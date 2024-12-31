@@ -1,7 +1,7 @@
 {
   "name": "next-chat-be",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
+    "dev": "bun run --hot src/app.ts",
     "eslint": "bunx eslint ./src",
     "typecheck": "tsc"
   },

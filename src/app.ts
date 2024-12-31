@@ -1,12 +1,11 @@
 import { Hono } from "hono"
+import { createRouter } from "./routes"
 
 const app = new Hono()
 
-app.get("/", (c) => {
-  return c.text("Hello Hono!")
-})
+createRouter(app)
 
 export default {
+  ...app,
   port: 8000,
-  fetch: app.fetch,
 }
