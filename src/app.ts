@@ -1,11 +1,11 @@
 import { Hono } from "hono"
 import { logger } from "hono/logger"
+import { ZodError } from "zod"
 
 import { ERROR } from "./common/constants/errors"
 import ClientError from "./common/exceptions/client-error"
 import { createError, customLogger } from "./common/lib/utils"
 import { createRouter } from "./routes"
-import { ZodError } from "zod"
 
 const app = new Hono()
 
