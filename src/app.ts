@@ -5,6 +5,7 @@ import { ERROR } from "./common/constants/errors"
 import ClientError from "./common/exceptions/client-error"
 import { createError, customLogger } from "./common/lib/utils"
 import { createRouter } from "./routes"
+import { ZodError } from "zod"
 
 const app = new Hono()
 
@@ -20,6 +21,14 @@ app.onError((error, c) => {
       `code: ${error.statusCode}`,
     )
     return c.json(createError(error.message), error.statusCode)
+  }
+
+  if (error instanceof ZodError) {
+    const response = createError(
+      error.errors[0]?.message,
+      error.errors[0]?.path,
+    )
+    return c.json(response, 400)
   }
 
   customLogger("ERROR:", `Message: ${error.message}`)
