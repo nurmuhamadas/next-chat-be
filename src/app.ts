@@ -5,7 +5,7 @@ import { ZodError } from "zod"
 import { ERROR } from "./common/constants/errors"
 import ClientError from "./common/exceptions/client-error"
 import { createError, customLogger } from "./common/lib/utils"
-import { createRouter } from "./routes"
+import { createRouter } from "./interfaces/routes"
 
 const app = new Hono()
 
