@@ -1,11 +1,14 @@
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
 
-export interface AuthTokenManager {
-  generateSessionToken(session: SessionTokenEntity): Promise<string>
+export abstract class AuthTokenManager {
+  abstract generateSessionToken(session: SessionTokenEntity): Promise<string>
 
-  generateVerificationToken(email: string, username: string): Promise<string>
+  abstract generateVerificationToken(
+    email: string,
+    username: string,
+  ): Promise<string>
 
-  verifySessionToken(token: string): Promise<SessionTokenEntity>
+  abstract verifySessionToken(token: string): Promise<SessionTokenEntity>
 
-  getTokenExpired(): Date
+  abstract getTokenExpired(): Date
 }

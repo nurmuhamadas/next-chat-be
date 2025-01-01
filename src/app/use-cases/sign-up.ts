@@ -1,16 +1,20 @@
+import { inject, injectable } from "inversify"
+
 import { ERROR } from "@/common/constants/errors"
 import InvariantError from "@/common/exceptions/invariant-error"
 import { UserEntity } from "@/domains/auth/entities/user-entity"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
+import { KEYS } from "@/infrastuctures/container/keys"
 
 import { AuthTokenManager } from "../security/auth-token-manager"
 import { PasswordHash } from "../security/password-hash"
 
+@injectable()
 export class SignUp {
   constructor(
-    private authRepository: AuthRepository,
-    private passwordHash: PasswordHash,
-    private tokenManager: AuthTokenManager,
+    @inject(KEYS.AuthRepository) private authRepository: AuthRepository,
+    @inject(KEYS.PasswordHash) private passwordHash: PasswordHash,
+    @inject(KEYS.AuthTokenManager) private tokenManager: AuthTokenManager,
   ) {}
 
   async execute(user: {

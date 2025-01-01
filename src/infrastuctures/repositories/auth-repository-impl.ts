@@ -1,8 +1,11 @@
+import { injectable } from "inversify"
+
 import { UserEntity } from "@/domains/auth/entities/user-entity"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 
 import { prisma } from "../orm/prisma"
 
+@injectable()
 export class AuthRepositoryImpl implements AuthRepository {
   async validateUsernameAvailability(username: string): Promise<boolean> {
     const result = await prisma.user.findUnique({

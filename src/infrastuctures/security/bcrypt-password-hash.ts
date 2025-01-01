@@ -1,5 +1,8 @@
+import { injectable } from "inversify"
+
 import { PasswordHash } from "@/app/security/password-hash"
 
+@injectable()
 export class BcryptPasswordHash implements PasswordHash {
   static SALT_ROUND = 10
 

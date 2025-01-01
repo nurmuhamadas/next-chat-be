@@ -5,7 +5,15 @@
     "jsxImportSource": "hono/jsx",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "target": "es2019",
+    "lib": ["es6", "dom"],
+    "types": ["reflect-metadata", "bun"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

@@ -4,9 +4,7 @@ import { Hono } from "hono"
 import { SignUp } from "@/app/use-cases/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/validate-username-availability"
 import { successResponse } from "@/common/lib/utils"
-import { AuthRepositoryImpl } from "@/infrastuctures/repositories/auth-repository-impl"
-import { BcryptPasswordHash } from "@/infrastuctures/security/bcrypt-password-hash"
-import { JWTTokenManager } from "@/infrastuctures/security/jwt-token-manager"
+import { container } from "@/infrastuctures/container"
 
 import { signUpSchema } from "../schemas/auth-schema"
 
@@ -14,8 +12,8 @@ const authRoute = new Hono()
   .get("/username-availability/:username", async (c) => {
     const { username } = c.req.param()
 
-    const authRepo = new AuthRepositoryImpl()
-    const validateUsername = new ValidateUsernameAvailability(authRepo)
+    const validateUsername = container.get(ValidateUsernameAvailability)
+
     const isUsernameAvailable = await validateUsername.execute(username)
 
     const response: UsernameAvailabilityResponse =
@@ -25,10 +23,7 @@ const authRoute = new Hono()
   .post("/sign-up", zValidator("json", signUpSchema), async (c) => {
     const { username, email, password } = c.req.valid("json")
 
-    const authRepo = new AuthRepositoryImpl()
-    const passwordHash = new BcryptPasswordHash()
-    const tokenManager = new JWTTokenManager()
-    const signUp = new SignUp(authRepo, passwordHash, tokenManager)
+    const signUp = container.get(SignUp)
 
     const createdUser = await signUp.execute({
       username,

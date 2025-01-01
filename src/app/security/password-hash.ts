@@ -1,5 +1,8 @@
-export interface PasswordHash {
-  hash(password: string): Promise<string>
+export abstract class PasswordHash {
+  abstract hash(password: string): Promise<string>
 
-  comparePassword(password: string, hashedPassword: string): Promise<boolean>
+  abstract comparePassword(
+    password: string,
+    hashedPassword: string,
+  ): Promise<boolean>
 }

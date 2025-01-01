@@ -1,4 +1,5 @@
 import * as jwt from "hono/jwt"
+import { injectable } from "inversify"
 
 import { AuthTokenManager } from "@/app/security/auth-token-manager"
 import { DateHelper } from "@/common/lib/date-helper"
@@ -6,6 +7,7 @@ import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity
 
 import { AUTH_SECRET } from "../../../config"
 
+@injectable()
 export class JWTTokenManager implements AuthTokenManager {
   generateSessionToken(session: SessionTokenEntity): Promise<string> {
     return jwt.sign(

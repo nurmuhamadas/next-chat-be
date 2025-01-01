@@ -1,11 +1,11 @@
 import { UserEntity } from "../entities/user-entity"
 
-export interface AuthRepository {
-  validateUsernameAvailability(username: string): Promise<boolean>
+export abstract class AuthRepository {
+  abstract validateUsernameAvailability(username: string): Promise<boolean>
 
-  getUserByEmail(email: string): Promise<UserEntity | null>
+  abstract getUserByEmail(email: string): Promise<UserEntity | null>
 
-  createUser(
+  abstract createUser(
     username: string,
     email: string,
     password: string,
