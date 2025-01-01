@@ -1,6 +1,7 @@
 import { beforeAll, describe, expect, it, spyOn } from "bun:test"
 import * as jwt from "hono/jwt"
 
+import { DateHelper } from "@/common/lib/date-helper"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
 
 import { JWTTokenManager } from "../jwt-token-manager"
@@ -59,5 +60,16 @@ describe("JWTTokenManager", () => {
     expect(verifiedSession.username).toBe("username")
     expect(verifiedSession.deviceId).toBe("device1")
     expect(verifiedSession.email).toBe("user@example.com")
+  })
+
+  it("should calculate token expiration date correctly", () => {
+    spyOn(DateHelper, "addDateDays").mockReturnValue(
+      new Date("2025-02-01T00:00:00Z"),
+    )
+
+    const expirationDate = jwtTokenManager.getTokenExpired()
+
+    expect(DateHelper.addDateDays).toHaveBeenCalledWith(expect.any(Date), 30)
+    expect(expirationDate.toISOString()).toBe("2025-02-01T00:00:00.000Z")
   })
 })

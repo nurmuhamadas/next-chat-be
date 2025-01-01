@@ -37,6 +37,7 @@ export class SignUp {
       user.email,
       hashedPassword,
       token,
+      this.tokenManager.getTokenExpired(),
     )
 
     const userEntity = new UserEntity(

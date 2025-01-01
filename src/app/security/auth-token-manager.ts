@@ -6,4 +6,6 @@ export interface AuthTokenManager {
   generateVerificationToken(email: string, username: string): Promise<string>
 
   verifySessionToken(token: string): Promise<SessionTokenEntity>
+
+  getTokenExpired(): Date
 }

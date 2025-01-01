@@ -22,6 +22,7 @@ const mockTokenManager: AuthTokenManager = {
   generateSessionToken: jest.fn(),
   verifySessionToken: jest.fn(),
   generateVerificationToken: jest.fn(),
+  getTokenExpired: jest.fn(),
 }
 
 describe("SignUp", () => {
@@ -46,6 +47,9 @@ describe("SignUp", () => {
     mockTokenManager.generateVerificationToken = jest
       .fn()
       .mockResolvedValue("verificationtoken")
+
+    const expiresAt = new Date()
+    mockTokenManager.getTokenExpired = jest.fn().mockResolvedValue(expiresAt)
 
     const signUp = new SignUp(
       mockAuthRepository,
@@ -80,6 +84,7 @@ describe("SignUp", () => {
       "user@example.com",
       "hashedpassword",
       "verificationtoken",
+      expiresAt,
     )
   })
 

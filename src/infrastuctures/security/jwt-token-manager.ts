@@ -1,6 +1,7 @@
 import * as jwt from "hono/jwt"
 
 import { AuthTokenManager } from "@/app/security/auth-token-manager"
+import { DateHelper } from "@/common/lib/date-helper"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
 
 import { AUTH_SECRET } from "../../../config"
@@ -39,5 +40,9 @@ export class JWTTokenManager implements AuthTokenManager {
     )
 
     return session
+  }
+
+  getTokenExpired(): Date {
+    return DateHelper.addDateDays(new Date(), 30)
   }
 }
