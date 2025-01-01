@@ -1,6 +1,6 @@
 export class SessionEntity {
   constructor(
-    public readonly id: string,
+    public readonly userId: string,
     public token: string,
     public deviceId: string,
     public userAgent: string,
