@@ -11,3 +11,10 @@ export const createError = (
 export const customLogger = (message: string, ...rest: string[]) => {
   console.log(message, ...rest)
 }
+
+export const successResponse = <T>(data: T): ApiResponse<T> => {
+  return {
+    success: true,
+    data,
+  }
+}

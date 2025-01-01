@@ -13,7 +13,11 @@ export class SignUp {
     private tokenManager: AuthTokenManager,
   ) {}
 
-  async execute(user: UserEntity): Promise<UserEntity> {
+  async execute(user: {
+    username: string
+    email: string
+    password: string
+  }): Promise<UserEntity> {
     const isUsernameAvailable =
       await this.authRepository.validateUsernameAvailability(user.username)
     if (!isUsernameAvailable) {

@@ -7,7 +7,7 @@ import ClientError from "./common/exceptions/client-error"
 import { createError, customLogger } from "./common/lib/utils"
 import { createRouter } from "./interfaces/routes"
 
-const app = new Hono()
+const app = new Hono().basePath("/api")
 
 app.use(logger(customLogger))
 

@@ -1,7 +1,7 @@
 import { Hono } from "hono"
 
+import authRoute from "./auth"
+
 export const createRouter = (app: Hono) => {
-  app.get("/", (c) => {
-    return c.text("Hello Hono!")
-  })
+  app.route("/auth", authRoute)
 }
