@@ -5,6 +5,10 @@ export abstract class AuthRepository {
 
   abstract getUserByEmail(email: string): Promise<UserEntity | null>
 
+  abstract getUserWithSettingAndProfileByEmail(
+    email: string,
+  ): Promise<UserEntity | null>
+
   abstract createUser(
     username: string,
     email: string,

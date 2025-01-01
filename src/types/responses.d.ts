@@ -21,5 +21,10 @@ declare type ApiCollectionResponse<T> = {
 // AUTH API
 declare type SignUpResponse = ApiResponse<{ username: string; email: string }>
 
+declare type SignInStatus = "unverified" | "2fa" | "success"
+declare type SignInResponse = ApiResponse<{
+  status: SignInStatus
+}>
+
 // USER API
 declare type UsernameAvailabilityResponse = ApiResponse<boolean>

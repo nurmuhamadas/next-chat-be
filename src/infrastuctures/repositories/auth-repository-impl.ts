@@ -31,6 +31,33 @@ export class AuthRepositoryImpl implements AuthRepository {
     )
   }
 
+  async getUserWithSettingAndProfileByEmail(
+    email: string,
+  ): Promise<UserEntity | null> {
+    const result = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        setting: { select: { enable2FA: true } },
+        profile: { select: { userId: true } },
+      },
+    })
+    if (!result) return null
+
+    const setting = result.setting ?? undefined
+
+    const profile = result.profile ?? undefined
+
+    return new UserEntity(
+      result.id,
+      result.username,
+      result.email,
+      result.password,
+      result.emailVerifiedAt,
+      setting,
+      profile,
+    )
+  }
+
   async createUser(
     username: string,
     email: string,

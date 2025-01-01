@@ -5,4 +5,6 @@ export const KEYS = {
 
   // AUTH
   AuthRepository: Symbol.for("AuthRepository"),
+  SessionRepository: Symbol.for("SessionRepository"),
+  TokenRepository: Symbol.for("TokenRepository"),
 }

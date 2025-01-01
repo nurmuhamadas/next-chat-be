@@ -2,11 +2,16 @@ import { Container } from "inversify"
 
 import { AuthTokenManager } from "@/app/security/auth-token-manager"
 import { PasswordHash } from "@/app/security/password-hash"
+import { SignIn } from "@/app/use-cases/sign-in"
 import { SignUp } from "@/app/use-cases/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/validate-username-availability"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
+import { SessionRepository } from "@/domains/auth/repositories/session-repository"
+import { TokenRepository } from "@/domains/auth/repositories/token-repository"
 
 import { AuthRepositoryImpl } from "../repositories/auth-repository-impl"
+import { SessionRepositoryImpl } from "../repositories/session-repository-impl"
+import { TokenRepositoryImpl } from "../repositories/token-repository-impl"
 import { BcryptPasswordHash } from "../security/bcrypt-password-hash"
 import { JWTTokenManager } from "../security/jwt-token-manager"
 
@@ -26,10 +31,15 @@ container
 
 // AUTH
 container.bind<AuthRepository>(KEYS.AuthRepository).to(AuthRepositoryImpl)
+container
+  .bind<SessionRepository>(KEYS.SessionRepository)
+  .to(SessionRepositoryImpl)
+container.bind<TokenRepository>(KEYS.TokenRepository).to(TokenRepositoryImpl)
 
-container.bind<SignUp>(SignUp).toSelf()
 container
   .bind<ValidateUsernameAvailability>(ValidateUsernameAvailability)
   .toSelf()
+container.bind<SignUp>(SignUp).toSelf()
+container.bind<SignIn>(SignIn).toSelf()
 
 export { container }
