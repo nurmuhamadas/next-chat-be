@@ -1,5 +1,6 @@
 import "reflect-metadata"
 
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { Hono } from "hono"
 import { logger } from "hono/logger"
 import { ZodError } from "zod"
@@ -31,6 +32,11 @@ app.onError((error, c) => {
       error.errors[0]?.path,
     )
     return c.json(response, 400)
+  }
+
+  if (error instanceof PrismaClientKnownRequestError) {
+    console.log(createError(error.message))
+    return c.json(createError(ERROR.INTERNAL_SERVER_ERROR), 500)
   }
 
   customLogger("ERROR:", `Message: ${error.message}`)
