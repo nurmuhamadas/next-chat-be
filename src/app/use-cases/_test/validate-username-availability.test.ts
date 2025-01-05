@@ -2,7 +2,7 @@ import { describe, expect, it, jest } from "bun:test"
 
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 
-import { ValidateUsernameAvailability } from "../validate-username-availability"
+import { ValidateUsernameAvailability } from "../auth/validate-username-availability"
 
 const mockAuthRepository: AuthRepository = {
   createUser: jest.fn(),

@@ -4,8 +4,8 @@ import { SessionEntity } from "@/domains/auth/entities/session-entity"
 import { LogActivity } from "@/domains/auth/entities/user-log-entity"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 
-import { prisma } from "../orm/prisma"
-import { PrismaHelper } from "../orm/prisma-helper"
+import { prisma } from "../../orm/prisma"
+import { PrismaHelper } from "../../orm/prisma-helper"
 
 @injectable()
 export class SessionRepositoryImpl implements SessionRepository {

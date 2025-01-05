@@ -7,7 +7,7 @@ import InvariantError from "@/common/exceptions/invariant-error"
 import { UserEntity } from "@/domains/auth/entities/user-entity"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 
-import { SignUp } from "../sign-up"
+import { SignUp } from "../auth/sign-up"
 
 const mockAuthRepository: AuthRepository = {
   createUser: jest.fn(),

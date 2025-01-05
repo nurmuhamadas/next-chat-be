@@ -6,8 +6,8 @@ import { UserEntity } from "@/domains/auth/entities/user-entity"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
 
-import { AuthTokenManager } from "../security/auth-token-manager"
-import { PasswordHash } from "../security/password-hash"
+import { AuthTokenManager } from "../../security/auth-token-manager"
+import { PasswordHash } from "../../security/password-hash"
 
 @injectable()
 export class SignUp {

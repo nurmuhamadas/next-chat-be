@@ -1,8 +1,8 @@
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
-import { SignUp } from "@/app/use-cases/sign-up"
-import { ValidateUsernameAvailability } from "@/app/use-cases/validate-username-availability"
+import { SignUp } from "@/app/use-cases/auth/sign-up"
+import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
 import { successResponse } from "@/common/lib/utils"
 import { container } from "@/infrastuctures/container"
 

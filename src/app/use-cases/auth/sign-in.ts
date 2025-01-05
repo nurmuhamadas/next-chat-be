@@ -12,8 +12,8 @@ import { SessionRepository } from "@/domains/auth/repositories/session-repositor
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
 
-import { AuthTokenManager } from "../security/auth-token-manager"
-import { PasswordHash } from "../security/password-hash"
+import { AuthTokenManager } from "../../security/auth-token-manager"
+import { PasswordHash } from "../../security/password-hash"
 
 @injectable()
 export class SignIn {
