@@ -2,6 +2,7 @@ import { Container } from "inversify"
 
 import { AuthTokenManager } from "@/app/security/auth-token-manager"
 import { PasswordHash } from "@/app/security/password-hash"
+import { WebSocketManager } from "@/app/socket/web-socket-manager"
 import { SignIn } from "@/app/use-cases/sign-in"
 import { SignUp } from "@/app/use-cases/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/validate-username-availability"
@@ -14,6 +15,7 @@ import { SessionRepositoryImpl } from "../repositories/session-repository-impl"
 import { TokenRepositoryImpl } from "../repositories/token-repository-impl"
 import { BcryptPasswordHash } from "../security/bcrypt-password-hash"
 import { JWTTokenManager } from "../security/jwt-token-manager"
+import { HonoWebSocket } from "../socket/hono-web-socket"
 
 import { KEYS } from "./keys"
 
@@ -28,6 +30,7 @@ container
   .bind<AuthTokenManager>(KEYS.AuthTokenManager)
   .to(JWTTokenManager)
   .inSingletonScope()
+container.bind<WebSocketManager>(KEYS.WebSocketManager).to(HonoWebSocket)
 
 // AUTH
 container.bind<AuthRepository>(KEYS.AuthRepository).to(AuthRepositoryImpl)
