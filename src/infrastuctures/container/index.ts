@@ -3,6 +3,7 @@ import { Container } from "inversify"
 import { AuthTokenManager } from "@/app/security/auth-token-manager"
 import { PasswordHash } from "@/app/security/password-hash"
 import { SignIn } from "@/app/use-cases/auth/sign-in"
+import { SignOut } from "@/app/use-cases/auth/sign-out"
 import { SignUp } from "@/app/use-cases/auth/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
@@ -41,5 +42,6 @@ container
   .toSelf()
 container.bind<SignUp>(SignUp).toSelf()
 container.bind<SignIn>(SignIn).toSelf()
+container.bind<SignOut>(SignOut).toSelf()
 
 export { container }

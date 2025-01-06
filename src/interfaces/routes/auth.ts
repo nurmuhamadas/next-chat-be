@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { SignIn } from "@/app/use-cases/auth/sign-in"
+import { SignOut } from "@/app/use-cases/auth/sign-out"
 import { SignUp } from "@/app/use-cases/auth/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
 import { successResponse } from "@/common/lib/utils"
@@ -56,6 +57,14 @@ const authRoute = new Hono()
     const response: SignInResponse = successResponse({
       status,
     })
+    return c.json(response)
+  })
+  .post("/sign-out", async (c) => {
+    const signOut = container.get(SignOut)
+
+    await signOut.execute(c)
+
+    const response: LogoutResponse = successResponse(true)
     return c.json(response)
   })
 

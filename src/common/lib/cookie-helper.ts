@@ -1,6 +1,6 @@
 import { addDays, addYears } from "date-fns"
 import { Context } from "hono"
-import { getCookie, setCookie } from "hono/cookie"
+import { deleteCookie, getCookie, setCookie } from "hono/cookie"
 import { v7 as uuidV7 } from "uuid"
 
 import { SessionEntity } from "@/domains/auth/entities/session-entity"
@@ -18,6 +18,10 @@ export class CookieHelper {
   }
 
   static getSessionExpired = () => addDays(new Date(), 30)
+
+  static getAuthCookie(c: Context): string | undefined {
+    return getCookie(c, this.AUTH_COOKIE_KEY)
+  }
 
   static setAuthCookies(c: Context, session: SessionEntity) {
     const deviceId = this.getDeviceId(c)
@@ -37,5 +41,9 @@ export class CookieHelper {
       sameSite: "strict",
       expires: this.getSessionExpired(),
     })
+  }
+
+  static deleteAuthCookie(c: Context) {
+    deleteCookie(c, this.AUTH_COOKIE_KEY)
   }
 }
