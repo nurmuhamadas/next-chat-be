@@ -5,6 +5,8 @@ import { v7 as uuidV7 } from "uuid"
 
 import { SessionEntity } from "@/domains/auth/entities/session-entity"
 
+import { APP_URL } from "../../../config"
+
 export class CookieHelper {
   static AUTH_COOKIE_KEY = "next-chat-session"
   static DEVICE_ID_COOKIE_KEY = "device-id"
@@ -28,22 +30,27 @@ export class CookieHelper {
     if (!deviceId) {
       setCookie(c, this.DEVICE_ID_COOKIE_KEY, session.deviceId, {
         path: "/",
+        domain: APP_URL,
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
         expires: addYears(new Date(), 1),
       })
     }
     setCookie(c, this.AUTH_COOKIE_KEY, session.token, {
       path: "/",
+      domain: APP_URL,
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: "none",
       expires: this.getSessionExpired(),
     })
   }
 
   static deleteAuthCookie(c: Context) {
-    deleteCookie(c, this.AUTH_COOKIE_KEY)
+    deleteCookie(c, this.AUTH_COOKIE_KEY, {
+      path: "/",
+      domain: APP_URL,
+    })
   }
 }

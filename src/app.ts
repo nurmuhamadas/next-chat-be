@@ -23,6 +23,7 @@ app.use(
     origin: APP_URL,
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     maxAge: 600,
+    credentials: true,
   }),
 )
 
