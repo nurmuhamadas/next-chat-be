@@ -9,12 +9,15 @@ import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-user
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
+import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
 
 import { AuthRepositoryImpl } from "../repositories/auth/auth-repository-impl"
 import { SessionRepositoryImpl } from "../repositories/auth/session-repository-impl"
 import { TokenRepositoryImpl } from "../repositories/auth/token-repository-impl"
+import { StorageRepositoryImpl } from "../repositories/storage/storage-repository-impl"
 import { BcryptPasswordHash } from "../security/bcrypt-password-hash"
 import { JWTTokenManager } from "../security/jwt-token-manager"
+import { AppwriteClient } from "../storage/appwrite"
 
 import { KEYS } from "./keys"
 
@@ -29,6 +32,15 @@ container
   .bind<AuthTokenManager>(KEYS.AuthTokenManager)
   .to(JWTTokenManager)
   .inSingletonScope()
+container
+  .bind<AppwriteClient>(KEYS.AuthTokenManager)
+  .toSelf()
+  .inSingletonScope()
+
+// STORAGE
+container
+  .bind<StorageRepository>(KEYS.StorageRepository)
+  .to(StorageRepositoryImpl)
 
 // AUTH
 container.bind<AuthRepository>(KEYS.AuthRepository).to(AuthRepositoryImpl)
