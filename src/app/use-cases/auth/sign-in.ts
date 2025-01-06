@@ -34,7 +34,7 @@ export class SignIn {
       password: string
     },
     userAgent: string,
-  ): Promise<SignInStatus | SessionEntity> {
+  ): Promise<SignInStatus> {
     const existingUser = await this.authRepository.getUserByEmail(user.email)
     if (!existingUser) {
       throw new InvariantError(ERROR.EMAIL_NOT_REGISTERED)

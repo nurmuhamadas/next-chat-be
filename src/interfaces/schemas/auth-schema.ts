@@ -33,3 +33,8 @@ export const signUpSchema = z
     message: ERROR.PASSWORD_DONT_MATCH,
     path: ["confirmPassword"],
   })
+
+export const signInSchema = z.object({
+  email: z.string().email(ERROR.INVALID_EMAIL).min(1, ERROR.EMAIL_REQUIRED),
+  password: z.string().min(1, ERROR.PASSWORD_REQUIRED),
+})
