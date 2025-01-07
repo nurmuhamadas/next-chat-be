@@ -34,3 +34,6 @@ declare type UsernameAvailabilityResponse = ApiResponse<boolean>
 declare type CreateUserProfileResponse = ApiResponse<Profile>
 
 declare type SearchUsersResponse = ApiCollectionResponse<UserSearch>
+
+declare type SearchUsersForMemberResponse =
+  ApiCollectionResponse<UserSearchForMember>

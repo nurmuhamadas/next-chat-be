@@ -8,6 +8,7 @@ import { SignUp } from "@/app/use-cases/auth/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
 import { SearchUsers } from "@/app/use-cases/user/search-users"
+import { SearchUsersForMember } from "@/app/use-cases/user/search-users-for-member"
 import { UpdateProfile } from "@/app/use-cases/user/update-profile"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
@@ -69,5 +70,6 @@ container
 container.bind<CreateProfile>(CreateProfile).toSelf()
 container.bind<UpdateProfile>(UpdateProfile).toSelf()
 container.bind<SearchUsers>(SearchUsers).toSelf()
+container.bind<SearchUsersForMember>(SearchUsersForMember).toSelf()
 
 export { container }

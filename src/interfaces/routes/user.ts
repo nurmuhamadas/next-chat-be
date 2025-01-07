@@ -3,6 +3,7 @@ import { Hono } from "hono"
 
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
 import { SearchUsers } from "@/app/use-cases/user/search-users"
+import { SearchUsersForMember } from "@/app/use-cases/user/search-users-for-member"
 import { UpdateProfile } from "@/app/use-cases/user/update-profile"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateProfileEntity } from "@/domains/users/entities/create-profile-entity"
@@ -114,6 +115,39 @@ const userRoute = new Hono()
           name: v.name,
           lastSeenAt: v.lastSeenAt ? v.lastSeenAt.toISOString() : null,
           imageUrl: v.imageUrl ?? null,
+        })),
+        result.total,
+        result.cursor,
+      )
+      return c.json(response)
+    },
+  )
+  .get(
+    "/search-for-member/:groupId",
+    sessionMiddleware,
+    zValidator("query", searchQuerySchema),
+    async (c) => {
+      const { query, limit, cursor } = c.req.valid("query")
+      const { groupId } = c.req.param()
+
+      const session = c.get("userSession")
+
+      const searchUsers = container.get(SearchUsersForMember)
+      const result = await searchUsers.execute({
+        userId: session.userId,
+        groupId,
+        query,
+        limit,
+        cursor,
+      })
+
+      const response: SearchUsersForMemberResponse = successCollectionResponse(
+        result.data.map((v) => ({
+          id: v.id,
+          name: v.name,
+          lastSeenAt: v.lastSeenAt ? v.lastSeenAt.toISOString() : null,
+          imageUrl: v.imageUrl ?? null,
+          allowAddToGroup: v.allowAddToGroup,
         })),
         result.total,
         result.cursor,

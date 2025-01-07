@@ -17,3 +17,11 @@ declare interface UserSearch {
   imageUrl: string | null
   lastSeenAt: string | null
 }
+
+declare interface UserSearchForMember {
+  id: string
+  name: string
+  imageUrl: string | null
+  lastSeenAt: string | null
+  allowAddToGroup: boolean
+}
