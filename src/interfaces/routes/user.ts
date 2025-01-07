@@ -43,19 +43,9 @@ const userRoute = new Hono()
         userAgent,
       })
 
-      const response: CreateUserProfileResponse = successResponse({
-        id: profile.id,
-        userId: profile.userId,
-        name: profile.name,
-        gender: profile.gender,
-        bio: profile.bio ?? null,
-        imageUrl: profile.imageUrl ?? null,
-        email: session.email,
-        username: session.username,
-        lastSeenAt: profile.lastSeenAt
-          ? profile.lastSeenAt.toISOString()
-          : null,
-      })
+      const response: CreateUserProfileResponse = successResponse(
+        profile.toProfileDTO(session.username, session.email),
+      )
       return c.json(response)
     },
   )
@@ -78,19 +68,9 @@ const userRoute = new Hono()
         session,
       })
 
-      const response: CreateUserProfileResponse = successResponse({
-        id: profile.id,
-        userId: profile.userId,
-        name: profile.name,
-        gender: profile.gender,
-        bio: profile.bio ?? null,
-        imageUrl: profile.imageUrl ?? null,
-        email: session.email,
-        username: session.username,
-        lastSeenAt: profile.lastSeenAt
-          ? profile.lastSeenAt.toISOString()
-          : null,
-      })
+      const response: CreateUserProfileResponse = successResponse(
+        profile.toProfileDTO(session.username, session.email),
+      )
       return c.json(response)
     },
   )
@@ -112,12 +92,7 @@ const userRoute = new Hono()
       })
 
       const response: SearchUsersResponse = successCollectionResponse(
-        result.data.map((v) => ({
-          id: v.id,
-          name: v.name,
-          lastSeenAt: v.lastSeenAt ? v.lastSeenAt.toISOString() : null,
-          imageUrl: v.imageUrl ?? null,
-        })),
+        result.data.map((user) => user.toUserSearchDTO()),
         result.total,
         result.cursor,
       )
@@ -144,13 +119,7 @@ const userRoute = new Hono()
       })
 
       const response: SearchUsersForMemberResponse = successCollectionResponse(
-        result.data.map((v) => ({
-          id: v.id,
-          name: v.name,
-          lastSeenAt: v.lastSeenAt ? v.lastSeenAt.toISOString() : null,
-          imageUrl: v.imageUrl ?? null,
-          allowAddToGroup: v.allowAddToGroup,
-        })),
+        result.data.map((v) => v.toUserSearchForMemberDTO()),
         result.total,
         result.cursor,
       )
@@ -164,7 +133,7 @@ const userRoute = new Hono()
     const result = await getMyProfile.execute(session)
 
     const response: GetMyProfileResponse = successResponse(
-      result.toProfileResponse(),
+      result.toProfileDTO(),
     )
     return c.json(response)
   })
@@ -175,7 +144,7 @@ const userRoute = new Hono()
     const result = await getMyProfile.execute(userId)
 
     const response: GetUserProfileResponse = successResponse(
-      result.toProfileResponse(),
+      result.toProfileDTO(),
     )
     return c.json(response)
   })

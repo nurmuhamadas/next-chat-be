@@ -10,7 +10,7 @@ export class DetailProfileEntity {
     public readonly lastSeenAt?: Date,
   ) {}
 
-  public toProfileResponse(): Profile {
+  public toProfileDTO(): ProfileDTO {
     return {
       id: this.id,
       name: this.name,

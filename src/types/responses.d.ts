@@ -31,13 +31,13 @@ declare type LogoutResponse = ApiResponse<boolean>
 // USER API
 declare type UsernameAvailabilityResponse = ApiResponse<boolean>
 
-declare type CreateUserProfileResponse = ApiResponse<Profile>
+declare type CreateUserProfileResponse = ApiResponse<ProfileDTO>
 
-declare type SearchUsersResponse = ApiCollectionResponse<UserSearch>
+declare type SearchUsersResponse = ApiCollectionResponse<UserSearchDTO>
 
 declare type SearchUsersForMemberResponse =
-  ApiCollectionResponse<UserSearchForMember>
+  ApiCollectionResponse<UserSearchForMemberDTO>
 
-declare type GetMyProfileResponse = ApiResponse<Profile>
+declare type GetMyProfileResponse = ApiResponse<ProfileDTO>
 
-declare type GetUserProfileResponse = ApiResponse<Profile>
+declare type GetUserProfileResponse = ApiResponse<ProfileDTO>

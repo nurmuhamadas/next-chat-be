@@ -1,6 +1,6 @@
 declare type Gender = "MALE" | "FEMALE"
 
-declare interface Profile {
+declare interface ProfileDTO {
   id: string
   name: string
   username: string
@@ -11,14 +11,14 @@ declare interface Profile {
   lastSeenAt: string | null
 }
 
-declare interface UserSearch {
+declare interface UserSearchDTO {
   id: string
   name: string
   imageUrl: string | null
   lastSeenAt: string | null
 }
 
-declare interface UserSearchForMember {
+declare interface UserSearchForMemberDTO {
   id: string
   name: string
   imageUrl: string | null
