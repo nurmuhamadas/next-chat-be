@@ -38,4 +38,12 @@ export class StorageRepositoryImpl implements StorageRepository {
 
     await storage.deleteFile(STORAGE_ID, id)
   }
+
+  async deleteFileByUrl(url: string): Promise<void> {
+    const { storage } = await this.appwrite.createAdminClient()
+
+    const id = this.appwrite.destructFileId(url)
+
+    await storage.deleteFile(STORAGE_ID, id)
+  }
 }
