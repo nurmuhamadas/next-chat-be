@@ -2,12 +2,14 @@ import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
+import { SearchUsers } from "@/app/use-cases/user/search-users"
 import { UpdateProfile } from "@/app/use-cases/user/update-profile"
-import { successResponse } from "@/common/lib/utils"
+import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateProfileEntity } from "@/domains/users/entities/create-profile-entity"
 import { UpdateProfileEntity } from "@/domains/users/entities/update-profile-entity"
 import { container } from "@/infrastuctures/container"
 
+import { searchQuerySchema } from "../schemas/common-schema"
 import { profileSchema } from "../schemas/profile-schema"
 
 import { sessionMiddleware } from "./middleware/session-middleware"
@@ -89,6 +91,35 @@ const userRoute = new Hono()
       return c.json(response)
     },
   )
-  .get("/")
+  .get(
+    "/search",
+    sessionMiddleware,
+    zValidator("query", searchQuerySchema),
+    async (c) => {
+      const { query, limit, cursor } = c.req.valid("query")
+
+      const session = c.get("userSession")
+
+      const searchUsers = container.get(SearchUsers)
+      const result = await searchUsers.execute({
+        userId: session.userId,
+        query,
+        limit,
+        cursor,
+      })
+
+      const response: SearchUsersResponse = successCollectionResponse(
+        result.data.map((v) => ({
+          id: v.id,
+          name: v.name,
+          lastSeenAt: v.lastSeenAt ? v.lastSeenAt.toISOString() : null,
+          imageUrl: v.imageUrl ?? null,
+        })),
+        result.total,
+        result.cursor,
+      )
+      return c.json(response)
+    },
+  )
 
 export default userRoute

@@ -10,3 +10,10 @@ declare interface Profile {
   imageUrl: string | null
   lastSeenAt: string | null
 }
+
+declare interface UserSearch {
+  id: string
+  name: string
+  imageUrl: string | null
+  lastSeenAt: string | null
+}
