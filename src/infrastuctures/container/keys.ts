@@ -14,4 +14,7 @@ export const KEYS = {
 
   // PROFILE
   ProfileRepository: Symbol.for("ProfileRepository"),
+
+  // SETTING
+  SettingRepository: Symbol.for("SettingRepository"),
 }

@@ -1,15 +1,29 @@
 import { SettingEntity } from "@/domains/settings/entities/setting-entity"
+import { UpdateSettingEntity } from "@/domains/settings/entities/update-setting-entity"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
 import { PrismaHelper } from "@/infrastuctures/orm/prisma-helper"
 
 export class SettingRepositoryImpl implements SettingRepository {
-  async createSetting(setting: SettingEntity): Promise<SettingEntity> {
-    const result = await prisma.setting.create({
-      data: {
+  async updateSetting(setting: UpdateSettingEntity): Promise<SettingEntity> {
+    const result = await prisma.setting.upsert({
+      where: { userId: setting.userId },
+      create: {
         userId: setting.userId,
         language: setting.language,
-        timeFormat: PrismaHelper.convertTimeFormat(setting.timeFormat),
+        timeFormat: setting.timeFormat
+          ? PrismaHelper.convertTimeFormat(setting.timeFormat)
+          : undefined,
+        notifications: setting.notifications,
+        allowAddToGroup: setting.allowAddToGroup,
+        enable2FA: setting.enable2FA,
+        showLastSeen: setting.showLastSeen,
+      },
+      update: {
+        language: setting.language,
+        timeFormat: setting.timeFormat
+          ? PrismaHelper.convertTimeFormat(setting.timeFormat)
+          : undefined,
         notifications: setting.notifications,
         allowAddToGroup: setting.allowAddToGroup,
         enable2FA: setting.enable2FA,
@@ -18,10 +32,11 @@ export class SettingRepositoryImpl implements SettingRepository {
     })
 
     return new SettingEntity(
+      result.id,
       result.userId,
       PrismaHelper.convertDBTimeFormat(result.timeFormat),
-      result.language,
-      result.notifications,
+      PrismaHelper.convertDBLanguage(result.language),
+      result.notifications.map(PrismaHelper.convertDBNotification),
       result.enable2FA,
       result.showLastSeen,
       result.allowAddToGroup,
@@ -36,10 +51,11 @@ export class SettingRepositoryImpl implements SettingRepository {
     if (!result) return null
 
     return new SettingEntity(
+      result.id,
       result.userId,
       PrismaHelper.convertDBTimeFormat(result.timeFormat),
-      result.language,
-      result.notifications,
+      PrismaHelper.convertDBLanguage(result.language),
+      result.notifications.map(PrismaHelper.convertDBNotification),
       result.enable2FA,
       result.showLastSeen,
       result.allowAddToGroup,

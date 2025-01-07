@@ -1,11 +1,17 @@
 import {
   DBTimeFormat,
+  Language as DBLanguage,
   LogActivity as LogActivityModel,
+  Notification as DBNotification,
   PrismaPromise,
 } from "@prisma/client"
 
 import { LogActivity } from "@/domains/auth/entities/user-log-entity"
-import { TimeFormat } from "@/domains/settings/entities/setting-entity"
+import {
+  Language,
+  Notifications,
+  TimeFormat,
+} from "@/domains/settings/entities/enums"
 
 import { prisma } from "./prisma"
 
@@ -23,7 +29,36 @@ export class PrismaHelper {
       ? DBTimeFormat.HALF_DAY
       : DBTimeFormat.FULL_DAY
   }
+
   static convertDBTimeFormat(timeFormat: DBTimeFormat): TimeFormat {
-    return timeFormat === DBTimeFormat.HALF_DAY ? "12-HOUR" : "24-HOUR"
+    return timeFormat === DBTimeFormat.HALF_DAY
+      ? TimeFormat.HALF_DAY
+      : TimeFormat.FULL_DAY
+  }
+
+  static convertLanguage(language: Language): DBLanguage {
+    return language === Language.ENGLISH ? DBLanguage.en_US : DBLanguage.id_ID
+  }
+
+  static convertDBLanguage(language: DBLanguage): Language {
+    return language === DBLanguage.en_US
+      ? Language.ENGLISH
+      : Language.INDONESIAN
+  }
+
+  static convertNotifications(notification: Notifications): DBNotification {
+    return notification === Notifications.PRIVATE
+      ? DBNotification.PRIVATE
+      : notification === Notifications.GROUP
+        ? DBNotification.GROUP
+        : DBNotification.CHANNEL
+  }
+
+  static convertDBNotification(notification: DBNotification): Notifications {
+    return notification === DBNotification.PRIVATE
+      ? Notifications.PRIVATE
+      : notification === DBNotification.GROUP
+        ? Notifications.GROUP
+        : Notifications.CHANNEL
   }
 }
