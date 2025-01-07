@@ -9,6 +9,7 @@ import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-user
 import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
+import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
 import { GetSetting } from "@/app/use-cases/settings/get-setting"
 import { UpdateSetting } from "@/app/use-cases/settings/update-setting"
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
@@ -101,5 +102,6 @@ container
 container.bind<GetBlockedUsers>(GetBlockedUsers).toSelf()
 container.bind<GetIsUserBlocked>(GetIsUserBlocked).toSelf()
 container.bind<BlockUser>(BlockUser).toSelf()
+container.bind<UnblockUser>(UnblockUser).toSelf()
 
 export { container }

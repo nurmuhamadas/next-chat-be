@@ -3,6 +3,7 @@ import { Hono } from "hono"
 import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
+import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
 import {
   successCollectionResponse,
   successResponse,
@@ -56,6 +57,18 @@ const blockedUserRoute = new Hono()
     await blockUser.execute(session, blockedUserId)
 
     const response: BlockUserResponse = successResponse({ id: blockedUserId })
+    return c.json(response)
+  })
+  .delete("/:blockedUserId", sessionMiddleware, async (c) => {
+    const { blockedUserId } = c.req.param()
+    const session = c.get("userSession")
+
+    const unblockUser = container.get(UnblockUser)
+    await unblockUser.execute(session, blockedUserId)
+
+    const response: UnblockUserResponse = successResponse({
+      id: blockedUserId,
+    })
     return c.json(response)
   })
 

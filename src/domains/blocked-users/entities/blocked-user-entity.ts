@@ -10,7 +10,7 @@ export class BlockedUserEntity {
 
   public toDTO(): BlockedUserDTO {
     return {
-      id: this.id,
+      id: this.blockedUserId,
       name: this.name,
       imageUrl: this.imageUrl ?? null,
     }
