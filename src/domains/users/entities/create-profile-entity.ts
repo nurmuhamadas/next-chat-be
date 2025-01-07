@@ -1,5 +1,3 @@
-export type Gender = "MALE" | "FEMALE"
-
 export class CreateProfileEntity {
   constructor(
     public readonly userId: string,

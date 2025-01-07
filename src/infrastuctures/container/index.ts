@@ -7,6 +7,7 @@ import { SignOut } from "@/app/use-cases/auth/sign-out"
 import { SignUp } from "@/app/use-cases/auth/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
+import { UpdateProfile } from "@/app/use-cases/user/update-profile"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
@@ -65,5 +66,6 @@ container
   .to(ProfileRepositoryImpl)
 
 container.bind<CreateProfile>(CreateProfile).toSelf()
+container.bind<UpdateProfile>(UpdateProfile).toSelf()
 
 export { container }

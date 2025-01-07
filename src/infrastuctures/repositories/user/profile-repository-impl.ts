@@ -3,6 +3,7 @@ import { injectable } from "inversify"
 import { SettingEntity } from "@/domains/settings/entities/setting-entity"
 import { CreateProfileEntity } from "@/domains/users/entities/create-profile-entity"
 import { ProfileEntity } from "@/domains/users/entities/profile-entity"
+import { UpdateProfileEntity } from "@/domains/users/entities/update-profile-entity"
 import { ProfileRepository } from "@/domains/users/repositories/profile-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
 import { PrismaHelper } from "@/infrastuctures/orm/prisma-helper"
@@ -71,5 +72,30 @@ export class ProfileRepositoryImpl implements ProfileRepository {
         settingResult.allowAddToGroup,
       ),
     ]
+  }
+
+  async updateProfile(
+    userId: string,
+    profile: UpdateProfileEntity,
+  ): Promise<ProfileEntity> {
+    const result = await prisma.profile.update({
+      where: { userId },
+      data: {
+        name: profile.name,
+        gender: profile.gender,
+        bio: profile.bio,
+        imageUrl: profile.imageUrl,
+      },
+    })
+
+    return new ProfileEntity(
+      result.id,
+      result.userId,
+      result.name,
+      result.gender,
+      result.bio ?? undefined,
+      result.imageUrl ?? undefined,
+      result.lastSeenAt ?? undefined,
+    )
   }
 }
