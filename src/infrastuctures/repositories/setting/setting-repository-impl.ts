@@ -1,10 +1,11 @@
+import { CreateSettingEntity } from "@/domains/settings/entities/create-setting-entity"
 import { SettingEntity } from "@/domains/settings/entities/setting-entity"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
 import { PrismaHelper } from "@/infrastuctures/orm/prisma-helper"
 
 export class SettingRepositoryImpl implements SettingRepository {
-  async createSetting(setting: SettingEntity): Promise<SettingEntity> {
+  async createSetting(setting: CreateSettingEntity): Promise<SettingEntity> {
     const result = await prisma.setting.create({
       data: {
         userId: setting.userId,
@@ -18,10 +19,11 @@ export class SettingRepositoryImpl implements SettingRepository {
     })
 
     return new SettingEntity(
+      result.id,
       result.userId,
       PrismaHelper.convertDBTimeFormat(result.timeFormat),
-      result.language,
-      result.notifications,
+      PrismaHelper.convertDBLanguage(result.language),
+      result.notifications.map(PrismaHelper.convertDBNotification),
       result.enable2FA,
       result.showLastSeen,
       result.allowAddToGroup,
@@ -36,10 +38,11 @@ export class SettingRepositoryImpl implements SettingRepository {
     if (!result) return null
 
     return new SettingEntity(
+      result.id,
       result.userId,
       PrismaHelper.convertDBTimeFormat(result.timeFormat),
-      result.language,
-      result.notifications,
+      PrismaHelper.convertDBLanguage(result.language),
+      result.notifications.map(PrismaHelper.convertDBNotification),
       result.enable2FA,
       result.showLastSeen,
       result.allowAddToGroup,

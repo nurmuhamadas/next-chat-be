@@ -1,8 +1,7 @@
 import { Language, Notifications, TimeFormat } from "./enums"
 
-export class SettingEntity {
+export class CreateSettingEntity {
   constructor(
-    public readonly id: string,
     public readonly userId: string,
     public readonly timeFormat: TimeFormat,
     public readonly language: Language,

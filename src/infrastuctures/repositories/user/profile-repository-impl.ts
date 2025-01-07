@@ -68,10 +68,11 @@ export class ProfileRepositoryImpl implements ProfileRepository {
         profileResult.lastSeenAt ?? undefined,
       ),
       new SettingEntity(
+        settingResult.id,
         settingResult.userId,
         PrismaHelper.convertDBTimeFormat(settingResult.timeFormat),
-        settingResult.language,
-        settingResult.notifications,
+        PrismaHelper.convertDBLanguage(settingResult.language),
+        settingResult.notifications.map(PrismaHelper.convertDBNotification),
         settingResult.enable2FA,
         settingResult.showLastSeen,
         settingResult.allowAddToGroup,
