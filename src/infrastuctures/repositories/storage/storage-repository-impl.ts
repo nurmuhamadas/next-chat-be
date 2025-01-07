@@ -1,3 +1,4 @@
+import { inject, injectable } from "inversify"
 import { ID } from "node-appwrite"
 
 import { UploadedFileEntity } from "@/domains/storage/entities/uploaded-file-entity"
@@ -6,8 +7,9 @@ import { AppwriteClient } from "@/infrastuctures/storage/appwrite"
 
 import { STORAGE_ID } from "../../../../config"
 
+@injectable()
 export class StorageRepositoryImpl implements StorageRepository {
-  constructor(private appwrite: AppwriteClient) {}
+  constructor(@inject(AppwriteClient) private appwrite: AppwriteClient) {}
 
   async uploadFile(file: File): Promise<UploadedFileEntity> {
     const { storage } = await this.appwrite.createAdminClient()

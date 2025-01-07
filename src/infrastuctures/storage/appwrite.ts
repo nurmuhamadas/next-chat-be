@@ -1,3 +1,4 @@
+import { injectable } from "inversify"
 import { Client, Storage } from "node-appwrite"
 
 import {
@@ -7,6 +8,7 @@ import {
   STORAGE_ID,
 } from "../../../config"
 
+@injectable()
 export class AppwriteClient {
   async createAdminClient() {
     const client = new Client()

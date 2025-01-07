@@ -34,7 +34,7 @@ container
   .inSingletonScope()
 container
   .bind<AppwriteClient>(KEYS.AuthTokenManager)
-  .toSelf()
+  .to(AppwriteClient)
   .inSingletonScope()
 
 // STORAGE
