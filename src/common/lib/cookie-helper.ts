@@ -30,7 +30,7 @@ export class CookieHelper {
     if (!deviceId) {
       setCookie(c, this.DEVICE_ID_COOKIE_KEY, session.deviceId, {
         path: "/",
-        domain: APP_URL,
+        domain: process.env.NODE_ENV !== "production" ? "localhost" : APP_URL,
         httpOnly: true,
         secure: true,
         sameSite: "none",
@@ -39,7 +39,7 @@ export class CookieHelper {
     }
     setCookie(c, this.AUTH_COOKIE_KEY, session.token, {
       path: "/",
-      domain: APP_URL,
+      domain: process.env.NODE_ENV !== "production" ? "localhost" : APP_URL,
       httpOnly: true,
       secure: true,
       sameSite: "none",
@@ -50,7 +50,7 @@ export class CookieHelper {
   static deleteAuthCookie(c: Context) {
     deleteCookie(c, this.AUTH_COOKIE_KEY, {
       path: "/",
-      domain: APP_URL,
+      domain: process.env.NODE_ENV !== "production" ? "localhost" : APP_URL,
     })
   }
 }
