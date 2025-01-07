@@ -1,7 +1,12 @@
 import { Hono } from "hono"
 
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
-import { successCollectionResponse, zValidator } from "@/common/lib/utils"
+import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
+import {
+  successCollectionResponse,
+  successResponse,
+  zValidator,
+} from "@/common/lib/utils"
 import { container } from "@/infrastuctures/container"
 
 import { searchQuerySchema } from "../schemas/common-schema"
@@ -32,6 +37,15 @@ const blockedUserRoute = new Hono()
       return c.json(response)
     },
   )
-  .get("/:blockedUserId/is-blocked")
+  .get("/:blockedUserId/is-blocked", sessionMiddleware, async (c) => {
+    const { blockedUserId } = c.req.param()
+    const session = c.get("userSession")
+
+    const getIsUserBlocked = container.get(GetIsUserBlocked)
+    const result = await getIsUserBlocked.execute(session, blockedUserId)
+
+    const response: GetIsBlockedUserResponse = successResponse(result)
+    return c.json(response)
+  })
 
 export default blockedUserRoute

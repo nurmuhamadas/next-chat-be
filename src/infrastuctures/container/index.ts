@@ -7,6 +7,7 @@ import { SignOut } from "@/app/use-cases/auth/sign-out"
 import { SignUp } from "@/app/use-cases/auth/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
+import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { GetSetting } from "@/app/use-cases/settings/get-setting"
 import { UpdateSetting } from "@/app/use-cases/settings/update-setting"
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
@@ -97,5 +98,6 @@ container
   .to(BlockedUserRepositoryImpl)
 
 container.bind<GetBlockedUsers>(GetBlockedUsers).toSelf()
+container.bind<GetIsUserBlocked>(GetIsUserBlocked).toSelf()
 
 export { container }

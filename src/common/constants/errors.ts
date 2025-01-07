@@ -49,4 +49,6 @@ export const ERROR = {
   INVALID_NOTIFICATION_TYPE: "error.settings.invalid_type",
   INVALID_TIME_FORMAT: "error.settings.invalid_time_format",
   INVALID_LANGUAGE: "error.settings.invalid_language",
+
+  USER_NOT_FOUND: "USER_NOT_FOUND",
 } as const

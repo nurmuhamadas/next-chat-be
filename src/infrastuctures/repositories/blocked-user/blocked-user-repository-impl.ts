@@ -45,4 +45,15 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
 
     return new SearchResultEntity(data, data.length, nextCursor)
   }
+
+  async getIsUserBlocked(
+    userId: string,
+    blockedUserId: string,
+  ): Promise<boolean> {
+    const result = await prisma.blockedUser.count({
+      where: { blockedUserId, userId, unblockedAt: null },
+    })
+
+    return result > 0
+  }
 }

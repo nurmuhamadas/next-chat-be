@@ -8,4 +8,9 @@ export abstract class BlockedUserRepository {
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<BlockedUserEntity>>
+
+  abstract getIsUserBlocked(
+    userId: string,
+    blockedUserId: string,
+  ): Promise<boolean>
 }
