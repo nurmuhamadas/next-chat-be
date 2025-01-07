@@ -43,4 +43,6 @@ declare type GetMyProfileResponse = ApiResponse<ProfileDTO>
 declare type GetUserProfileResponse = ApiResponse<ProfileDTO>
 
 // SETTING API
+declare type GetSettingResponse = ApiResponse<SettingDTO>
+
 declare type UpdateSettingResponse = ApiResponse<SettingDTO>

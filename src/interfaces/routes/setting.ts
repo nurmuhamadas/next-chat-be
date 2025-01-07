@@ -1,5 +1,6 @@
 import { Hono } from "hono"
 
+import { GetSetting } from "@/app/use-cases/settings/get-setting"
 import { UpdateSetting } from "@/app/use-cases/settings/update-setting"
 import { successResponse, zValidator } from "@/common/lib/utils"
 import { UpdateSettingEntity } from "@/domains/settings/entities/update-setting-entity"
@@ -10,7 +11,15 @@ import { settingSchema } from "../schemas/setting-schema"
 import { sessionMiddleware } from "./middleware/session-middleware"
 
 const settingRoute = new Hono()
-  .get("/")
+  .get("/", sessionMiddleware, async (c) => {
+    const session = c.get("userSession")
+
+    const getSetting = container.get(GetSetting)
+    const result = await getSetting.execute(session)
+
+    const response: GetSettingResponse = successResponse(result.toDTO())
+    return c.json(response)
+  })
   .patch(
     "/",
     sessionMiddleware,

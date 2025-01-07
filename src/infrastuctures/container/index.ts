@@ -6,6 +6,7 @@ import { SignIn } from "@/app/use-cases/auth/sign-in"
 import { SignOut } from "@/app/use-cases/auth/sign-out"
 import { SignUp } from "@/app/use-cases/auth/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
+import { GetSetting } from "@/app/use-cases/settings/get-setting"
 import { UpdateSetting } from "@/app/use-cases/settings/update-setting"
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
 import { GetMyProfile } from "@/app/use-cases/user/get-my-profile"
@@ -85,5 +86,6 @@ container
   .to(SettingRepositoryImpl)
 
 container.bind<UpdateSetting>(UpdateSetting).toSelf()
+container.bind<GetSetting>(GetSetting).toSelf()
 
 export { container }
