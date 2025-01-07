@@ -11,4 +11,17 @@ export class SettingEntity {
     public readonly showLastSeen: boolean,
     public readonly allowAddToGroup: boolean,
   ) {}
+
+  public toDTO(): SettingDTO {
+    return {
+      id: this.id,
+      userId: this.userId,
+      timeFormat: this.timeFormat,
+      language: this.language,
+      notifications: this.notifications,
+      enable2FA: this.enable2FA,
+      showLastSeen: this.showLastSeen,
+      allowAddToGroup: this.allowAddToGroup,
+    }
+  }
 }

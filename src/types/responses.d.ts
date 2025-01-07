@@ -41,3 +41,6 @@ declare type SearchUsersForMemberResponse =
 declare type GetMyProfileResponse = ApiResponse<ProfileDTO>
 
 declare type GetUserProfileResponse = ApiResponse<ProfileDTO>
+
+// SETTING API
+declare type UpdateSettingResponse = ApiResponse<SettingDTO>

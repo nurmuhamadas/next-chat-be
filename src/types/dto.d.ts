@@ -31,3 +31,15 @@ declare interface UserSearchForMemberDTO {
   lastSeenAt: string | null
   allowAddToGroup: boolean
 }
+
+// SETTING
+declare interface SettingDTO {
+  id: string
+  userId: string
+  timeFormat: TimeFormatDTO
+  language: LanguageDTO
+  notifications: NotificationsDTO[]
+  enable2FA: boolean
+  showLastSeen: boolean
+  allowAddToGroup: boolean
+}

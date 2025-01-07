@@ -6,6 +6,7 @@ import { SignIn } from "@/app/use-cases/auth/sign-in"
 import { SignOut } from "@/app/use-cases/auth/sign-out"
 import { SignUp } from "@/app/use-cases/auth/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
+import { UpdateSetting } from "@/app/use-cases/settings/update-setting"
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
 import { GetMyProfile } from "@/app/use-cases/user/get-my-profile"
 import { GetUserProfile } from "@/app/use-cases/user/get-user-profile"
@@ -15,12 +16,14 @@ import { UpdateProfile } from "@/app/use-cases/user/update-profile"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
+import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
 import { ProfileRepository } from "@/domains/users/repositories/profile-repository"
 
 import { AuthRepositoryImpl } from "../repositories/auth/auth-repository-impl"
 import { SessionRepositoryImpl } from "../repositories/auth/session-repository-impl"
 import { TokenRepositoryImpl } from "../repositories/auth/token-repository-impl"
+import { SettingRepositoryImpl } from "../repositories/setting/setting-repository-impl"
 import { StorageRepositoryImpl } from "../repositories/storage/storage-repository-impl"
 import { ProfileRepositoryImpl } from "../repositories/user/profile-repository-impl"
 import { BcryptPasswordHash } from "../security/bcrypt-password-hash"
@@ -75,5 +78,12 @@ container.bind<SearchUsers>(SearchUsers).toSelf()
 container.bind<SearchUsersForMember>(SearchUsersForMember).toSelf()
 container.bind<GetMyProfile>(GetMyProfile).toSelf()
 container.bind<GetUserProfile>(GetUserProfile).toSelf()
+
+// SETTING
+container
+  .bind<SettingRepository>(KEYS.SettingRepository)
+  .to(SettingRepositoryImpl)
+
+container.bind<UpdateSetting>(UpdateSetting).toSelf()
 
 export { container }

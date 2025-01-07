@@ -1,16 +1,29 @@
-import { CreateSettingEntity } from "@/domains/settings/entities/create-setting-entity"
 import { SettingEntity } from "@/domains/settings/entities/setting-entity"
+import { UpdateSettingEntity } from "@/domains/settings/entities/update-setting-entity"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
 import { PrismaHelper } from "@/infrastuctures/orm/prisma-helper"
 
 export class SettingRepositoryImpl implements SettingRepository {
-  async createSetting(setting: CreateSettingEntity): Promise<SettingEntity> {
-    const result = await prisma.setting.create({
-      data: {
+  async updateSetting(setting: UpdateSettingEntity): Promise<SettingEntity> {
+    const result = await prisma.setting.upsert({
+      where: { userId: setting.userId },
+      create: {
         userId: setting.userId,
         language: setting.language,
-        timeFormat: PrismaHelper.convertTimeFormat(setting.timeFormat),
+        timeFormat: setting.timeFormat
+          ? PrismaHelper.convertTimeFormat(setting.timeFormat)
+          : undefined,
+        notifications: setting.notifications,
+        allowAddToGroup: setting.allowAddToGroup,
+        enable2FA: setting.enable2FA,
+        showLastSeen: setting.showLastSeen,
+      },
+      update: {
+        language: setting.language,
+        timeFormat: setting.timeFormat
+          ? PrismaHelper.convertTimeFormat(setting.timeFormat)
+          : undefined,
         notifications: setting.notifications,
         allowAddToGroup: setting.allowAddToGroup,
         enable2FA: setting.enable2FA,

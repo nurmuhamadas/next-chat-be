@@ -3,6 +3,7 @@ export const ERROR = {
   INVALID_CREDENTIALS: "INVALID_CREDENTIALS",
   UNAUTHORIZE: "UNAUTHORIZE",
   UNAUTHENTICATED: "UNAUTHENTICATED",
+  INVALID_TYPE: "INVALID_TYPE",
 
   INVALID_EMAIL: "INVALID_EMAIL",
   EMAIL_REQUIRED: "EMAIL_REQUIRED",
@@ -44,4 +45,8 @@ export const ERROR = {
 
   INVALID_TOKEN: "INVALID_TOKEN",
   TOKEN_EXPIRED: "TOKEN_EXPIRED",
+
+  INVALID_NOTIFICATION_TYPE: "error.settings.invalid_type",
+  INVALID_TIME_FORMAT: "error.settings.invalid_time_format",
+  INVALID_LANGUAGE: "error.settings.invalid_language",
 } as const
