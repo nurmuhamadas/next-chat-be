@@ -78,6 +78,8 @@ export class SignIn {
       existingUser.username,
       deviceId,
       user.email,
+      userAgent,
+      !!existingUser.profile,
     )
     const token =
       await this.tokenManager.generateSessionToken(sessionTokenEntity)

@@ -39,6 +39,8 @@ export class JWTTokenManager implements AuthTokenManager {
       payload.username as string,
       payload.deviceId as string,
       payload.email as string,
+      payload.userAgent as string,
+      payload.isProfileComplete as boolean,
     )
 
     return session
