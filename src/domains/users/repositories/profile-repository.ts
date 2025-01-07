@@ -3,6 +3,7 @@ import { SearchResultEntity } from "@/common/entities/search-result-entity"
 import { SettingEntity } from "@/domains/settings/entities/setting-entity"
 
 import { CreateProfileEntity } from "../entities/create-profile-entity"
+import { DetailProfileEntity } from "../entities/detail-profile-entity"
 import { ProfileEntity } from "../entities/profile-entity"
 import { SearchUserEntity } from "../entities/search-user-entity"
 import { SearchUserForMemberEntity } from "../entities/search-user-for-member-entity"
@@ -30,4 +31,6 @@ export abstract class ProfileRepository {
     groupId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<SearchUserForMemberEntity>>
+
+  abstract getDetailProfile(userId: string): Promise<DetailProfileEntity | null>
 }

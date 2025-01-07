@@ -37,3 +37,5 @@ declare type SearchUsersResponse = ApiCollectionResponse<UserSearch>
 
 declare type SearchUsersForMemberResponse =
   ApiCollectionResponse<UserSearchForMember>
+
+declare type GetMyProfileResponse = ApiResponse<Profile>

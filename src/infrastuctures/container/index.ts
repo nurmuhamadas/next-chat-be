@@ -7,6 +7,7 @@ import { SignOut } from "@/app/use-cases/auth/sign-out"
 import { SignUp } from "@/app/use-cases/auth/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
+import { GetMyProfile } from "@/app/use-cases/user/get-my-profile"
 import { SearchUsers } from "@/app/use-cases/user/search-users"
 import { SearchUsersForMember } from "@/app/use-cases/user/search-users-for-member"
 import { UpdateProfile } from "@/app/use-cases/user/update-profile"
@@ -71,5 +72,6 @@ container.bind<CreateProfile>(CreateProfile).toSelf()
 container.bind<UpdateProfile>(UpdateProfile).toSelf()
 container.bind<SearchUsers>(SearchUsers).toSelf()
 container.bind<SearchUsersForMember>(SearchUsersForMember).toSelf()
+container.bind<GetMyProfile>(GetMyProfile).toSelf()
 
 export { container }

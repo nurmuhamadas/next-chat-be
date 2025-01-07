@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
+import { GetMyProfile } from "@/app/use-cases/user/get-my-profile"
 import { SearchUsers } from "@/app/use-cases/user/search-users"
 import { SearchUsersForMember } from "@/app/use-cases/user/search-users-for-member"
 import { UpdateProfile } from "@/app/use-cases/user/update-profile"
@@ -155,5 +156,16 @@ const userRoute = new Hono()
       return c.json(response)
     },
   )
+  .get("/my-profile", sessionMiddleware, async (c) => {
+    const session = c.get("userSession")
+
+    const getMyProfile = container.get(GetMyProfile)
+    const result = await getMyProfile.execute(session)
+
+    const response: GetMyProfileResponse = successResponse(
+      result.toProfileResponse(),
+    )
+    return c.json(response)
+  })
 
 export default userRoute

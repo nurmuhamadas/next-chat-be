@@ -4,6 +4,7 @@ import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
 import { SettingEntity } from "@/domains/settings/entities/setting-entity"
 import { CreateProfileEntity } from "@/domains/users/entities/create-profile-entity"
+import { DetailProfileEntity } from "@/domains/users/entities/detail-profile-entity"
 import { ProfileEntity } from "@/domains/users/entities/profile-entity"
 import { SearchUserEntity } from "@/domains/users/entities/search-user-entity"
 import { SearchUserForMemberEntity } from "@/domains/users/entities/search-user-for-member-entity"
@@ -192,5 +193,27 @@ export class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     return new SearchResultEntity(data, result.length, nextCursor)
+  }
+
+  async getDetailProfile(userId: string): Promise<DetailProfileEntity | null> {
+    const result = await prisma.profile.findUnique({
+      where: { userId },
+      include: {
+        user: { select: { username: true } },
+      },
+    })
+
+    if (!result) return null
+
+    return new DetailProfileEntity(
+      result.id,
+      result.userId,
+      result.name,
+      result.gender,
+      result.user.username,
+      result.bio ?? undefined,
+      result.imageUrl ?? undefined,
+      result.lastSeenAt ?? undefined,
+    )
   }
 }
