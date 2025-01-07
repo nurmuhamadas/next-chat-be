@@ -4,12 +4,12 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { Hono } from "hono"
 import { cors } from "hono/cors"
 import { logger } from "hono/logger"
-import { ZodError } from "zod"
 
 import { APP_URL } from "../config"
 
 import { ERROR } from "./common/constants/errors"
 import ClientError from "./common/exceptions/client-error"
+import InvariantError from "./common/exceptions/invariant-error"
 import { createError, customLogger } from "./common/lib/utils"
 import { createRouter } from "./interfaces/routes"
 
@@ -36,15 +36,12 @@ app.onError((error, c) => {
       `Message: ${error.message}`,
       `code: ${error.statusCode}`,
     )
-    return c.json(createError(error.message), error.statusCode)
-  }
 
-  if (error instanceof ZodError) {
-    const response = createError(
-      error.errors[0]?.message,
-      error.errors[0]?.path,
-    )
-    return c.json(response, 400)
+    if (error instanceof InvariantError) {
+      return c.json(createError(error.message, error.path), error.statusCode)
+    }
+
+    return c.json(createError(error.message), error.statusCode)
   }
 
   if (error instanceof PrismaClientKnownRequestError) {
