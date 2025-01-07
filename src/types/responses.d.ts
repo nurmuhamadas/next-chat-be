@@ -46,3 +46,6 @@ declare type GetUserProfileResponse = ApiResponse<ProfileDTO>
 declare type GetSettingResponse = ApiResponse<SettingDTO>
 
 declare type UpdateSettingResponse = ApiResponse<SettingDTO>
+
+// BLOCKED USERS
+declare type GetBlockedUsersResponse = ApiCollectionResponse<BlockedUserDTO>

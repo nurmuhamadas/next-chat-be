@@ -17,4 +17,7 @@ export const KEYS = {
 
   // SETTING
   SettingRepository: Symbol.for("SettingRepository"),
+
+  // BLOCKED USER
+  BlockedUserRepository: Symbol.for("BlockedUserRepository"),
 }

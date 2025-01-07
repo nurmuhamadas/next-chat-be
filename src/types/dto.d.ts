@@ -43,3 +43,10 @@ declare interface SettingDTO {
   showLastSeen: boolean
   allowAddToGroup: boolean
 }
+
+// BLOCKED USER
+declare interface BlockedUserDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+}
