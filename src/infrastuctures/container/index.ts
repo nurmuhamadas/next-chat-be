@@ -36,7 +36,7 @@ container
   .to(JWTTokenManager)
   .inSingletonScope()
 container
-  .bind<AppwriteClient>(KEYS.AuthTokenManager)
+  .bind<AppwriteClient>(KEYS.AppwriteClient)
   .to(AppwriteClient)
   .inSingletonScope()
 

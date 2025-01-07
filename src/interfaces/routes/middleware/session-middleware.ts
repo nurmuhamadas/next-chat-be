@@ -7,6 +7,7 @@ import AuthenticationError from "@/common/exceptions/authentication-error"
 import { CookieHelper } from "@/common/lib/cookie-helper"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
 import { container } from "@/infrastuctures/container"
+import { KEYS } from "@/infrastuctures/container/keys"
 
 type AdditionalContext = {
   Variables: {
@@ -23,22 +24,22 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(
         throw ERROR.UNAUTHORIZE
       }
 
-      const tokenManager = container.get(AuthTokenManager)
+      const tokenManager = container.get<AuthTokenManager>(
+        KEYS.AuthTokenManager,
+      )
       const session = await tokenManager.verifySessionToken(token)
 
       const isCreatingProfile =
-        c.req.path === "/api/users/" && c.req.method === "POST"
-      if (!isCreatingProfile) {
-        if (!session.isProfileComplete) {
-          throw new AuthenticationError(ERROR.PROFILE_ALREADY_CREATED)
-        }
+        c.req.path === "/api/users" && c.req.method === "POST"
+      if (!isCreatingProfile && !session.isProfileComplete) {
+        throw ERROR.UNAUTHORIZE
       }
 
       c.set("userSession", session)
 
       await next()
     } catch (error) {
-      CookieHelper.deleteAuthCookie(c)
+      // CookieHelper.deleteAuthCookie(c)
 
       if (error instanceof JwtTokenInvalid) {
         throw new AuthenticationError(ERROR.INVALID_TOKEN)
