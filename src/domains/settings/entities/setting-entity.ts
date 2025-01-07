@@ -2,7 +2,7 @@ export type TimeFormat = "12-HOUR" | "24-HOUR"
 
 export type Language = "en_US" | "id_ID"
 
-export type Notification = "PRIVATE" | "GROUP" | "CHANNEl"
+export type Notification = "PRIVATE" | "GROUP" | "CHANNEL"
 
 export class SettingEntity {
   constructor(

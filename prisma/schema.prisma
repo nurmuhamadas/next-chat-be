@@ -37,6 +37,8 @@ model User {
   reactions             Reaction[]
   blockingUsers         BlockedUser[]       @relation("blockingUser")
   blockedUsers          BlockedUser[]       @relation("blockedUser")
+
+  @@map("users")
 }
 
 model Session {

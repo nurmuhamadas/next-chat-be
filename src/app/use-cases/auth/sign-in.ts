@@ -35,7 +35,8 @@ export class SignIn {
     },
     userAgent: string,
   ): Promise<SignInStatus> {
-    const existingUser = await this.authRepository.getUserByEmail(user.email)
+    const existingUser =
+      await this.authRepository.getUserWithSettingAndProfileByEmail(user.email)
     if (!existingUser) {
       throw new InvariantError(ERROR.EMAIL_NOT_REGISTERED)
     }
@@ -78,6 +79,8 @@ export class SignIn {
       existingUser.username,
       deviceId,
       user.email,
+      userAgent,
+      !!existingUser.profile,
     )
     const token =
       await this.tokenManager.generateSessionToken(sessionTokenEntity)

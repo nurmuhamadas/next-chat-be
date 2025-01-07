@@ -2,8 +2,11 @@ import "reflect-metadata"
 
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { Hono } from "hono"
+import { cors } from "hono/cors"
 import { logger } from "hono/logger"
 import { ZodError } from "zod"
+
+import { APP_URL } from "../config"
 
 import { ERROR } from "./common/constants/errors"
 import ClientError from "./common/exceptions/client-error"
@@ -13,6 +16,16 @@ import { createRouter } from "./interfaces/routes"
 const app = new Hono().basePath("/api")
 
 app.use(logger(customLogger))
+
+app.use(
+  "/*",
+  cors({
+    origin: APP_URL,
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    maxAge: 600,
+    credentials: true,
+  }),
+)
 
 createRouter(app)
 

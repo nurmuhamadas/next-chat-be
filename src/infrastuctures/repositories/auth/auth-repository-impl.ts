@@ -62,17 +62,18 @@ export class AuthRepositoryImpl implements AuthRepository {
     username: string,
     email: string,
     password: string,
-    token: string,
-    expiresAt: Date,
+    // token: string,
+    // expiresAt: Date,
   ): Promise<UserEntity> {
     const result = await prisma.user.create({
       data: {
         username,
         email,
         password,
-        verificationToken: {
-          create: { token, expiresAt },
-        },
+        emailVerifiedAt: new Date(), // TODO: temporary auto verified
+        // verificationToken: {
+        //   create: { token, expiresAt },
+        // },
       },
     })
 
