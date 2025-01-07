@@ -18,3 +18,16 @@ export const successResponse = <T>(data: T): ApiResponse<T> => {
     data,
   }
 }
+
+export const successCollectionResponse = <T>(
+  data: T[],
+  total: number,
+  cursor?: string,
+): ApiCollectionResponse<T> => {
+  return {
+    success: true,
+    data,
+    total,
+    cursor,
+  }
+}

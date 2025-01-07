@@ -25,3 +25,17 @@ export const imageProfileSchema = z
       message: ERROR.IMAGE_TOO_LARGE,
     },
   )
+
+export const searchQuerySchema = z.object({
+  query: z
+    .string()
+    .trim()
+    .optional()
+    .transform((v) => (!v ? undefined : v)),
+  limit: z
+    .string()
+    .trim()
+    .optional()
+    .transform((v) => (isNaN(Number(v)) ? 20 : Number(v))),
+  cursor: z.string().trim().optional(),
+})

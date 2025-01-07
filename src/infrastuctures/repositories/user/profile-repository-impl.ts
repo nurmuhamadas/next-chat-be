@@ -1,8 +1,13 @@
 import { injectable } from "inversify"
 
+import { SearchParamsEntity } from "@/common/entities/search-params-entity"
+import { SearchResultEntity } from "@/common/entities/search-result-entity"
 import { SettingEntity } from "@/domains/settings/entities/setting-entity"
 import { CreateProfileEntity } from "@/domains/users/entities/create-profile-entity"
+import { DetailProfileEntity } from "@/domains/users/entities/detail-profile-entity"
 import { ProfileEntity } from "@/domains/users/entities/profile-entity"
+import { SearchUserEntity } from "@/domains/users/entities/search-user-entity"
+import { SearchUserForMemberEntity } from "@/domains/users/entities/search-user-for-member-entity"
 import { UpdateProfileEntity } from "@/domains/users/entities/update-profile-entity"
 import { ProfileRepository } from "@/domains/users/repositories/profile-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
@@ -93,6 +98,119 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       result.userId,
       result.name,
       result.gender,
+      result.bio ?? undefined,
+      result.imageUrl ?? undefined,
+      result.lastSeenAt ?? undefined,
+    )
+  }
+
+  async searchUsers(
+    userId: string,
+    params: SearchParamsEntity,
+  ): Promise<SearchResultEntity<SearchUserEntity>> {
+    const results = await prisma.profile.findMany({
+      where: {
+        userId: { not: userId },
+        OR: [
+          { name: { contains: params.query } },
+          { user: { username: { contains: params.query } } },
+        ],
+      },
+      select: {
+        name: true,
+        imageUrl: true,
+        lastSeenAt: true,
+        userId: true,
+      },
+      take: params.limit + 1,
+      cursor: params.cursor ? { id: params.cursor } : undefined,
+      skip: params.cursor ? 1 : undefined,
+    })
+
+    const data = results.map(
+      (result) =>
+        new SearchUserEntity(
+          result.userId,
+          result.name,
+          result.imageUrl ?? undefined,
+          result.lastSeenAt ?? undefined,
+        ),
+    )
+
+    let nextCursor: string | undefined
+    if (data.length > params.limit) {
+      nextCursor = data[data.length - 1].id
+      data.pop()
+    }
+
+    return new SearchResultEntity(data, results.length, nextCursor)
+  }
+
+  async searchForMember(
+    userId: string,
+    groupId: string,
+    params: SearchParamsEntity,
+  ): Promise<SearchResultEntity<SearchUserForMemberEntity>> {
+    const { limit, query, cursor } = params
+    const result = await prisma.profile.findMany({
+      where: {
+        userId: { not: userId },
+        OR: [
+          { name: { contains: query } },
+          { user: { username: { contains: query } } },
+        ],
+        user: { groups: { none: { groupId, leftAt: null } } },
+      },
+      select: {
+        name: true,
+        imageUrl: true,
+        lastSeenAt: true,
+        userId: true,
+        user: {
+          select: { setting: { select: { allowAddToGroup: true } } },
+        },
+      },
+      take: limit + 1,
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : undefined,
+    })
+
+    const data = result.map(
+      (result) =>
+        new SearchUserForMemberEntity(
+          result.userId,
+          result.name,
+          result.user.setting?.allowAddToGroup ?? false,
+          result.imageUrl ?? undefined,
+          result.lastSeenAt ?? undefined,
+        ),
+    )
+
+    let nextCursor: string | undefined
+    if (data.length > params.limit) {
+      nextCursor = data[data.length - 1].id
+      data.pop()
+    }
+
+    return new SearchResultEntity(data, result.length, nextCursor)
+  }
+
+  async getDetailProfile(userId: string): Promise<DetailProfileEntity | null> {
+    const result = await prisma.profile.findUnique({
+      where: { userId },
+      include: {
+        user: { select: { username: true } },
+      },
+    })
+
+    if (!result) return null
+
+    return new DetailProfileEntity(
+      result.id,
+      result.userId,
+      result.name,
+      result.gender,
+      result.user.username,
       result.bio ?? undefined,
       result.imageUrl ?? undefined,
       result.lastSeenAt ?? undefined,
