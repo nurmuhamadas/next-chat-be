@@ -11,4 +11,7 @@ export const KEYS = {
   AuthRepository: Symbol.for("AuthRepository"),
   SessionRepository: Symbol.for("SessionRepository"),
   TokenRepository: Symbol.for("TokenRepository"),
+
+  // PROFILE
+  ProfileRepository: Symbol.for("ProfileRepository"),
 }

@@ -30,3 +30,5 @@ declare type LogoutResponse = ApiResponse<boolean>
 
 // USER API
 declare type UsernameAvailabilityResponse = ApiResponse<boolean>
+
+declare type CreateUserProfileResponse = ApiResponse<Profile>

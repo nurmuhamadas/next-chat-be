@@ -6,15 +6,18 @@ import { SignIn } from "@/app/use-cases/auth/sign-in"
 import { SignOut } from "@/app/use-cases/auth/sign-out"
 import { SignUp } from "@/app/use-cases/auth/sign-up"
 import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
+import { CreateProfile } from "@/app/use-cases/user/create-profile"
 import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
+import { ProfileRepository } from "@/domains/users/repositories/profile-repository"
 
 import { AuthRepositoryImpl } from "../repositories/auth/auth-repository-impl"
 import { SessionRepositoryImpl } from "../repositories/auth/session-repository-impl"
 import { TokenRepositoryImpl } from "../repositories/auth/token-repository-impl"
 import { StorageRepositoryImpl } from "../repositories/storage/storage-repository-impl"
+import { ProfileRepositoryImpl } from "../repositories/user/profile-repository-impl"
 import { BcryptPasswordHash } from "../security/bcrypt-password-hash"
 import { JWTTokenManager } from "../security/jwt-token-manager"
 import { AppwriteClient } from "../storage/appwrite"
@@ -55,5 +58,12 @@ container
 container.bind<SignUp>(SignUp).toSelf()
 container.bind<SignIn>(SignIn).toSelf()
 container.bind<SignOut>(SignOut).toSelf()
+
+// USER PROFILE
+container
+  .bind<ProfileRepository>(KEYS.ProfileRepository)
+  .to(ProfileRepositoryImpl)
+
+container.bind<CreateProfile>(CreateProfile).toSelf()
 
 export { container }
