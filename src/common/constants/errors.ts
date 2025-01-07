@@ -51,4 +51,5 @@ export const ERROR = {
   INVALID_LANGUAGE: "error.settings.invalid_language",
 
   USER_NOT_FOUND: "USER_NOT_FOUND",
+  USER_ALREADY_BLOCKED: "USER_ALREADY_BLOCKED",
 } as const

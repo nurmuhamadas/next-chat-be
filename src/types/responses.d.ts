@@ -51,3 +51,5 @@ declare type UpdateSettingResponse = ApiResponse<SettingDTO>
 declare type GetBlockedUsersResponse = ApiCollectionResponse<BlockedUserDTO>
 
 declare type GetIsBlockedUserResponse = ApiResponse<boolean>
+
+declare type BlockUserResponse = ApiResponse<{ id: string }>

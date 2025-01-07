@@ -56,4 +56,8 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
 
     return result > 0
   }
+
+  async blockUser(userId: string, blockedUserId: string): Promise<void> {
+    await prisma.blockedUser.create({ data: { userId, blockedUserId } })
+  }
 }

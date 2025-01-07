@@ -13,4 +13,6 @@ export abstract class BlockedUserRepository {
     userId: string,
     blockedUserId: string,
   ): Promise<boolean>
+
+  abstract blockUser(userId: string, blockedUserId: string): Promise<void>
 }

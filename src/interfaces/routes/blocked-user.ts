@@ -1,5 +1,6 @@
 import { Hono } from "hono"
 
+import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import {
@@ -45,6 +46,16 @@ const blockedUserRoute = new Hono()
     const result = await getIsUserBlocked.execute(session, blockedUserId)
 
     const response: GetIsBlockedUserResponse = successResponse(result)
+    return c.json(response)
+  })
+  .post("/:blockedUserId", sessionMiddleware, async (c) => {
+    const { blockedUserId } = c.req.param()
+    const session = c.get("userSession")
+
+    const blockUser = container.get(BlockUser)
+    await blockUser.execute(session, blockedUserId)
+
+    const response: BlockUserResponse = successResponse({ id: blockedUserId })
     return c.json(response)
   })
 
