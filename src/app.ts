@@ -21,7 +21,7 @@ app.use(
   "/*",
   cors({
     origin: APP_URL,
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     maxAge: 600,
     credentials: true,
   }),
