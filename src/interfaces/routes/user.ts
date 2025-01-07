@@ -3,6 +3,7 @@ import { Hono } from "hono"
 
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
 import { GetMyProfile } from "@/app/use-cases/user/get-my-profile"
+import { GetUserProfile } from "@/app/use-cases/user/get-user-profile"
 import { SearchUsers } from "@/app/use-cases/user/search-users"
 import { SearchUsersForMember } from "@/app/use-cases/user/search-users-for-member"
 import { UpdateProfile } from "@/app/use-cases/user/update-profile"
@@ -163,6 +164,17 @@ const userRoute = new Hono()
     const result = await getMyProfile.execute(session)
 
     const response: GetMyProfileResponse = successResponse(
+      result.toProfileResponse(),
+    )
+    return c.json(response)
+  })
+  .get("/:userId", sessionMiddleware, async (c) => {
+    const { userId } = c.req.param()
+
+    const getMyProfile = container.get(GetUserProfile)
+    const result = await getMyProfile.execute(userId)
+
+    const response: GetUserProfileResponse = successResponse(
       result.toProfileResponse(),
     )
     return c.json(response)
