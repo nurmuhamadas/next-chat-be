@@ -1,12 +1,15 @@
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
+import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
-import { successCollectionResponse } from "@/common/lib/utils"
+import { successCollectionResponse, successResponse } from "@/common/lib/utils"
+import { CreateGroupEntity } from "@/domains/groups/entities/create-group-entity"
 import { container } from "@/infrastuctures/container"
 
 import { searchQuerySchema } from "../schemas/common-schema"
+import { groupSchema } from "../schemas/group-schema"
 
 import { sessionMiddleware } from "./middleware/session-middleware"
 
@@ -33,6 +36,26 @@ const groupRoute = new Hono()
       return c.json(response)
     },
   )
-  .post("/")
+  .post("/", sessionMiddleware, zValidator("form", groupSchema), async (c) => {
+    const { image, memberIds, ...data } = c.req.valid("form")
+    const imageFile = image as unknown as File
+
+    const session = c.get("userSession")
+
+    const createGroup = container.get(CreateGroup)
+    const result = await createGroup.execute(
+      session,
+      CreateGroupEntity.fromJSON({
+        name: data.name,
+        type: data.type,
+        memberIds,
+        ownerId: session.userId,
+      }),
+      imageFile,
+    )
+
+    const response: CreateGroupResponse = successResponse(result.toDTO())
+    return c.json(response)
+  })
 
 export default groupRoute

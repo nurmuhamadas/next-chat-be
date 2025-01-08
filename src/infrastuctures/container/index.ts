@@ -10,6 +10,7 @@ import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
+import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
@@ -129,5 +130,6 @@ container
   .inSingletonScope()
 
 container.bind<GetGroups>(GetGroups).toSelf()
+container.bind<CreateGroup>(CreateGroup).toSelf()
 
 export { container }

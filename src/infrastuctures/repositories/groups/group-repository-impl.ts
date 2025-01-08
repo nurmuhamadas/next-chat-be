@@ -1,7 +1,10 @@
+import { RoomType } from "@prisma/client"
 import { injectable } from "inversify"
 
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
+import { CommonHelper } from "@/common/lib/common-helper"
+import { CreateGroupEntity } from "@/domains/groups/entities/create-group-entity"
 import { GroupEntity } from "@/domains/groups/entities/group-entity"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
@@ -19,6 +22,22 @@ export class GroupRepositoryImpl implements GroupRepository {
         select: { members: { where: { leftAt: null } } },
       },
     }
+  }
+
+  private async generateInviteCode(): Promise<string> {
+    let isExist = true
+    let inviteCode = CommonHelper.generateInviteCode(10)
+    while (isExist) {
+      const result = await prisma.group.findUnique({
+        where: { inviteCode: inviteCode },
+      })
+      isExist = !!result
+      if (isExist) {
+        inviteCode = CommonHelper.generateInviteCode(10)
+      }
+    }
+
+    return inviteCode
   }
 
   async getGroups(
@@ -61,5 +80,99 @@ export class GroupRepositoryImpl implements GroupRepository {
     }
 
     return new SearchResultEntity(data, data.length, nextCursor)
+  }
+
+  async checkGroupNameAvailability(
+    ownerId: string,
+    name: string,
+  ): Promise<boolean> {
+    const result = await prisma.group.count({
+      where: { ownerId, name, deletedAt: null },
+    })
+
+    return result === 0
+  }
+
+  async createGroup(data: CreateGroupEntity): Promise<GroupEntity> {
+    const inviteCode = await this.generateInviteCode()
+
+    const result = await prisma.$transaction(async (tx) => {
+      const createdGroup = await tx.group.create({
+        data: {
+          name: data.name,
+          type: data.type,
+          inviteCode,
+          description: data.description,
+          imageUrl: data.imageUrl,
+          ownerId: data.ownerId,
+          membersOption: {
+            createMany: {
+              data: [
+                {
+                  userId: data.ownerId,
+                  notification: true,
+                },
+                ...data.memberIds.map((id) => ({
+                  userId: id,
+                  notification: true,
+                })),
+              ],
+            },
+          },
+          members: {
+            createMany: {
+              data: [
+                {
+                  userId: data.ownerId,
+                  isAdmin: true,
+                },
+                ...data.memberIds.map((id) => ({
+                  userId: id,
+                  isAdmin: false,
+                })),
+              ],
+            },
+          },
+          rooms: {
+            createMany: {
+              data: [
+                {
+                  type: RoomType.GROUP,
+                  ownerId: data.ownerId,
+                },
+                ...data.memberIds.map((id) => ({
+                  type: RoomType.GROUP,
+                  ownerId: id,
+                })),
+              ],
+            },
+          },
+        },
+        include: { rooms: { select: { id: true, ownerId: true } } },
+      })
+
+      await tx.userUnreadMessage.createMany({
+        data: createdGroup.rooms.map((room) => ({
+          userId: room.ownerId,
+          roomId: room.id,
+          count: 0,
+        })),
+      })
+
+      return createdGroup
+    })
+
+    return new GroupEntity(
+      result.id,
+      result.name,
+      PrismaHelper.convertDBGroupType(result.type),
+      result.ownerId,
+      result.inviteCode,
+      0,
+      true,
+      true,
+      result.description ?? undefined,
+      result.imageUrl ?? undefined,
+    )
   }
 }

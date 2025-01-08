@@ -1,6 +1,7 @@
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
 
+import { CreateGroupEntity } from "../entities/create-group-entity"
 import { GroupEntity } from "../entities/group-entity"
 
 export abstract class GroupRepository {
@@ -8,4 +9,11 @@ export abstract class GroupRepository {
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<GroupEntity>>
+
+  abstract checkGroupNameAvailability(
+    ownerId: string,
+    name: string,
+  ): Promise<boolean>
+
+  abstract createGroup(data: CreateGroupEntity): Promise<GroupEntity>
 }

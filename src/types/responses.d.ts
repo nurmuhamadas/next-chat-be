@@ -65,3 +65,5 @@ declare type DeleteAllPrivateChatResponse = ApiResponse<boolean>
 
 // GROUP API
 declare type GetGroupsResponse = ApiCollectionResponse<GroupDTO>
+
+declare type CreateGroupResponse = ApiResponse<GroupDTO>
