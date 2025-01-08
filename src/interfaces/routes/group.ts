@@ -6,9 +6,11 @@ import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
+import { UpdateGroup } from "@/app/use-cases/groups/update-group"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateGroupEntity } from "@/domains/groups/entities/create-group-entity"
+import { UpdateGroupEntity } from "@/domains/groups/entities/update-group-entity"
 import { container } from "@/infrastuctures/container"
 
 import { searchQuerySchema } from "../schemas/common-schema"
@@ -103,5 +105,30 @@ const groupRoute = new Hono()
     const response: GetGroupResponse = successResponse(result.toDTO())
     return c.json(response)
   })
+  .patch(
+    "/:groupId",
+    sessionMiddleware,
+    zValidator("form", groupSchema.partial()),
+    async (c) => {
+      const { groupId } = c.req.param()
+      const { image, ...form } = c.req.valid("form")
+      const imageFile = image as unknown as File
+
+      const session = c.get("userSession")
+
+      const updateGroup = container.get(UpdateGroup)
+      const result = await updateGroup.execute(
+        session,
+        UpdateGroupEntity.fromJSON({
+          ...form,
+          id: groupId,
+        }),
+        imageFile,
+      )
+
+      const response: GetGroupResponse = successResponse(result.toDTO())
+      return c.json(response)
+    },
+  )
 
 export default groupRoute

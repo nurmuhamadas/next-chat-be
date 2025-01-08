@@ -15,6 +15,7 @@ import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
+import { UpdateGroup } from "@/app/use-cases/groups/update-group"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
@@ -137,5 +138,6 @@ container.bind<CreateGroup>(CreateGroup).toSelf()
 container.bind<GetNameAvailability>(GetNameAvailability).toSelf()
 container.bind<SearchPublicGroups>(SearchPublicGroups).toSelf()
 container.bind<GetGroupById>(GetGroupById).toSelf()
+container.bind<UpdateGroup>(UpdateGroup).toSelf()
 
 export { container }

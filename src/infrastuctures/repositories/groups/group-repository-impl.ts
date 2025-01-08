@@ -7,6 +7,7 @@ import { CommonHelper } from "@/common/lib/common-helper"
 import { CreateGroupEntity } from "@/domains/groups/entities/create-group-entity"
 import { GroupEntity } from "@/domains/groups/entities/group-entity"
 import { GroupSearchEntity } from "@/domains/groups/entities/group-search-entity"
+import { UpdateGroupEntity } from "@/domains/groups/entities/update-group-entity"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
 import { PrismaHelper } from "@/infrastuctures/orm/prisma-helper"
@@ -241,6 +242,35 @@ export class GroupRepositoryImpl implements GroupRepository {
     })
 
     if (!result) return null
+
+    return new GroupEntity(
+      result.id,
+      result.name,
+      PrismaHelper.convertDBGroupType(result.type),
+      result.ownerId,
+      result.inviteCode,
+      result._count.members,
+      true,
+      result.members[0]?.isAdmin ?? false,
+      result.description ?? undefined,
+      result.imageUrl ?? undefined,
+    )
+  }
+
+  async updateGroup(
+    userId: string,
+    data: UpdateGroupEntity,
+  ): Promise<GroupEntity> {
+    const result = await prisma.group.update({
+      where: { id: data.id },
+      data: {
+        name: data.name,
+        type: data.type,
+        description: data.description,
+        imageUrl: data.imageUrl,
+      },
+      include: { ...this.getGroupIncludeQuery({ userId }) },
+    })
 
     return new GroupEntity(
       result.id,
