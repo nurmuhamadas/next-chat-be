@@ -1,8 +1,10 @@
 import { injectable } from "inversify"
 
 import { PrivateChatOptionEntity } from "@/domains/private-chat/entites/private-chat-option-entity"
+import { UpdatePrivateChatOptionEntity } from "@/domains/private-chat/entites/update-private-chat-option-entity"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
+
 @injectable()
 export class PrivateChatOptionRepositoryImpl
   implements PrivateChatOptionRepository
@@ -25,6 +27,23 @@ export class PrivateChatOptionRepositoryImpl
     })
 
     if (!result) return null
+
+    return new PrivateChatOptionEntity(
+      result.id,
+      result.userId,
+      result.privateChatId,
+      result.notification,
+    )
+  }
+
+  async updatePrivateChatOption(
+    id: string,
+    option: UpdatePrivateChatOptionEntity,
+  ): Promise<PrivateChatOptionEntity> {
+    const result = await prisma.privateChatOption.update({
+      where: { id },
+      data: { notification: option.notification },
+    })
 
     return new PrivateChatOptionEntity(
       result.id,
