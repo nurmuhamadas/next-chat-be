@@ -20,4 +20,7 @@ export const KEYS = {
 
   // BLOCKED USER
   BlockedUserRepository: Symbol.for("BlockedUserRepository"),
+
+  // PRIVATE CHAT
+  PrivateChatOptionRepository: Symbol.for("PrivateChatOptionRepository"),
 }

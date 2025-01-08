@@ -50,3 +50,10 @@ declare interface BlockedUserDTO {
   name: string
   imageUrl: string | null
 }
+
+// PRIVATE CHAT
+declare interface PrivateChatOptionDTO {
+  userId: string
+  privateChatId: string
+  notification: boolean
+}
