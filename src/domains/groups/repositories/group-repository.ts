@@ -40,4 +40,9 @@ export abstract class GroupRepository {
   ): Promise<GroupEntity>
 
   abstract softDeleteGroup(groupId: string): Promise<void>
+
+  abstract getGeneralGroupById(
+    groupId: string,
+    userId: string,
+  ): Promise<GroupEntity | null>
 }

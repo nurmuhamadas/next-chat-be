@@ -8,8 +8,9 @@ import { DeleteGroup } from "@/app/use-cases/groups/delete-group"
 import { DeleteGroupMember } from "@/app/use-cases/groups/delete-group-member"
 import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
-import { GetGroups } from "@/app/use-cases/groups/get-groups"
+import { GetJoinedGroups } from "@/app/use-cases/groups/get-joined-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
+import { JoinGroup } from "@/app/use-cases/groups/join-group"
 import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { UpdateGroup } from "@/app/use-cases/groups/update-group"
@@ -20,7 +21,7 @@ import { UpdateGroupEntity } from "@/domains/groups/entities/update-group-entity
 import { container } from "@/infrastuctures/container"
 
 import { searchQuerySchema } from "../schemas/common-schema"
-import { groupSchema } from "../schemas/group-schema"
+import { groupSchema, joinGroupSchema } from "../schemas/group-schema"
 
 import { sessionMiddleware } from "./middleware/session-middleware"
 
@@ -33,7 +34,7 @@ const groupRoute = new Hono()
       const params = c.req.valid("query")
       const session = c.get("userSession")
 
-      const getGroups = container.get(GetGroups)
+      const getGroups = container.get(GetJoinedGroups)
       const result = await getGroups.execute(
         session,
         SearchParamsEntity.fromJSON(params),
@@ -214,5 +215,22 @@ const groupRoute = new Hono()
     const response: UnsetAdminGroupResponse = successResponse(true)
     return c.json(response)
   })
+  .post(
+    "/:groupId/join",
+    sessionMiddleware,
+    zValidator("json", joinGroupSchema),
+    async (c) => {
+      const { code } = c.req.valid("json")
+      const { groupId } = c.req.param()
+
+      const session = c.get("userSession")
+
+      const joinGroup = container.get(JoinGroup)
+      await joinGroup.execute(session, groupId, code)
+
+      const response: JoinGroupResponse = successResponse(true)
+      return c.json(response)
+    },
+  )
 
 export default groupRoute

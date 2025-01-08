@@ -18,6 +18,7 @@ import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
 import { GetJoinedGroups } from "@/app/use-cases/groups/get-joined-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
+import { JoinGroup } from "@/app/use-cases/groups/join-group"
 import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { UpdateGroup } from "@/app/use-cases/groups/update-group"
@@ -157,5 +158,7 @@ container.bind<DeleteGroupMember>(DeleteGroupMember).toSelf()
 
 container.bind<AddGroupAdmin>(AddGroupAdmin).toSelf()
 container.bind<RemoveGroupAdmin>(RemoveGroupAdmin).toSelf()
+
+container.bind<JoinGroup>(JoinGroup).toSelf()
 
 export { container }

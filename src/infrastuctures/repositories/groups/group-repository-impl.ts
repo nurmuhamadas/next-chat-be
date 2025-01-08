@@ -253,7 +253,7 @@ export class GroupRepositoryImpl implements GroupRepository {
       result.ownerId,
       result.inviteCode,
       result._count.members,
-      true,
+      result.members.length > 0,
       result.members[0]?.isAdmin ?? false,
       result.description ?? undefined,
       result.imageUrl ?? undefined,
@@ -278,7 +278,7 @@ export class GroupRepositoryImpl implements GroupRepository {
       result.ownerId,
       result.inviteCode,
       result._count.members,
-      true,
+      result.members.length > 0,
       result.members[0]?.isAdmin ?? false,
       result.description ?? undefined,
       result.imageUrl ?? undefined,
@@ -307,7 +307,7 @@ export class GroupRepositoryImpl implements GroupRepository {
       result.ownerId,
       result.inviteCode,
       result._count.members,
-      true,
+      result.members.length > 0,
       result.members[0]?.isAdmin ?? false,
       result.description ?? undefined,
       result.imageUrl ?? undefined,
@@ -332,5 +332,30 @@ export class GroupRepositoryImpl implements GroupRepository {
         },
       },
     })
+  }
+
+  async getGeneralGroupById(
+    groupId: string,
+    userId: string,
+  ): Promise<GroupEntity | null> {
+    const group = await prisma.group.findUnique({
+      where: { id: groupId, deletedAt: null },
+      include: { ...this.getGroupIncludeQuery({ userId }) },
+    })
+
+    if (!group) return null
+
+    return new GroupEntity(
+      group.id,
+      group.name,
+      PrismaHelper.convertDBGroupType(group.type),
+      group.ownerId,
+      group.inviteCode,
+      group._count.members,
+      group.members.length > 0,
+      group.members[0]?.isAdmin ?? false,
+      group.description ?? undefined,
+      group.imageUrl ?? undefined,
+    )
   }
 }

@@ -29,3 +29,13 @@ export const groupSchema = z.object({
   memberIds: z.union([z.array(z.string()).default([]), z.string()]),
   image: imageProfileSchema,
 })
+
+export const joinGroupSchema = z.object({
+  code: z
+    .string({
+      required_error: ERROR.JOIN_CODE_REQUIRED,
+      invalid_type_error: ERROR.INVALID_JOIN_CODE,
+    })
+    .length(10, ERROR.INVALID_JOIN_CODE)
+    .optional(),
+})
