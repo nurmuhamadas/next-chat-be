@@ -23,4 +23,6 @@ export abstract class GroupMemberRepository {
   abstract addAdmin(groupId: string, userId: string): Promise<void>
 
   abstract removeAdmin(groupId: string, userId: string): Promise<void>
+
+  abstract getTotalAdmins(groupId: string): Promise<number>
 }

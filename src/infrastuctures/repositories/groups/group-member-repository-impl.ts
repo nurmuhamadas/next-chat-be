@@ -125,4 +125,11 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
       data: { isAdmin: false },
     })
   }
+
+  async getTotalAdmins(groupId: string): Promise<number> {
+    const result = await prisma.groupMember.count({
+      where: { groupId, isAdmin: true, leftAt: null },
+    })
+    return result
+  }
 }

@@ -11,6 +11,7 @@ import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
 import { GetJoinedGroups } from "@/app/use-cases/groups/get-joined-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
 import { JoinGroup } from "@/app/use-cases/groups/join-group"
+import { LeaveGroup } from "@/app/use-cases/groups/leave-group"
 import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { UpdateGroup } from "@/app/use-cases/groups/update-group"
@@ -232,5 +233,16 @@ const groupRoute = new Hono()
       return c.json(response)
     },
   )
+  .post("/:groupId/left", sessionMiddleware, async (c) => {
+    const { groupId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const leaveGroup = container.get(LeaveGroup)
+    await leaveGroup.execute(session, groupId)
+
+    const response: LeaveGroupResponse = successResponse(true)
+    return c.json(response)
+  })
 
 export default groupRoute
