@@ -1,5 +1,6 @@
 import { Hono } from "hono"
 
+import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
 import { successResponse, zValidator } from "@/common/lib/utils"
@@ -49,6 +50,16 @@ const privateChatRoute = new Hono()
       return c.json(response)
     },
   )
-  .delete("/:userId/chat")
+  .delete("/:userId/chat", sessionMiddleware, async (c) => {
+    const { userId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const clearChat = container.get(ClearChat)
+    await clearChat.execute(session, userId)
+
+    const response: DeleteAllPrivateChatResponse = successResponse(true)
+    return c.json(response)
+  })
 
 export default privateChatRoute

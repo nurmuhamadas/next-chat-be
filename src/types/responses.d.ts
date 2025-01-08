@@ -60,3 +60,5 @@ declare type UnblockUserResponse = ApiResponse<{ id: string }>
 declare type GetPrivateChatOptionResponse = ApiResponse<PrivateChatOptionDTO>
 
 declare type UpdatePrivateChatOptionResponse = ApiResponse<PrivateChatOptionDTO>
+
+declare type DeleteAllPrivateChatResponse = ApiResponse<boolean>

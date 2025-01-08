@@ -10,6 +10,7 @@ import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
+import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
 import { GetSetting } from "@/app/use-cases/settings/get-setting"
@@ -116,5 +117,6 @@ container
 
 container.bind<GetPrivateChatOption>(GetPrivateChatOption).toSelf()
 container.bind<UpdatePrivateChatOption>(UpdatePrivateChatOption).toSelf()
+container.bind<ClearChat>(ClearChat).toSelf()
 
 export { container }

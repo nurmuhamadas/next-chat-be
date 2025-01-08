@@ -11,4 +11,8 @@ export abstract class PrivateChatOptionRepository {
     id: string,
     option: UpdatePrivateChatOptionEntity,
   ): Promise<PrivateChatOptionEntity>
+
+  abstract clearAllOptionAndCreateNewOne(
+    lastOption: PrivateChatOptionEntity,
+  ): Promise<PrivateChatOptionEntity>
 }

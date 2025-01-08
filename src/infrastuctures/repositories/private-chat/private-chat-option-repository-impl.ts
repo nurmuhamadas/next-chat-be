@@ -52,4 +52,28 @@ export class PrivateChatOptionRepositoryImpl
       result.notification,
     )
   }
+
+  async clearAllOptionAndCreateNewOne(
+    lastOption: PrivateChatOptionEntity,
+  ): Promise<PrivateChatOptionEntity> {
+    const [, newOption] = await prisma.$transaction([
+      prisma.privateChatOption.deleteMany({
+        where: { userId: lastOption.userId },
+      }),
+      prisma.privateChatOption.create({
+        data: {
+          userId: lastOption.userId,
+          privateChatId: lastOption.privateChatId,
+          notification: lastOption.notification,
+        },
+      }),
+    ])
+
+    return new PrivateChatOptionEntity(
+      newOption.id,
+      newOption.userId,
+      newOption.privateChatId,
+      newOption.notification,
+    )
+  }
 }
