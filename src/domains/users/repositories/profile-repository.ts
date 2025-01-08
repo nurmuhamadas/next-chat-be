@@ -33,4 +33,9 @@ export abstract class ProfileRepository {
   ): Promise<SearchResultEntity<SearchUserForMemberEntity>>
 
   abstract getDetailProfile(userId: string): Promise<DetailProfileEntity | null>
+
+  abstract findProfileUserIdsByUserIdsExceptUserId(
+    userIds: string[],
+    userId: string,
+  ): Promise<Pick<ProfileEntity, "userId">[]>
 }
