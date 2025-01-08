@@ -10,6 +10,7 @@ import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
+import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
@@ -25,6 +26,7 @@ import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
 import { BlockedUserRepository } from "@/domains/blocked-users/repositories/blocked-user-repository"
+import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
@@ -34,6 +36,7 @@ import { AuthRepositoryImpl } from "../repositories/auth/auth-repository-impl"
 import { SessionRepositoryImpl } from "../repositories/auth/session-repository-impl"
 import { TokenRepositoryImpl } from "../repositories/auth/token-repository-impl"
 import { BlockedUserRepositoryImpl } from "../repositories/blocked-user/blocked-user-repository-impl"
+import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
 import { PrivateChatOptionRepositoryImpl } from "../repositories/private-chat/private-chat-option-repository-impl"
 import { SettingRepositoryImpl } from "../repositories/setting/setting-repository-impl"
 import { StorageRepositoryImpl } from "../repositories/storage/storage-repository-impl"
@@ -118,5 +121,13 @@ container
 container.bind<GetPrivateChatOption>(GetPrivateChatOption).toSelf()
 container.bind<UpdatePrivateChatOption>(UpdatePrivateChatOption).toSelf()
 container.bind<ClearChat>(ClearChat).toSelf()
+
+// GROUP
+container
+  .bind<GroupRepository>(KEYS.GroupRepository)
+  .to(GroupRepositoryImpl)
+  .inSingletonScope()
+
+container.bind<GetGroups>(GetGroups).toSelf()
 
 export { container }

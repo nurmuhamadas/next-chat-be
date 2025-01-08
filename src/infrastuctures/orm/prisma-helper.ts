@@ -1,5 +1,6 @@
 import {
   DBTimeFormat,
+  GroupType as DBGroupType,
   Language as DBLanguage,
   LogActivity as LogActivityModel,
   Notification as DBNotification,
@@ -7,6 +8,7 @@ import {
 } from "@prisma/client"
 
 import { LogActivity } from "@/domains/auth/entities/user-log-entity"
+import { GroupType } from "@/domains/groups/entities/enums"
 import {
   Language,
   Notifications,
@@ -60,5 +62,9 @@ export class PrismaHelper {
       : notification === DBNotification.GROUP
         ? Notifications.GROUP
         : Notifications.CHANNEL
+  }
+
+  static convertDBGroupType(type: DBGroupType): GroupType {
+    return type === "PRIVATE" ? GroupType.PRIVATE : GroupType.PUBLIC
   }
 }
