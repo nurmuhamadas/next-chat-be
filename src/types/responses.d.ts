@@ -89,3 +89,5 @@ declare type UnsetAdminGroupResponse = ApiResponse<boolean>
 declare type JoinGroupResponse = ApiResponse<boolean>
 
 declare type LeaveGroupResponse = ApiResponse<boolean>
+
+declare type DeleteGroupChatResponse = ApiResponse<boolean>
