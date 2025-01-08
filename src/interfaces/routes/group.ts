@@ -1,6 +1,7 @@
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
+import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { DeleteGroup } from "@/app/use-cases/groups/delete-group"
 import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
@@ -166,5 +167,16 @@ const groupRoute = new Hono()
       return c.json(response)
     },
   )
+  .post("/:groupId/members/:userId", sessionMiddleware, async (c) => {
+    const { groupId, userId: addedUserId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const addGroupMember = container.get(AddGroupMember)
+    await addGroupMember.execute(session, groupId, addedUserId)
+
+    const response: AddGroupMemberResponse = successResponse(true)
+    return c.json(response)
+  })
 
 export default groupRoute

@@ -8,4 +8,11 @@ export abstract class GroupMemberRepository {
     groupId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<GroupMemberEntity>>
+
+  abstract validateUserInGroup(
+    groupId: string,
+    userId: string,
+  ): Promise<boolean>
+
+  abstract joinGroup(groupId: string, userId: string): Promise<void>
 }
