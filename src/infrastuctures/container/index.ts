@@ -11,6 +11,7 @@ import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
+import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
@@ -135,5 +136,6 @@ container.bind<GetGroups>(GetGroups).toSelf()
 container.bind<CreateGroup>(CreateGroup).toSelf()
 container.bind<GetNameAvailability>(GetNameAvailability).toSelf()
 container.bind<SearchPublicGroups>(SearchPublicGroups).toSelf()
+container.bind<GetGroupById>(GetGroupById).toSelf()
 
 export { container }

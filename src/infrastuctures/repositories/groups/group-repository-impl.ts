@@ -1,4 +1,4 @@
-import { RoomType } from "@prisma/client"
+import { GroupType, RoomType } from "@prisma/client"
 import { injectable } from "inversify"
 
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
@@ -13,6 +13,18 @@ import { PrismaHelper } from "@/infrastuctures/orm/prisma-helper"
 
 @injectable()
 export class GroupRepositoryImpl implements GroupRepository {
+  private getGroupWhere = (groupId: string, userId: string) => ({
+    id: groupId,
+    OR: [
+      {
+        type: GroupType.PRIVATE,
+        members: { some: { userId, leftAt: { equals: null } } },
+      },
+      { type: GroupType.PUBLIC },
+    ],
+    deletedAt: null,
+  })
+
   private getGroupIncludeQuery = ({ userId }: { userId: string }) => {
     return {
       members: {
@@ -220,5 +232,27 @@ export class GroupRepositoryImpl implements GroupRepository {
     })
 
     return new SearchResultEntity(data, data.length, nextCursor)
+  }
+
+  async getGroupById(id: string, userId: string): Promise<GroupEntity | null> {
+    const result = await prisma.group.findUnique({
+      where: { ...this.getGroupWhere(id, userId), deletedAt: undefined },
+      include: { ...this.getGroupIncludeQuery({ userId }) },
+    })
+
+    if (!result) return null
+
+    return new GroupEntity(
+      result.id,
+      result.name,
+      PrismaHelper.convertDBGroupType(result.type),
+      result.ownerId,
+      result.inviteCode,
+      result._count.members,
+      true,
+      result.members[0]?.isAdmin ?? false,
+      result.description ?? undefined,
+      result.imageUrl ?? undefined,
+    )
   }
 }

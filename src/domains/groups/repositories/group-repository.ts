@@ -22,4 +22,6 @@ export abstract class GroupRepository {
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<GroupSearchEntity>>
+
+  abstract getGroupById(id: string, userId: string): Promise<GroupEntity | null>
 }

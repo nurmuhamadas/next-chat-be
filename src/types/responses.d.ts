@@ -71,3 +71,5 @@ declare type CreateGroupResponse = ApiResponse<GroupDTO>
 declare type GetNameAvailabilityResponse = ApiResponse<boolean>
 
 declare type SearchGroupsResponse = ApiCollectionResponse<GroupSearchDTO>
+
+declare type GetGroupResponse = ApiResponse<GroupDTO>

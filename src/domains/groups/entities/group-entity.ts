@@ -12,7 +12,28 @@ export class GroupEntity {
     public readonly isAdmin: boolean,
     public readonly description?: string,
     public readonly imageUrl?: string,
+    public readonly deletedAt?: Date,
   ) {}
+
+  get isDeleted() {
+    return Boolean(this.deletedAt)
+  }
+
+  get deletedGroup() {
+    return new GroupEntity(
+      this.id,
+      "Deleted Group",
+      this.type,
+      this.ownerId,
+      this.inviteCode,
+      0,
+      this.isMember,
+      this.isAdmin,
+      undefined,
+      undefined,
+      this.deletedAt,
+    )
+  }
 
   public toDTO(): GroupDTO {
     return {
