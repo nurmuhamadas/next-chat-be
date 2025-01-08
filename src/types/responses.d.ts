@@ -83,3 +83,5 @@ declare type AddGroupMemberResponse = ApiResponse<boolean>
 declare type DeleteGroupMemberResponse = ApiResponse<boolean>
 
 declare type SetAdminGroupResponse = ApiResponse<boolean>
+
+declare type UnsetAdminGroupResponse = ApiResponse<boolean>

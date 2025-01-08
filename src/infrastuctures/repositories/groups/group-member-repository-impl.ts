@@ -117,4 +117,11 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
       data: { isAdmin: true },
     })
   }
+
+  async removeAdmin(groupId: string, userId: string): Promise<void> {
+    await prisma.groupMember.updateMany({
+      where: { groupId, userId, leftAt: null },
+      data: { isAdmin: false },
+    })
+  }
 }

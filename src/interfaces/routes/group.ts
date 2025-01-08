@@ -10,6 +10,7 @@ import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
+import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { UpdateGroup } from "@/app/use-cases/groups/update-group"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
@@ -200,6 +201,17 @@ const groupRoute = new Hono()
     await addGroupAdmin.execute(session, groupId, addedAdminId)
 
     const response: SetAdminGroupResponse = successResponse(true)
+    return c.json(response)
+  })
+  .delete("/:groupId/members/:userId/admin", sessionMiddleware, async (c) => {
+    const { groupId, userId: removedAdminId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const removeGroupAdmin = container.get(RemoveGroupAdmin)
+    await removeGroupAdmin.execute(session, groupId, removedAdminId)
+
+    const response: UnsetAdminGroupResponse = successResponse(true)
     return c.json(response)
   })
 

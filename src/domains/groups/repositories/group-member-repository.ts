@@ -21,4 +21,6 @@ export abstract class GroupMemberRepository {
   abstract validateGroupAdmin(groupId: string, userId: string): Promise<boolean>
 
   abstract addAdmin(groupId: string, userId: string): Promise<void>
+
+  abstract removeAdmin(groupId: string, userId: string): Promise<void>
 }
