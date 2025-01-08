@@ -79,3 +79,5 @@ declare type DeleteGroupResponse = ApiResponse<{ id: string }>
 declare type GetGroupMembersResponse = ApiCollectionResponse<GroupMemberDTO>
 
 declare type AddGroupMemberResponse = ApiResponse<boolean>
+
+declare type DeleteGroupMemberResponse = ApiResponse<boolean>

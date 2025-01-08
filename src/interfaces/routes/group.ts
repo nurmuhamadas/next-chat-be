@@ -4,6 +4,7 @@ import { Hono } from "hono"
 import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { DeleteGroup } from "@/app/use-cases/groups/delete-group"
+import { DeleteGroupMember } from "@/app/use-cases/groups/delete-group-member"
 import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
@@ -176,6 +177,17 @@ const groupRoute = new Hono()
     await addGroupMember.execute(session, groupId, addedUserId)
 
     const response: AddGroupMemberResponse = successResponse(true)
+    return c.json(response)
+  })
+  .delete("/:groupId/members/:userId", sessionMiddleware, async (c) => {
+    const { groupId, userId: removedUserId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const deleteGroupMember = container.get(DeleteGroupMember)
+    await deleteGroupMember.execute(session, groupId, removedUserId)
+
+    const response: DeleteGroupMemberResponse = successResponse(true)
     return c.json(response)
   })
 

@@ -15,4 +15,6 @@ export abstract class GroupMemberRepository {
   ): Promise<boolean>
 
   abstract joinGroup(groupId: string, userId: string): Promise<void>
+
+  abstract leaveGroup(groupId: string, userId: string): Promise<void>
 }

@@ -87,4 +87,19 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
       }),
     ])
   }
+
+  async leaveGroup(groupId: string, userId: string): Promise<void> {
+    await prisma.$transaction([
+      prisma.groupMember.updateMany({
+        where: { groupId, userId, leftAt: null },
+        data: { leftAt: new Date(), isAdmin: false },
+      }),
+      prisma.groupOption.deleteMany({
+        where: { groupId, userId },
+      }),
+      prisma.userUnreadMessage.deleteMany({
+        where: { userId, room: { groupId } },
+      }),
+    ])
+  }
 }

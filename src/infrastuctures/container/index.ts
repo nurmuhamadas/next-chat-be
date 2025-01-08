@@ -12,6 +12,7 @@ import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-block
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
 import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
+import { DeleteGroupMember } from "@/app/use-cases/groups/delete-group-member"
 import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
@@ -150,5 +151,6 @@ container.bind<UpdateGroup>(UpdateGroup).toSelf()
 
 container.bind<GetGroupMembers>(GetGroupMembers).toSelf()
 container.bind<AddGroupMember>(AddGroupMember).toSelf()
+container.bind<DeleteGroupMember>(DeleteGroupMember).toSelf()
 
 export { container }
