@@ -1,6 +1,7 @@
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
+import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
 import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { DeleteGroup } from "@/app/use-cases/groups/delete-group"
@@ -188,6 +189,17 @@ const groupRoute = new Hono()
     await deleteGroupMember.execute(session, groupId, removedUserId)
 
     const response: DeleteGroupMemberResponse = successResponse(true)
+    return c.json(response)
+  })
+  .post("/:groupId/members/:userId/admin", sessionMiddleware, async (c) => {
+    const { groupId, userId: addedAdminId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const addGroupAdmin = container.get(AddGroupAdmin)
+    await addGroupAdmin.execute(session, groupId, addedAdminId)
+
+    const response: SetAdminGroupResponse = successResponse(true)
     return c.json(response)
   })
 

@@ -102,4 +102,19 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
       }),
     ])
   }
+
+  async validateGroupAdmin(groupId: string, userId: string): Promise<boolean> {
+    const result = await prisma.groupMember.count({
+      where: { groupId, userId, isAdmin: true, leftAt: null },
+    })
+
+    return result > 0
+  }
+
+  async addAdmin(groupId: string, userId: string): Promise<void> {
+    await prisma.groupMember.updateMany({
+      where: { groupId, userId, leftAt: null },
+      data: { isAdmin: true },
+    })
+  }
 }

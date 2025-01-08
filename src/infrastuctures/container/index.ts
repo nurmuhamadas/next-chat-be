@@ -10,6 +10,7 @@ import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
+import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
 import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { DeleteGroupMember } from "@/app/use-cases/groups/delete-group-member"
@@ -152,5 +153,7 @@ container.bind<UpdateGroup>(UpdateGroup).toSelf()
 container.bind<GetGroupMembers>(GetGroupMembers).toSelf()
 container.bind<AddGroupMember>(AddGroupMember).toSelf()
 container.bind<DeleteGroupMember>(DeleteGroupMember).toSelf()
+
+container.bind<AddGroupAdmin>(AddGroupAdmin).toSelf()
 
 export { container }
