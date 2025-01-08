@@ -51,9 +51,8 @@ const groupRoute = new Hono()
     const result = await createGroup.execute(
       session,
       CreateGroupEntity.fromJSON({
-        name: data.name,
-        type: data.type,
-        memberIds,
+        ...data,
+        memberIds: Array.isArray(memberIds) ? memberIds : [memberIds],
         ownerId: session.userId,
       }),
       imageFile,
