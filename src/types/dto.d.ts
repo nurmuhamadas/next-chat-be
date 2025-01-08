@@ -79,3 +79,10 @@ declare interface GroupDTO {
   isMember: boolean
   isAdmin: boolean
 }
+
+declare interface GroupSearchDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+  totalMembers: number
+}

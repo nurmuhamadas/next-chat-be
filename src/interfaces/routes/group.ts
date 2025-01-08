@@ -4,6 +4,7 @@ import { Hono } from "hono"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
+import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateGroupEntity } from "@/domains/groups/entities/create-group-entity"
@@ -68,5 +69,27 @@ const groupRoute = new Hono()
     const resposne: GetNameAvailabilityResponse = successResponse(isAvailable)
     return c.json(resposne)
   })
+  .get(
+    "/search",
+    sessionMiddleware,
+    zValidator("query", searchQuerySchema),
+    async (c) => {
+      const query = c.req.valid("query")
+
+      const session = c.get("userSession")
+
+      const searchPublicGroups = container.get(SearchPublicGroups)
+      const result = await searchPublicGroups.execute(
+        session,
+        SearchParamsEntity.fromJSON(query),
+      )
+      const response: SearchGroupsResponse = successCollectionResponse(
+        result.data.map((v) => v.toDTO()),
+        result.total,
+        result.cursor,
+      )
+      return c.json(response)
+    },
+  )
 
 export default groupRoute

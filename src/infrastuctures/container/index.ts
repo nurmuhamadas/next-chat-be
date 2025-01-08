@@ -13,6 +13,7 @@ import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
+import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
@@ -133,5 +134,6 @@ container
 container.bind<GetGroups>(GetGroups).toSelf()
 container.bind<CreateGroup>(CreateGroup).toSelf()
 container.bind<GetNameAvailability>(GetNameAvailability).toSelf()
+container.bind<SearchPublicGroups>(SearchPublicGroups).toSelf()
 
 export { container }

@@ -6,6 +6,7 @@ import { SearchResultEntity } from "@/common/entities/search-result-entity"
 import { CommonHelper } from "@/common/lib/common-helper"
 import { CreateGroupEntity } from "@/domains/groups/entities/create-group-entity"
 import { GroupEntity } from "@/domains/groups/entities/group-entity"
+import { GroupSearchEntity } from "@/domains/groups/entities/group-search-entity"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
 import { PrismaHelper } from "@/infrastuctures/orm/prisma-helper"
@@ -174,5 +175,50 @@ export class GroupRepositoryImpl implements GroupRepository {
       result.description ?? undefined,
       result.imageUrl ?? undefined,
     )
+  }
+
+  async searchPublicGroups(
+    userId: string,
+    params: SearchParamsEntity,
+  ): Promise<SearchResultEntity<GroupSearchEntity>> {
+    const { limit, cursor, query } = params
+
+    const result = await prisma.group.findMany({
+      where: {
+        type: "PUBLIC",
+        members: { none: { userId, leftAt: null } },
+        name: { contains: query, mode: "insensitive" },
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        name: true,
+        imageUrl: true,
+        ownerId: true,
+        _count: {
+          select: { members: { where: { leftAt: null } } },
+        },
+      },
+      take: limit + 1,
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : undefined,
+    })
+
+    let nextCursor: string | undefined
+    if (result.length > limit) {
+      nextCursor = result[result.length - 1].id
+      result.pop()
+    }
+
+    const data = result.map((v) => {
+      return new GroupSearchEntity(
+        v.id,
+        v.name,
+        v._count.members,
+        v.imageUrl ?? undefined,
+      )
+    })
+
+    return new SearchResultEntity(data, data.length, nextCursor)
   }
 }
