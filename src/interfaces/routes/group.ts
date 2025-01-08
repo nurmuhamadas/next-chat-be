@@ -3,6 +3,7 @@ import { Hono } from "hono"
 
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
+import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateGroupEntity } from "@/domains/groups/entities/create-group-entity"
@@ -56,6 +57,16 @@ const groupRoute = new Hono()
 
     const response: CreateGroupResponse = successResponse(result.toDTO())
     return c.json(response)
+  })
+  .get("/name-availability/:groupName", sessionMiddleware, async (c) => {
+    const { groupName } = c.req.param()
+    const session = c.get("userSession")
+
+    const getNameAvailability = container.get(GetNameAvailability)
+    const isAvailable = await getNameAvailability.execute(session, groupName)
+
+    const resposne: GetNameAvailabilityResponse = successResponse(isAvailable)
+    return c.json(resposne)
   })
 
 export default groupRoute
