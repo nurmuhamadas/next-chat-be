@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
+import { DeleteGroup } from "@/app/use-cases/groups/delete-group"
 import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
@@ -129,5 +130,15 @@ const groupRoute = new Hono()
       return c.json(response)
     },
   )
+  .delete("/:groupId", sessionMiddleware, async (c) => {
+    const { groupId } = c.req.param()
+    const session = c.get("userSession")
+
+    const deleteGroup = container.get(DeleteGroup)
+    await deleteGroup.execute(session, groupId)
+
+    const response: DeleteGroupResponse = successResponse({ id: groupId })
+    return c.json(response)
+  })
 
 export default groupRoute

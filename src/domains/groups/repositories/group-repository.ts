@@ -30,4 +30,6 @@ export abstract class GroupRepository {
     userId: string,
     data: UpdateGroupEntity,
   ): Promise<GroupEntity>
+
+  abstract softDeleteGroup(groupId: string): Promise<void>
 }

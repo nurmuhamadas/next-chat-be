@@ -285,4 +285,24 @@ export class GroupRepositoryImpl implements GroupRepository {
       result.imageUrl ?? undefined,
     )
   }
+
+  async softDeleteGroup(groupId: string): Promise<void> {
+    await prisma.group.update({
+      where: { id: groupId },
+      data: {
+        deletedAt: new Date(),
+        members: {
+          updateMany: [
+            {
+              where: { groupId },
+              data: { isAdmin: false, leftAt: new Date() },
+            },
+          ],
+        },
+        membersOption: {
+          deleteMany: [{ groupId }],
+        },
+      },
+    })
+  }
 }
