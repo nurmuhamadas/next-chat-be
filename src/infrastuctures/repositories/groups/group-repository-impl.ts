@@ -54,7 +54,7 @@ export class GroupRepositoryImpl implements GroupRepository {
     return inviteCode
   }
 
-  async getGroups(
+  async getJoinedGroups(
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<GroupEntity>> {
@@ -235,7 +235,35 @@ export class GroupRepositoryImpl implements GroupRepository {
     return new SearchResultEntity(data, data.length, nextCursor)
   }
 
-  async getGroupById(id: string, userId: string): Promise<GroupEntity | null> {
+  async getPublicOrJoinedGroupById(
+    id: string,
+    userId: string,
+  ): Promise<GroupEntity | null> {
+    const result = await prisma.group.findUnique({
+      where: { ...this.getGroupWhere(id, userId) },
+      include: { ...this.getGroupIncludeQuery({ userId }) },
+    })
+
+    if (!result) return null
+
+    return new GroupEntity(
+      result.id,
+      result.name,
+      PrismaHelper.convertDBGroupType(result.type),
+      result.ownerId,
+      result.inviteCode,
+      result._count.members,
+      true,
+      result.members[0]?.isAdmin ?? false,
+      result.description ?? undefined,
+      result.imageUrl ?? undefined,
+    )
+  }
+
+  async getPublicOrJoinedGroupByIdIncludeDeleted(
+    id: string,
+    userId: string,
+  ): Promise<GroupEntity | null> {
     const result = await prisma.group.findUnique({
       where: { ...this.getGroupWhere(id, userId), deletedAt: undefined },
       include: { ...this.getGroupIncludeQuery({ userId }) },

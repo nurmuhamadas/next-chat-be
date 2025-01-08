@@ -8,7 +8,7 @@ import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
 
 @injectable()
-export class GetGroups {
+export class GetJoinedGroups {
   constructor(
     @inject(KEYS.GroupRepository) private groupRepository: GroupRepository,
   ) {}
@@ -17,6 +17,6 @@ export class GetGroups {
     session: SessionTokenEntity,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<GroupEntity>> {
-    return this.groupRepository.getGroups(session.userId, params)
+    return this.groupRepository.getJoinedGroups(session.userId, params)
   }
 }

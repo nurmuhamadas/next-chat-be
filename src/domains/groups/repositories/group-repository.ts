@@ -7,7 +7,7 @@ import { GroupSearchEntity } from "../entities/group-search-entity"
 import { UpdateGroupEntity } from "../entities/update-group-entity"
 
 export abstract class GroupRepository {
-  abstract getGroups(
+  abstract getJoinedGroups(
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<GroupEntity>>
@@ -24,7 +24,15 @@ export abstract class GroupRepository {
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<GroupSearchEntity>>
 
-  abstract getGroupById(id: string, userId: string): Promise<GroupEntity | null>
+  abstract getPublicOrJoinedGroupById(
+    id: string,
+    userId: string,
+  ): Promise<GroupEntity | null>
+
+  abstract getPublicOrJoinedGroupByIdIncludeDeleted(
+    id: string,
+    userId: string,
+  ): Promise<GroupEntity | null>
 
   abstract updateGroup(
     userId: string,

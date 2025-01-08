@@ -22,7 +22,7 @@ export class RemoveGroupAdmin {
     groupId: string,
     addedUserId: string,
   ) {
-    const group = await this.groupRepository.getGroupById(
+    const group = await this.groupRepository.getPublicOrJoinedGroupById(
       groupId,
       session.userId,
     )

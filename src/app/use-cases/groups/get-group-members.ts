@@ -23,7 +23,7 @@ export class GetGroupMembers {
     groupId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<GroupMemberEntity>> {
-    const group = await this.groupRepository.getGroupById(
+    const group = await this.groupRepository.getPublicOrJoinedGroupById(
       groupId,
       session.userId,
     )

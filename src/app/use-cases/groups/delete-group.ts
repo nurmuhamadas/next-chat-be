@@ -14,7 +14,7 @@ export class DeleteGroup {
   ) {}
 
   async execute(session: SessionTokenEntity, groupId: string): Promise<void> {
-    const currentGroup = await this.groupRepository.getGroupById(
+    const currentGroup = await this.groupRepository.getPublicOrJoinedGroupById(
       groupId,
       session.userId,
     )

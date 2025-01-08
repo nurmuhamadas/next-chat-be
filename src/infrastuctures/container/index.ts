@@ -16,7 +16,7 @@ import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { DeleteGroupMember } from "@/app/use-cases/groups/delete-group-member"
 import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
-import { GetGroups } from "@/app/use-cases/groups/get-groups"
+import { GetJoinedGroups } from "@/app/use-cases/groups/get-joined-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
 import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
@@ -144,7 +144,7 @@ container
   .to(GroupMemberRepositoryImpl)
   .inSingletonScope()
 
-container.bind<GetGroups>(GetGroups).toSelf()
+container.bind<GetJoinedGroups>(GetJoinedGroups).toSelf()
 container.bind<CreateGroup>(CreateGroup).toSelf()
 container.bind<GetNameAvailability>(GetNameAvailability).toSelf()
 container.bind<SearchPublicGroups>(SearchPublicGroups).toSelf()

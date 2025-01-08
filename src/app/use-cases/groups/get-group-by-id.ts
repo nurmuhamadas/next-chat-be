@@ -17,10 +17,11 @@ export class GetGroupById {
     session: SessionTokenEntity,
     groupId: string,
   ): Promise<GroupEntity> {
-    const group = await this.groupRepository.getGroupById(
-      groupId,
-      session.userId,
-    )
+    const group =
+      await this.groupRepository.getPublicOrJoinedGroupByIdIncludeDeleted(
+        groupId,
+        session.userId,
+      )
 
     if (!group) {
       throw new NotFoundError(ERROR.GROUP_NOT_FOUND)

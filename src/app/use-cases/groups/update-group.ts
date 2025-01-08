@@ -30,7 +30,7 @@ export class UpdateGroup {
     data: UpdateGroupEntity,
     imageFile?: File,
   ): Promise<GroupEntity> {
-    const currentGroup = await this.groupRepository.getGroupById(
+    const currentGroup = await this.groupRepository.getPublicOrJoinedGroupById(
       data.id,
       session.userId,
     )
