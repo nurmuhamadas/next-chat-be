@@ -27,6 +27,7 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
       take: limit + 1,
       cursor: cursor ? { id: cursor } : undefined,
       skip: cursor ? 1 : undefined,
+      orderBy: [{ isAdmin: "desc" }],
     })
 
     let nextCursor: string | undefined
