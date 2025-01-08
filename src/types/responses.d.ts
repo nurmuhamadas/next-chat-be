@@ -75,3 +75,5 @@ declare type SearchGroupsResponse = ApiCollectionResponse<GroupSearchDTO>
 declare type GetGroupResponse = ApiResponse<GroupDTO>
 
 declare type DeleteGroupResponse = ApiResponse<{ id: string }>
+
+declare type GetGroupMembersResponse = ApiCollectionResponse<GroupMemberDTO>

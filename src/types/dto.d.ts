@@ -86,3 +86,11 @@ declare interface GroupSearchDTO {
   imageUrl: string | null
   totalMembers: number
 }
+
+declare interface GroupMemberDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+  isAdmin: boolean
+  lastSeenAt: string | null
+}

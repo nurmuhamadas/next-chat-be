@@ -4,6 +4,7 @@ import { Hono } from "hono"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { DeleteGroup } from "@/app/use-cases/groups/delete-group"
 import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
+import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
@@ -140,5 +141,30 @@ const groupRoute = new Hono()
     const response: DeleteGroupResponse = successResponse({ id: groupId })
     return c.json(response)
   })
+  .get(
+    "/:groupId/members",
+    zValidator("query", searchQuerySchema),
+    sessionMiddleware,
+    async (c) => {
+      const { groupId } = c.req.param()
+      const query = c.req.valid("query")
+
+      const session = c.get("userSession")
+
+      const getGroupMembers = container.get(GetGroupMembers)
+      const result = await getGroupMembers.execute(
+        session,
+        groupId,
+        SearchParamsEntity.fromJSON(query),
+      )
+
+      const response: GetGroupMembersResponse = successCollectionResponse(
+        result.data.map((v) => v.toDTO()),
+        result.total,
+        result.cursor,
+      )
+      return c.json(response)
+    },
+  )
 
 export default groupRoute

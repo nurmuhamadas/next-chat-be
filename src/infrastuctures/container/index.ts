@@ -12,6 +12,7 @@ import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-block
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
 import { CreateGroup } from "@/app/use-cases/groups/create-group"
 import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
+import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
 import { GetGroups } from "@/app/use-cases/groups/get-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
@@ -31,6 +32,7 @@ import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
 import { BlockedUserRepository } from "@/domains/blocked-users/repositories/blocked-user-repository"
+import { GroupMemberRepository } from "@/domains/groups/repositories/group-member-repository"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
@@ -41,6 +43,7 @@ import { AuthRepositoryImpl } from "../repositories/auth/auth-repository-impl"
 import { SessionRepositoryImpl } from "../repositories/auth/session-repository-impl"
 import { TokenRepositoryImpl } from "../repositories/auth/token-repository-impl"
 import { BlockedUserRepositoryImpl } from "../repositories/blocked-user/blocked-user-repository-impl"
+import { GroupMemberRepositoryImpl } from "../repositories/groups/group-member-repository-impl"
 import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
 import { PrivateChatOptionRepositoryImpl } from "../repositories/private-chat/private-chat-option-repository-impl"
 import { SettingRepositoryImpl } from "../repositories/setting/setting-repository-impl"
@@ -132,6 +135,10 @@ container
   .bind<GroupRepository>(KEYS.GroupRepository)
   .to(GroupRepositoryImpl)
   .inSingletonScope()
+container
+  .bind<GroupMemberRepository>(KEYS.GroupMemberRepository)
+  .to(GroupMemberRepositoryImpl)
+  .inSingletonScope()
 
 container.bind<GetGroups>(GetGroups).toSelf()
 container.bind<CreateGroup>(CreateGroup).toSelf()
@@ -139,5 +146,7 @@ container.bind<GetNameAvailability>(GetNameAvailability).toSelf()
 container.bind<SearchPublicGroups>(SearchPublicGroups).toSelf()
 container.bind<GetGroupById>(GetGroupById).toSelf()
 container.bind<UpdateGroup>(UpdateGroup).toSelf()
+
+container.bind<GetGroupMembers>(GetGroupMembers).toSelf()
 
 export { container }
