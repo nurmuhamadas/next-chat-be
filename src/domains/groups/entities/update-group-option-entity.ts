@@ -5,7 +5,7 @@ export class UpdateGroupOptionEntity {
     public readonly notification: boolean,
   ) {}
 
-  public fromJSON({
+  static fromJSON({
     groupId,
     userId,
     notification,

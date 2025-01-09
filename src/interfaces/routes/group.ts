@@ -17,14 +17,20 @@ import { LeaveGroup } from "@/app/use-cases/groups/leave-group"
 import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { UpdateGroup } from "@/app/use-cases/groups/update-group"
+import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateGroupEntity } from "@/domains/groups/entities/create-group-entity"
 import { UpdateGroupEntity } from "@/domains/groups/entities/update-group-entity"
+import { UpdateGroupOptionEntity } from "@/domains/groups/entities/update-group-option-entity"
 import { container } from "@/infrastuctures/container"
 
 import { searchQuerySchema } from "../schemas/common-schema"
-import { groupSchema, joinGroupSchema } from "../schemas/group-schema"
+import {
+  groupSchema,
+  joinGroupSchema,
+  updateGroupOptionSchema,
+} from "../schemas/group-schema"
 
 import { sessionMiddleware } from "./middleware/session-middleware"
 
@@ -270,5 +276,31 @@ const groupRoute = new Hono()
     )
     return c.json(response)
   })
+  .patch(
+    "/:groupId/options",
+    sessionMiddleware,
+    zValidator("json", updateGroupOptionSchema),
+    async (c) => {
+      const { groupId } = c.req.param()
+      const { notification } = c.req.valid("json")
+
+      const session = c.get("userSession")
+
+      const updateGroupOption = container.get(UpdateGroupOption)
+      const groupOption = await updateGroupOption.execute(
+        session,
+        UpdateGroupOptionEntity.fromJSON({
+          groupId,
+          userId: session.userId,
+          notification,
+        }),
+      )
+
+      const response: GetGroupOptionResponse = successResponse(
+        groupOption.toDTO(),
+      )
+      return c.json(response)
+    },
+  )
 
 export default groupRoute
