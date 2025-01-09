@@ -62,3 +62,34 @@ declare type GetPrivateChatOptionResponse = ApiResponse<PrivateChatOptionDTO>
 declare type UpdatePrivateChatOptionResponse = ApiResponse<PrivateChatOptionDTO>
 
 declare type DeleteAllPrivateChatResponse = ApiResponse<boolean>
+
+// GROUP API
+declare type GetGroupsResponse = ApiCollectionResponse<GroupDTO>
+
+declare type CreateGroupResponse = ApiResponse<GroupDTO>
+
+declare type GetNameAvailabilityResponse = ApiResponse<boolean>
+
+declare type SearchGroupsResponse = ApiCollectionResponse<GroupSearchDTO>
+
+declare type GetGroupResponse = ApiResponse<GroupDTO>
+
+declare type DeleteGroupResponse = ApiResponse<{ id: string }>
+
+declare type GetGroupMembersResponse = ApiCollectionResponse<GroupMemberDTO>
+
+declare type AddGroupMemberResponse = ApiResponse<boolean>
+
+declare type DeleteGroupMemberResponse = ApiResponse<boolean>
+
+declare type SetAdminGroupResponse = ApiResponse<boolean>
+
+declare type UnsetAdminGroupResponse = ApiResponse<boolean>
+
+declare type JoinGroupResponse = ApiResponse<boolean>
+
+declare type LeaveGroupResponse = ApiResponse<boolean>
+
+declare type DeleteGroupChatResponse = ApiResponse<boolean>
+
+declare type GetGroupOptionResponse = ApiResponse<GroupOptionDTO | null>

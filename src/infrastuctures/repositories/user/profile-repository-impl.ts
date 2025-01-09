@@ -217,4 +217,17 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       result.lastSeenAt ?? undefined,
     )
   }
+
+  async findProfileUserIdsByUserIdsExceptUserId(
+    userIds: string[],
+    userId: string,
+  ): Promise<Pick<ProfileEntity, "userId">[]> {
+    return prisma.profile.findMany({
+      where: {
+        userId: { in: userIds, not: userId },
+      },
+      select: { userId: true },
+      take: userIds.length,
+    })
+  }
 }

@@ -10,6 +10,22 @@ import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
+import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
+import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
+import { ClearGroupChat } from "@/app/use-cases/groups/clear-group-chat"
+import { CreateGroup } from "@/app/use-cases/groups/create-group"
+import { DeleteGroupMember } from "@/app/use-cases/groups/delete-group-member"
+import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
+import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
+import { GetGroupOption } from "@/app/use-cases/groups/get-group-option"
+import { GetJoinedGroups } from "@/app/use-cases/groups/get-joined-groups"
+import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
+import { JoinGroup } from "@/app/use-cases/groups/join-group"
+import { LeaveGroup } from "@/app/use-cases/groups/leave-group"
+import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
+import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
+import { UpdateGroup } from "@/app/use-cases/groups/update-group"
+import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
@@ -25,6 +41,9 @@ import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
 import { BlockedUserRepository } from "@/domains/blocked-users/repositories/blocked-user-repository"
+import { GroupMemberRepository } from "@/domains/groups/repositories/group-member-repository"
+import { GroupOptionRepository } from "@/domains/groups/repositories/group-option-repository"
+import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
@@ -34,6 +53,9 @@ import { AuthRepositoryImpl } from "../repositories/auth/auth-repository-impl"
 import { SessionRepositoryImpl } from "../repositories/auth/session-repository-impl"
 import { TokenRepositoryImpl } from "../repositories/auth/token-repository-impl"
 import { BlockedUserRepositoryImpl } from "../repositories/blocked-user/blocked-user-repository-impl"
+import { GroupMemberRepositoryImpl } from "../repositories/groups/group-member-repository-impl"
+import { GroupOptionRepositoryImpl } from "../repositories/groups/group-option-repository-impl"
+import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
 import { PrivateChatOptionRepositoryImpl } from "../repositories/private-chat/private-chat-option-repository-impl"
 import { SettingRepositoryImpl } from "../repositories/setting/setting-repository-impl"
 import { StorageRepositoryImpl } from "../repositories/storage/storage-repository-impl"
@@ -118,5 +140,39 @@ container
 container.bind<GetPrivateChatOption>(GetPrivateChatOption).toSelf()
 container.bind<UpdatePrivateChatOption>(UpdatePrivateChatOption).toSelf()
 container.bind<ClearChat>(ClearChat).toSelf()
+
+// GROUP
+container
+  .bind<GroupRepository>(KEYS.GroupRepository)
+  .to(GroupRepositoryImpl)
+  .inSingletonScope()
+container
+  .bind<GroupMemberRepository>(KEYS.GroupMemberRepository)
+  .to(GroupMemberRepositoryImpl)
+  .inSingletonScope()
+container
+  .bind<GroupOptionRepository>(KEYS.GroupOptionRepository)
+  .to(GroupOptionRepositoryImpl)
+  .inSingletonScope()
+
+container.bind<GetJoinedGroups>(GetJoinedGroups).toSelf()
+container.bind<CreateGroup>(CreateGroup).toSelf()
+container.bind<GetNameAvailability>(GetNameAvailability).toSelf()
+container.bind<SearchPublicGroups>(SearchPublicGroups).toSelf()
+container.bind<GetGroupById>(GetGroupById).toSelf()
+container.bind<UpdateGroup>(UpdateGroup).toSelf()
+
+container.bind<GetGroupMembers>(GetGroupMembers).toSelf()
+container.bind<AddGroupMember>(AddGroupMember).toSelf()
+container.bind<DeleteGroupMember>(DeleteGroupMember).toSelf()
+
+container.bind<AddGroupAdmin>(AddGroupAdmin).toSelf()
+container.bind<RemoveGroupAdmin>(RemoveGroupAdmin).toSelf()
+
+container.bind<JoinGroup>(JoinGroup).toSelf()
+container.bind<LeaveGroup>(LeaveGroup).toSelf()
+container.bind<ClearGroupChat>(ClearGroupChat).toSelf()
+container.bind<GetGroupOption>(GetGroupOption).toSelf()
+container.bind<UpdateGroupOption>(UpdateGroupOption).toSelf()
 
 export { container }

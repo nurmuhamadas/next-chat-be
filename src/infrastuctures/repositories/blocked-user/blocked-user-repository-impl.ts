@@ -67,4 +67,32 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
       data: { unblockedAt: new Date() },
     })
   }
+
+  async getBlockedUserIdsByUserIds(
+    userId: string,
+    userIds: string[],
+  ): Promise<Pick<BlockedUserEntity, "blockedUserId">[]> {
+    return prisma.blockedUser.findMany({
+      where: {
+        userId,
+        blockedUserId: { in: userIds },
+        unblockedAt: { equals: null },
+      },
+      select: { blockedUserId: true },
+    })
+  }
+
+  async getBlockedByUserIdsByUserIds(
+    userId: string,
+    userIds: string[],
+  ): Promise<Pick<BlockedUserEntity, "userId">[]> {
+    return prisma.blockedUser.findMany({
+      where: {
+        userId: { in: userIds },
+        blockedUserId: userId,
+        unblockedAt: { equals: null },
+      },
+      select: { userId: true },
+    })
+  }
 }

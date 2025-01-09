@@ -6,6 +6,8 @@ declare type LanguageDTO = "en_US" | "id_ID"
 
 declare type NotificationsDTO = "PRIVATE" | "GROUP" | "CHANNEL"
 
+declare type GroupType = "PUBLIC" | "PRIVATE"
+
 declare interface ProfileDTO {
   id: string
   name: string
@@ -55,5 +57,47 @@ declare interface BlockedUserDTO {
 declare interface PrivateChatOptionDTO {
   userId: string
   privateChatId: string
+  notification: boolean
+}
+
+// GROUP
+declare interface GroupOwnerDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+}
+
+declare interface GroupDTO {
+  id: string
+  name: string
+  description: string | null
+  type: GroupType
+  ownerId: string
+  imageUrl: string | null
+  inviteCode: string
+  totalMembers: number
+  isMember: boolean
+  isAdmin: boolean
+}
+
+declare interface GroupSearchDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+  totalMembers: number
+}
+
+declare interface GroupMemberDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+  isAdmin: boolean
+  lastSeenAt: string | null
+}
+
+declare interface GroupOptionDTO {
+  id: string
+  userId: string
+  groupId: string
   notification: boolean
 }
