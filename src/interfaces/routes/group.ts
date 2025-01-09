@@ -9,6 +9,7 @@ import { DeleteGroup } from "@/app/use-cases/groups/delete-group"
 import { DeleteGroupMember } from "@/app/use-cases/groups/delete-group-member"
 import { GetGroupById } from "@/app/use-cases/groups/get-group-by-id"
 import { GetGroupMembers } from "@/app/use-cases/groups/get-group-members"
+import { GetGroupOption } from "@/app/use-cases/groups/get-group-option"
 import { GetJoinedGroups } from "@/app/use-cases/groups/get-joined-groups"
 import { GetNameAvailability } from "@/app/use-cases/groups/get-name-availability"
 import { JoinGroup } from "@/app/use-cases/groups/join-group"
@@ -254,6 +255,19 @@ const groupRoute = new Hono()
     await clearGroupChat.execute(session, groupId)
 
     const response: DeleteGroupChatResponse = successResponse(true)
+    return c.json(response)
+  })
+  .get("/:groupId/options", sessionMiddleware, async (c) => {
+    const { groupId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const getGroupOption = container.get(GetGroupOption)
+    const groupOption = await getGroupOption.execute(session, groupId)
+
+    const response: GetGroupOptionResponse = successResponse(
+      groupOption.toDTO(),
+    )
     return c.json(response)
   })
 

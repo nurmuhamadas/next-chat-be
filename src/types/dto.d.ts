@@ -94,3 +94,10 @@ declare interface GroupMemberDTO {
   isAdmin: boolean
   lastSeenAt: string | null
 }
+
+declare interface GroupOptionDTO {
+  id: string
+  userId: string
+  groupId: string
+  notification: boolean
+}
