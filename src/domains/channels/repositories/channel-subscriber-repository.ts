@@ -24,4 +24,8 @@ export abstract class ChannelSubscriberRepository {
   abstract removeAdmin(channelId: string, userId: string): Promise<void>
 
   abstract subscribeChannel(channelId: string, userId: string): Promise<void>
+
+  abstract unsubscribeChannel(channelId: string, userId: string): Promise<void>
+
+  abstract getTotalAdmins(channelId: string): Promise<number>
 }

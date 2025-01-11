@@ -20,6 +20,7 @@ import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-c
 import { RemoveChannelAdmin } from "@/app/use-cases/channels/remove-channel-admin"
 import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
 import { SubscribeChannel } from "@/app/use-cases/channels/subscribe-channel"
+import { UnsubscribeChannel } from "@/app/use-cases/channels/unsubscribe-channel"
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
 import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
 import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
@@ -212,5 +213,6 @@ container.bind<GetChannelSubscribers>(GetChannelSubscribers).toSelf()
 container.bind<AddChannelAdmin>(AddChannelAdmin).toSelf()
 container.bind<RemoveChannelAdmin>(RemoveChannelAdmin).toSelf()
 container.bind<SubscribeChannel>(SubscribeChannel).toSelf()
+container.bind<UnsubscribeChannel>(UnsubscribeChannel).toSelf()
 
 export { container }

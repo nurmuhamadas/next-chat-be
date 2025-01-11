@@ -114,4 +114,6 @@ declare type SetAdminChannelResponse = ApiResponse<boolean>
 
 declare type UnsetAdminChannelResponse = ApiResponse<boolean>
 
-declare type JoinChannelResponse = ApiResponse<boolean>
+declare type SubscribeChannelResponse = ApiResponse<boolean>
+
+declare type UnsubscribeChannelResponse = ApiResponse<boolean>

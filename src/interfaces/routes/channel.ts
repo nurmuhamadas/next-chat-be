@@ -11,6 +11,7 @@ import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-c
 import { RemoveChannelAdmin } from "@/app/use-cases/channels/remove-channel-admin"
 import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
 import { SubscribeChannel } from "@/app/use-cases/channels/subscribe-channel"
+import { UnsubscribeChannel } from "@/app/use-cases/channels/unsubscribe-channel"
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
@@ -222,9 +223,20 @@ const channelRoute = new Hono()
       const subscribeChannel = container.get(SubscribeChannel)
       await subscribeChannel.execute(session, channelId, code)
 
-      const response: JoinChannelResponse = successResponse(true)
+      const response: SubscribeChannelResponse = successResponse(true)
       return c.json(response)
     },
   )
+  .post("/:channelId/unsubscribe", sessionMiddleware, async (c) => {
+    const { channelId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const unsubscribeChannel = container.get(UnsubscribeChannel)
+    await unsubscribeChannel.execute(session, channelId)
+
+    const response: UnsubscribeChannelResponse = successResponse(true)
+    return c.json(response)
+  })
 
 export default channelRoute

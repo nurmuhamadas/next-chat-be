@@ -121,4 +121,25 @@ export class ChannelSubscriberRepositoryImpl
       }),
     ])
   }
+
+  async unsubscribeChannel(channelId: string, userId: string): Promise<void> {
+    await prisma.$transaction([
+      prisma.channelSubscriber.updateMany({
+        where: { channelId, userId, unsubscribedAt: null },
+        data: { unsubscribedAt: new Date(), isAdmin: false },
+      }),
+      prisma.channelOption.deleteMany({
+        where: { channelId, userId },
+      }),
+      prisma.userUnreadMessage.deleteMany({
+        where: { userId, room: { channelId } },
+      }),
+    ])
+  }
+
+  async getTotalAdmins(channelId: string): Promise<number> {
+    return await prisma.channelSubscriber.count({
+      where: { channelId, isAdmin: true, unsubscribedAt: null },
+    })
+  }
 }
