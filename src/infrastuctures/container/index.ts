@@ -44,6 +44,7 @@ import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
+import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
 import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
 import { GetSetting } from "@/app/use-cases/settings/get-setting"
 import { UpdateSetting } from "@/app/use-cases/settings/update-setting"
@@ -238,5 +239,6 @@ container
   .inSingletonScope()
 
 container.bind<GetRooms>(GetRooms).toSelf()
+container.bind<GetPrivateRooms>(GetPrivateRooms).toSelf()
 
 export { container }

@@ -160,3 +160,10 @@ declare interface RoomDTO {
   isActive: boolean
   totalUnreadMessages: number
 }
+
+declare interface PrivateRoomDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+  lastSeenAt: string | null
+}
