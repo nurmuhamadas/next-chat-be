@@ -5,22 +5,16 @@ import AuthorizationError from "@/common/exceptions/authorization-error"
 import InvariantError from "@/common/exceptions/invariant-error"
 import NotFoundError from "@/common/exceptions/not-found-error"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
-import { BlockedUserRepository } from "@/domains/blocked-users/repositories/blocked-user-repository"
 import { GroupEntity } from "@/domains/groups/entities/group-entity"
 import { UpdateGroupEntity } from "@/domains/groups/entities/update-group-entity"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
-import { ProfileRepository } from "@/domains/users/repositories/profile-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
 
 @injectable()
 export class UpdateGroup {
   constructor(
     @inject(KEYS.GroupRepository) private groupRepository: GroupRepository,
-    @inject(KEYS.ProfileRepository)
-    private profileRepository: ProfileRepository,
-    @inject(KEYS.BlockedUserRepository)
-    private blockedUserRepository: BlockedUserRepository,
     @inject(KEYS.StorageRepository)
     private storageRepository: StorageRepository,
   ) {}
@@ -74,11 +68,11 @@ export class UpdateGroup {
       }
 
       return result
-    } catch {
+    } catch (e) {
       if (fileId) {
         await this.storageRepository.deleteFile(fileId)
       }
-      throw new Error(ERROR.INTERNAL_SERVER_ERROR)
+      throw e
     }
   }
 }

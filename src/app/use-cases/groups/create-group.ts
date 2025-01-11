@@ -106,11 +106,11 @@ export class CreateGroup {
       const result = await this.groupRepository.createGroup(data)
 
       return result
-    } catch {
+    } catch (e) {
       if (fileId) {
         await this.storageRepository.deleteFile(fileId)
       }
-      throw new Error(ERROR.INTERNAL_SERVER_ERROR)
+      throw e
     }
   }
 }
