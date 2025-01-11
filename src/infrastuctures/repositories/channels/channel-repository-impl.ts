@@ -285,4 +285,24 @@ export class ChannelRepositoryImpl implements ChannelRepository {
       result.imageUrl ?? undefined,
     )
   }
+
+  async softDeleteChannel(channelId: string): Promise<void> {
+    await prisma.channel.update({
+      where: { id: channelId },
+      data: {
+        deletedAt: new Date(),
+        subscribers: {
+          updateMany: [
+            {
+              where: { channelId },
+              data: { isAdmin: false, unsubscribedAt: new Date() },
+            },
+          ],
+        },
+        subscribersOption: {
+          deleteMany: [{ channelId }],
+        },
+      },
+    })
+  }
 }

@@ -38,4 +38,6 @@ export abstract class ChannelRepository {
     userId: string,
     data: UpdateChannelEntity,
   ): Promise<ChannelEntity>
+
+  abstract softDeleteChannel(channelId: string): Promise<void>
 }

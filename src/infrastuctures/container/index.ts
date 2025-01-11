@@ -11,6 +11,7 @@ import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
 import { CreateChannel } from "@/app/use-cases/channels/create-channel"
+import { DeleteChannel } from "@/app/use-cases/channels/delete-channel"
 import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
@@ -195,5 +196,6 @@ container.bind<GetChannelNameAvailability>(GetChannelNameAvailability).toSelf()
 container.bind<SearchPublicChannels>(SearchPublicChannels).toSelf()
 container.bind<GetChannelById>(GetChannelById).toSelf()
 container.bind<UpdateChannel>(UpdateChannel).toSelf()
+container.bind<DeleteChannel>(DeleteChannel).toSelf()
 
 export { container }

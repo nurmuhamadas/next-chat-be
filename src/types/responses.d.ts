@@ -104,3 +104,5 @@ declare type SearchChannelsResponse = ApiCollectionResponse<ChannelSearchDTO>
 declare type GetChannelResponse = ApiResponse<ChannelDTO>
 
 declare type PatchChannelResponse = ApiResponse<ChannelDTO>
+
+declare type DeleteChannelResponse = ApiResponse<{ id: string }>
