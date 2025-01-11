@@ -138,3 +138,10 @@ declare interface ChannelSubscriberDTO {
   isAdmin: boolean
   lastSeenAt: string | null
 }
+
+declare interface ChannelOptionDTO {
+  id: string
+  userId: string
+  channelId: string
+  notification: boolean
+}

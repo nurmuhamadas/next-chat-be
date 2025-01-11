@@ -7,6 +7,7 @@ import { CreateChannel } from "@/app/use-cases/channels/create-channel"
 import { DeleteChannel } from "@/app/use-cases/channels/delete-channel"
 import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
+import { GetChannelOption } from "@/app/use-cases/channels/get-channel-option"
 import { GetChannelSubscribers } from "@/app/use-cases/channels/get-group-subscribers"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { RemoveChannelAdmin } from "@/app/use-cases/channels/remove-channel-admin"
@@ -248,6 +249,19 @@ const channelRoute = new Hono()
     await clearChannelChat.execute(session, channelId)
 
     const response: ClearChannelChatResponse = successResponse(true)
+    return c.json(response)
+  })
+  .get("/:channelId/options", sessionMiddleware, async (c) => {
+    const { channelId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const getChannelOption = container.get(GetChannelOption)
+    const channelOption = await getChannelOption.execute(session, channelId)
+
+    const response: GetChannelOptionResponse = successResponse(
+      channelOption.toDTO(),
+    )
     return c.json(response)
   })
 

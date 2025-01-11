@@ -119,3 +119,5 @@ declare type SubscribeChannelResponse = ApiResponse<boolean>
 declare type UnsubscribeChannelResponse = ApiResponse<boolean>
 
 declare type ClearChannelChatResponse = ApiResponse<boolean>
+
+declare type GetChannelOptionResponse = ApiResponse<ChannelOptionDTO | null>

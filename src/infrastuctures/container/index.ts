@@ -16,6 +16,7 @@ import { CreateChannel } from "@/app/use-cases/channels/create-channel"
 import { DeleteChannel } from "@/app/use-cases/channels/delete-channel"
 import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
+import { GetChannelOption } from "@/app/use-cases/channels/get-channel-option"
 import { GetChannelSubscribers } from "@/app/use-cases/channels/get-group-subscribers"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { RemoveChannelAdmin } from "@/app/use-cases/channels/remove-channel-admin"
@@ -223,5 +224,6 @@ container.bind<SubscribeChannel>(SubscribeChannel).toSelf()
 container.bind<UnsubscribeChannel>(UnsubscribeChannel).toSelf()
 
 container.bind<ClearChannelChat>(ClearChannelChat).toSelf()
+container.bind<GetChannelOption>(GetChannelOption).toSelf()
 
 export { container }
