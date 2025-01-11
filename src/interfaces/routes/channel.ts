@@ -4,6 +4,7 @@ import { Hono } from "hono"
 import { CreateChannel } from "@/app/use-cases/channels/create-channel"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
+import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateChannelEntity } from "@/domains/channels/entities/create-channel-entity"
@@ -75,5 +76,27 @@ const channelRoute = new Hono()
     const resposne: GetNameAvailabilityResponse = successResponse(isAvailable)
     return c.json(resposne)
   })
+  .get(
+    "/search",
+    sessionMiddleware,
+    zValidator("query", searchQuerySchema),
+    async (c) => {
+      const query = c.req.valid("query")
+
+      const session = c.get("userSession")
+
+      const searchPublicChannels = container.get(SearchPublicChannels)
+      const result = await searchPublicChannels.execute(
+        session,
+        SearchParamsEntity.fromJSON(query),
+      )
+      const response: SearchChannelsResponse = successCollectionResponse(
+        result.data.map((v) => v.toDTO()),
+        result.total,
+        result.cursor,
+      )
+      return c.json(response)
+    },
+  )
 
 export default channelRoute

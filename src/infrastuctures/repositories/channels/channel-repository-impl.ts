@@ -5,6 +5,7 @@ import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
 import { CommonHelper } from "@/common/lib/common-helper"
 import { ChannelEntity } from "@/domains/channels/entities/channel-entity"
+import { ChannelSearchEntity } from "@/domains/channels/entities/channel-search-entity"
 import { CreateChannelEntity } from "@/domains/channels/entities/create-channel-entity"
 import { ChannelRepository } from "@/domains/channels/repositories/channel-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
@@ -156,5 +157,49 @@ export class ChannelRepositoryImpl implements ChannelRepository {
       result.description ?? undefined,
       result.imageUrl ?? undefined,
     )
+  }
+
+  async searchPublicChannels(
+    userId: string,
+    params: SearchParamsEntity,
+  ): Promise<SearchResultEntity<ChannelSearchEntity>> {
+    const { limit, cursor, query } = params
+
+    const result = await prisma.channel.findMany({
+      where: {
+        type: "PUBLIC",
+        subscribers: { none: { userId, unsubscribedAt: null } },
+        name: { contains: query, mode: "insensitive" },
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        name: true,
+        imageUrl: true,
+        _count: {
+          select: { subscribers: { where: { unsubscribedAt: null } } },
+        },
+      },
+      take: limit + 1,
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : undefined,
+    })
+
+    let nextCursor: string | undefined
+    if (result.length > limit) {
+      nextCursor = result[result.length - 1].id
+      result.pop()
+    }
+
+    const data = result.map((v) => {
+      return new ChannelSearchEntity(
+        v.id,
+        v.name,
+        v._count.subscribers,
+        v.imageUrl ?? undefined,
+      )
+    })
+
+    return new SearchResultEntity(data, data.length, nextCursor)
   }
 }

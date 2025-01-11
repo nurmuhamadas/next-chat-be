@@ -123,3 +123,10 @@ declare interface ChannelDTO {
   isSubscriber: boolean
   isAdmin: boolean
 }
+
+declare interface ChannelSearchDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+  totalSubscribers: number
+}
