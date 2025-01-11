@@ -10,6 +10,7 @@ import { GetChannelSubscribers } from "@/app/use-cases/channels/get-group-subscr
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { RemoveChannelAdmin } from "@/app/use-cases/channels/remove-channel-admin"
 import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
+import { SubscribeChannel } from "@/app/use-cases/channels/subscribe-channel"
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
@@ -17,7 +18,10 @@ import { CreateChannelEntity } from "@/domains/channels/entities/create-channel-
 import { UpdateChannelEntity } from "@/domains/channels/entities/update-channel-entity"
 import { container } from "@/infrastuctures/container"
 
-import { channelSchema } from "../schemas/channel-schema"
+import {
+  channelSchema,
+  subscribeChannelSchema,
+} from "../schemas/channel-schema"
 import { searchQuerySchema } from "../schemas/common-schema"
 
 import { sessionMiddleware } from "./middleware/session-middleware"
@@ -202,6 +206,23 @@ const channelRoute = new Hono()
       await removeChannelAdmin.execute(session, channelId, removedAdminId)
 
       const response: UnsetAdminGroupResponse = successResponse(true)
+      return c.json(response)
+    },
+  )
+  .post(
+    "/:channelId/subscribe",
+    sessionMiddleware,
+    zValidator("json", subscribeChannelSchema),
+    async (c) => {
+      const { code } = c.req.valid("json")
+      const { channelId } = c.req.param()
+
+      const session = c.get("userSession")
+
+      const subscribeChannel = container.get(SubscribeChannel)
+      await subscribeChannel.execute(session, channelId, code)
+
+      const response: JoinChannelResponse = successResponse(true)
       return c.json(response)
     },
   )

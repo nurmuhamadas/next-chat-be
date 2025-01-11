@@ -40,4 +40,9 @@ export abstract class ChannelRepository {
   ): Promise<ChannelEntity>
 
   abstract softDeleteChannel(channelId: string): Promise<void>
+
+  abstract getGeneralChannelById(
+    channelId: string,
+    userId: string,
+  ): Promise<ChannelEntity | null>
 }

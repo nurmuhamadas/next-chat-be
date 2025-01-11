@@ -84,4 +84,41 @@ export class ChannelSubscriberRepositoryImpl
       data: { isAdmin: false },
     })
   }
+
+  async subscribeChannel(channelId: string, userId: string): Promise<void> {
+    const currentRoom = await prisma.room.findFirst({
+      where: { channelId, ownerId: userId, deletedAt: null },
+    })
+    await prisma.$transaction([
+      prisma.room.upsert({
+        where: { id: currentRoom?.id ?? "" },
+        create: {
+          channelId,
+          ownerId: userId,
+          type: "CHANNEL",
+          unreadMessage: {
+            create: {
+              userId,
+              count: 0,
+            },
+          },
+        },
+        update: {
+          deletedAt: null,
+          unreadMessage: {
+            create: {
+              userId,
+              count: 0,
+            },
+          },
+        },
+      }),
+      prisma.channelSubscriber.create({
+        data: { channelId, userId, isAdmin: false },
+      }),
+      prisma.channelOption.create({
+        data: { channelId, userId, notification: true },
+      }),
+    ])
+  }
 }

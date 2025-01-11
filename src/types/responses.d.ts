@@ -113,3 +113,5 @@ declare type GetChannelSubscribersResponse =
 declare type SetAdminChannelResponse = ApiResponse<boolean>
 
 declare type UnsetAdminChannelResponse = ApiResponse<boolean>
+
+declare type JoinChannelResponse = ApiResponse<boolean>
