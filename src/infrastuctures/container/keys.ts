@@ -28,4 +28,7 @@ export const KEYS = {
   GroupRepository: Symbol.for("GroupRepository"),
   GroupMemberRepository: Symbol.for("GroupMemberRepository"),
   GroupOptionRepository: Symbol.for("GroupOptionRepository"),
+
+  // CHANNELS
+  ChannelRepository: Symbol.for("ChannelRepository"),
 }

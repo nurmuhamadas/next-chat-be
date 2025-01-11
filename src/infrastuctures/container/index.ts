@@ -10,6 +10,7 @@ import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
+import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
 import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
 import { ClearGroupChat } from "@/app/use-cases/groups/clear-group-chat"
@@ -41,6 +42,7 @@ import { AuthRepository } from "@/domains/auth/repositories/auth-repository"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
 import { BlockedUserRepository } from "@/domains/blocked-users/repositories/blocked-user-repository"
+import { ChannelRepository } from "@/domains/channels/repositories/channel-repository"
 import { GroupMemberRepository } from "@/domains/groups/repositories/group-member-repository"
 import { GroupOptionRepository } from "@/domains/groups/repositories/group-option-repository"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
@@ -53,6 +55,7 @@ import { AuthRepositoryImpl } from "../repositories/auth/auth-repository-impl"
 import { SessionRepositoryImpl } from "../repositories/auth/session-repository-impl"
 import { TokenRepositoryImpl } from "../repositories/auth/token-repository-impl"
 import { BlockedUserRepositoryImpl } from "../repositories/blocked-user/blocked-user-repository-impl"
+import { ChannelRepositoryImpl } from "../repositories/channels/channel-repository-impl"
 import { GroupMemberRepositoryImpl } from "../repositories/groups/group-member-repository-impl"
 import { GroupOptionRepositoryImpl } from "../repositories/groups/group-option-repository-impl"
 import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
@@ -174,5 +177,13 @@ container.bind<LeaveGroup>(LeaveGroup).toSelf()
 container.bind<ClearGroupChat>(ClearGroupChat).toSelf()
 container.bind<GetGroupOption>(GetGroupOption).toSelf()
 container.bind<UpdateGroupOption>(UpdateGroupOption).toSelf()
+
+// CHANNEL
+container
+  .bind<ChannelRepository>(KEYS.ChannelRepository)
+  .to(ChannelRepositoryImpl)
+  .inSingletonScope()
+
+container.bind<GetSubscribedChannels>(GetSubscribedChannels).toSelf()
 
 export { container }
