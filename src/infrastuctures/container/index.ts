@@ -10,6 +10,7 @@ import { BlockUser } from "@/app/use-cases/blocked-user/block-user"
 import { GetBlockedUsers } from "@/app/use-cases/blocked-user/get-blocked-users"
 import { GetIsUserBlocked } from "@/app/use-cases/blocked-user/get-is-user-blocked"
 import { UnblockUser } from "@/app/use-cases/blocked-user/unblock-user"
+import { CreateChannel } from "@/app/use-cases/channels/create-channel"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
 import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
@@ -185,5 +186,6 @@ container
   .inSingletonScope()
 
 container.bind<GetSubscribedChannels>(GetSubscribedChannels).toSelf()
+container.bind<CreateChannel>(CreateChannel).toSelf()
 
 export { container }

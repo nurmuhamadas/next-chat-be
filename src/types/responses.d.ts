@@ -96,3 +96,5 @@ declare type GetGroupOptionResponse = ApiResponse<GroupOptionDTO | null>
 
 // CHANNEL API
 declare type GetChannelsResponse = ApiCollectionResponse<ChannelDTO>
+
+declare type CreateChannelResponse = ApiResponse<ChannelDTO>

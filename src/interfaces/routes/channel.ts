@@ -1,11 +1,14 @@
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
+import { CreateChannel } from "@/app/use-cases/channels/create-channel"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
-import { successCollectionResponse } from "@/common/lib/utils"
+import { successCollectionResponse, successResponse } from "@/common/lib/utils"
+import { CreateChannelEntity } from "@/domains/channels/entities/create-channel-entity"
 import { container } from "@/infrastuctures/container"
 
+import { channelSchema } from "../schemas/channel-schema"
 import { searchQuerySchema } from "../schemas/common-schema"
 
 import { sessionMiddleware } from "./middleware/session-middleware"
@@ -33,6 +36,29 @@ const channelRoute = new Hono()
       return c.json(response)
     },
   )
-  .post("/")
+  .post(
+    "/",
+    sessionMiddleware,
+    zValidator("form", channelSchema),
+    async (c) => {
+      const { image, ...data } = c.req.valid("form")
+      const imageFile = image as unknown as File
+
+      const session = c.get("userSession")
+
+      const createChannel = container.get(CreateChannel)
+      const result = await createChannel.execute(
+        session,
+        CreateChannelEntity.fromJSON({
+          ...data,
+          ownerId: session.userId,
+        }),
+        imageFile,
+      )
+
+      const response: CreateChannelResponse = successResponse(result.toDTO())
+      return c.json(response)
+    },
+  )
 
 export default channelRoute

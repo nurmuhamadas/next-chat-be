@@ -3,7 +3,9 @@ import { injectable } from "inversify"
 
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
+import { CommonHelper } from "@/common/lib/common-helper"
 import { ChannelEntity } from "@/domains/channels/entities/channel-entity"
+import { CreateChannelEntity } from "@/domains/channels/entities/create-channel-entity"
 import { ChannelRepository } from "@/domains/channels/repositories/channel-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
 import { PrismaHelper } from "@/infrastuctures/orm/prisma-helper"
@@ -32,6 +34,22 @@ export class ChannelRepositoryImpl implements ChannelRepository {
         select: { subscribers: { where: { unsubscribedAt: null } } },
       },
     }
+  }
+
+  private async generateInviteCode(): Promise<string> {
+    let isExist = true
+    let inviteCode = CommonHelper.generateInviteCode(10)
+    while (isExist) {
+      const result = await prisma.channel.findUnique({
+        where: { inviteCode: inviteCode },
+      })
+      isExist = !!result
+      if (isExist) {
+        inviteCode = CommonHelper.generateInviteCode(10)
+      }
+    }
+
+    return inviteCode
   }
 
   async getSubscribedChannels(
@@ -74,5 +92,69 @@ export class ChannelRepositoryImpl implements ChannelRepository {
     }
 
     return new SearchResultEntity(data, data.length, nextCursor)
+  }
+
+  async checkChannelNameAvailability(
+    ownerId: string,
+    name: string,
+  ): Promise<boolean> {
+    const result = await prisma.channel.count({
+      where: { ownerId, name, deletedAt: null },
+    })
+
+    return result === 0
+  }
+
+  async createChannel(data: CreateChannelEntity): Promise<ChannelEntity> {
+    const inviteCode = await this.generateInviteCode()
+
+    const result = await prisma.channel.create({
+      data: {
+        name: data.name,
+        type: data.type,
+        inviteCode,
+        description: data.description,
+        imageUrl: data.imageUrl,
+        ownerId: data.ownerId,
+        subscribersOption: {
+          create: {
+            userId: data.ownerId,
+            notification: true,
+          },
+        },
+        subscribers: {
+          create: {
+            userId: data.ownerId,
+            isAdmin: true,
+          },
+        },
+        rooms: {
+          create: {
+            type: "CHANNEL",
+            ownerId: data.ownerId,
+            unreadMessage: {
+              create: {
+                userId: data.ownerId,
+                count: 0,
+              },
+            },
+          },
+        },
+      },
+      include: { rooms: { select: { id: true, ownerId: true } } },
+    })
+
+    return new ChannelEntity(
+      result.id,
+      result.name,
+      PrismaHelper.convertDBChannelType(result.type),
+      result.ownerId,
+      result.inviteCode,
+      1,
+      true,
+      true,
+      result.description ?? undefined,
+      result.imageUrl ?? undefined,
+    )
   }
 }
