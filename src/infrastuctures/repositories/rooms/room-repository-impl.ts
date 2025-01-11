@@ -274,4 +274,49 @@ export class RoomRepositoryImpl implements RoomRepository {
 
     return new SearchResultEntity(data, data.length, nextCursor)
   }
+
+  async getRoomById(
+    userId: string,
+    roomId: string,
+  ): Promise<RoomEntity | null> {
+    const result = await prisma.room.findFirst({
+      where: {
+        ownerId: userId,
+        OR: [
+          { privateChat: { user1Id: roomId, user2Id: userId } },
+          { privateChat: { user2Id: roomId, user1Id: userId } },
+          { groupId: roomId },
+          { channelId: roomId },
+        ],
+        deletedAt: null,
+      },
+    })
+
+    if (!result) return null
+
+    return new RoomEntity(
+      result.id,
+      PrismaHelper.convertDBRoomType(result.type),
+      result.ownerId,
+      !!result.pinnedAt,
+      !!result.archivedAt,
+      0,
+    )
+  }
+
+  async pinRoom(userId: string, roomId: string): Promise<void> {
+    await prisma.room.updateMany({
+      where: {
+        ownerId: userId,
+        OR: [
+          { privateChat: { user1Id: roomId, user2Id: userId } },
+          { privateChat: { user2Id: roomId, user1Id: userId } },
+          { groupId: roomId },
+          { channelId: roomId },
+        ],
+        deletedAt: null,
+      },
+      data: { pinnedAt: new Date() },
+    })
+  }
 }

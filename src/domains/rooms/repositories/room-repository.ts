@@ -19,4 +19,11 @@ export abstract class RoomRepository {
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<RoomEntity>>
+
+  abstract getRoomById(
+    userId: string,
+    roomId: string,
+  ): Promise<RoomEntity | null>
+
+  abstract pinRoom(roomId: string, userId: string): Promise<void>
 }

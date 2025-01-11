@@ -4,8 +4,9 @@ import { Hono } from "hono"
 import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
 import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
+import { PinRoom } from "@/app/use-cases/rooms/pin-room"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
-import { successCollectionResponse } from "@/common/lib/utils"
+import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { container } from "@/infrastuctures/container"
 
 import { searchQuerySchema } from "../schemas/common-schema"
@@ -79,5 +80,15 @@ const roomRoute = new Hono()
       return c.json(response)
     },
   )
+  .post("/pinned/:roomId", sessionMiddleware, async (c) => {
+    const { roomId } = c.req.param()
+    const session = c.get("userSession")
+
+    const pinRoom = container.get(PinRoom)
+    await pinRoom.execute(session.userId, roomId)
+
+    const response: PinRoomResponse = successResponse(true)
+    return c.json(response)
+  })
 
 export default roomRoute
