@@ -14,6 +14,7 @@ import { CreateChannel } from "@/app/use-cases/channels/create-channel"
 import { DeleteChannel } from "@/app/use-cases/channels/delete-channel"
 import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
+import { GetChannelSubscribers } from "@/app/use-cases/channels/get-group-subscribers"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
@@ -49,6 +50,7 @@ import { SessionRepository } from "@/domains/auth/repositories/session-repositor
 import { TokenRepository } from "@/domains/auth/repositories/token-repository"
 import { BlockedUserRepository } from "@/domains/blocked-users/repositories/blocked-user-repository"
 import { ChannelRepository } from "@/domains/channels/repositories/channel-repository"
+import { ChannelSubscriberRepository } from "@/domains/channels/repositories/channel-subscriber-repository"
 import { GroupMemberRepository } from "@/domains/groups/repositories/group-member-repository"
 import { GroupOptionRepository } from "@/domains/groups/repositories/group-option-repository"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
@@ -62,6 +64,7 @@ import { SessionRepositoryImpl } from "../repositories/auth/session-repository-i
 import { TokenRepositoryImpl } from "../repositories/auth/token-repository-impl"
 import { BlockedUserRepositoryImpl } from "../repositories/blocked-user/blocked-user-repository-impl"
 import { ChannelRepositoryImpl } from "../repositories/channels/channel-repository-impl"
+import { ChannelSubscriberRepositoryImpl } from "../repositories/channels/channel-subscriber-repository-impl"
 import { GroupMemberRepositoryImpl } from "../repositories/groups/group-member-repository-impl"
 import { GroupOptionRepositoryImpl } from "../repositories/groups/group-option-repository-impl"
 import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
@@ -189,6 +192,10 @@ container
   .bind<ChannelRepository>(KEYS.ChannelRepository)
   .to(ChannelRepositoryImpl)
   .inSingletonScope()
+container
+  .bind<ChannelSubscriberRepository>(KEYS.ChannelSubscriberRepository)
+  .to(ChannelSubscriberRepositoryImpl)
+  .inSingletonScope()
 
 container.bind<GetSubscribedChannels>(GetSubscribedChannels).toSelf()
 container.bind<CreateChannel>(CreateChannel).toSelf()
@@ -197,5 +204,6 @@ container.bind<SearchPublicChannels>(SearchPublicChannels).toSelf()
 container.bind<GetChannelById>(GetChannelById).toSelf()
 container.bind<UpdateChannel>(UpdateChannel).toSelf()
 container.bind<DeleteChannel>(DeleteChannel).toSelf()
+container.bind<GetChannelSubscribers>(GetChannelSubscribers).toSelf()
 
 export { container }

@@ -5,6 +5,7 @@ import { CreateChannel } from "@/app/use-cases/channels/create-channel"
 import { DeleteChannel } from "@/app/use-cases/channels/delete-channel"
 import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
+import { GetChannelSubscribers } from "@/app/use-cases/channels/get-group-subscribers"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
@@ -147,5 +148,30 @@ const channelRoute = new Hono()
     const response: DeleteChannelResponse = successResponse({ id: channelId })
     return c.json(response)
   })
+  .get(
+    "/:channelId/subscribers",
+    zValidator("query", searchQuerySchema),
+    sessionMiddleware,
+    async (c) => {
+      const { channelId } = c.req.param()
+      const query = c.req.valid("query")
+
+      const session = c.get("userSession")
+
+      const getGroupSubscribers = container.get(GetChannelSubscribers)
+      const result = await getGroupSubscribers.execute(
+        session,
+        channelId,
+        SearchParamsEntity.fromJSON(query),
+      )
+
+      const response: GetChannelSubscribersResponse = successCollectionResponse(
+        result.data.map((v) => v.toDTO()),
+        result.total,
+        result.cursor,
+      )
+      return c.json(response)
+    },
+  )
 
 export default channelRoute
