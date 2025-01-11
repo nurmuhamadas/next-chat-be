@@ -117,3 +117,5 @@ declare type UnsetAdminChannelResponse = ApiResponse<boolean>
 declare type SubscribeChannelResponse = ApiResponse<boolean>
 
 declare type UnsubscribeChannelResponse = ApiResponse<boolean>
+
+declare type ClearChannelChatResponse = ApiResponse<boolean>

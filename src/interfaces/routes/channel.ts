@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { AddChannelAdmin } from "@/app/use-cases/channels/add-channel-admin"
+import { ClearChannelChat } from "@/app/use-cases/channels/clear-channel-chat"
 import { CreateChannel } from "@/app/use-cases/channels/create-channel"
 import { DeleteChannel } from "@/app/use-cases/channels/delete-channel"
 import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
@@ -236,6 +237,17 @@ const channelRoute = new Hono()
     await unsubscribeChannel.execute(session, channelId)
 
     const response: UnsubscribeChannelResponse = successResponse(true)
+    return c.json(response)
+  })
+  .delete("/:channelId/chat", sessionMiddleware, async (c) => {
+    const { channelId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const clearChannelChat = container.get(ClearChannelChat)
+    await clearChannelChat.execute(session, channelId)
+
+    const response: ClearChannelChatResponse = successResponse(true)
     return c.json(response)
   })
 

@@ -4,21 +4,21 @@ import { ERROR } from "@/common/constants/errors"
 import InvariantError from "@/common/exceptions/invariant-error"
 import NotFoundError from "@/common/exceptions/not-found-error"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
+import { ChannelOptionRepository } from "@/domains/channels/repositories/channel-option-repository"
 import { ChannelRepository } from "@/domains/channels/repositories/channel-repository"
-import { ChannelSubscriberRepository } from "@/domains/channels/repositories/channel-subscriber-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
 
 @injectable()
-export class SubscribeChannel {
+export class ClearChannelChat {
   constructor(
     @inject(KEYS.ChannelRepository)
     private channelRepository: ChannelRepository,
-    @inject(KEYS.ChannelSubscriberRepository)
-    private channelSubscriberRepository: ChannelSubscriberRepository,
+    @inject(KEYS.ChannelOptionRepository)
+    private channelOptionRepository: ChannelOptionRepository,
   ) {}
 
-  async execute(session: SessionTokenEntity, channelId: string, code?: string) {
-    const channel = await this.channelRepository.getGeneralChannelById(
+  async execute(session: SessionTokenEntity, channelId: string) {
+    const channel = await this.channelRepository.getPublicOrJoinedChannelById(
       channelId,
       session.userId,
     )
@@ -27,17 +27,14 @@ export class SubscribeChannel {
       throw new NotFoundError(ERROR.CHANNEL_NOT_FOUND)
     }
 
-    if (channel.isSubscriber) {
-      throw new InvariantError(ERROR.ALREADY_SUBSCRIBER)
+    if (!channel.isSubscriber) {
+      throw new InvariantError(ERROR.USER_IS_NOT_SUBSCRIBER)
     }
 
-    if (channel.type === "PRIVATE" && channel.inviteCode !== code) {
-      throw new InvariantError(ERROR.INVALID_JOIN_CODE)
-    }
-
-    await this.channelSubscriberRepository.subscribeChannel(
+    await this.channelOptionRepository.clearAllChats(
       channelId,
       session.userId,
+      channel.isAdmin,
     )
   }
 }
