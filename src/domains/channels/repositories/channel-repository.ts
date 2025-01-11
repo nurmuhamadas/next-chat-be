@@ -22,4 +22,9 @@ export abstract class ChannelRepository {
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<ChannelSearchEntity>>
+
+  abstract getPublicOrJoinedChannelByIdIncludeDeleted(
+    id: string,
+    userId: string,
+  ): Promise<ChannelEntity | null>
 }

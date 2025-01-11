@@ -100,3 +100,5 @@ declare type GetChannelsResponse = ApiCollectionResponse<ChannelDTO>
 declare type CreateChannelResponse = ApiResponse<ChannelDTO>
 
 declare type SearchChannelsResponse = ApiCollectionResponse<ChannelSearchDTO>
+
+declare type GetChannelResponse = ApiResponse<ChannelDTO>

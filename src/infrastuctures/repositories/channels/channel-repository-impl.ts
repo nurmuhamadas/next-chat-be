@@ -202,4 +202,32 @@ export class ChannelRepositoryImpl implements ChannelRepository {
 
     return new SearchResultEntity(data, data.length, nextCursor)
   }
+
+  async getPublicOrJoinedChannelByIdIncludeDeleted(
+    id: string,
+    userId: string,
+  ): Promise<ChannelEntity | null> {
+    const result = await prisma.channel.findUnique({
+      where: {
+        ...this.getChannelWhere(id, userId),
+        deletedAt: undefined,
+      },
+      include: { ...this.getChannelIncludeQuery({ userId }) },
+    })
+
+    if (!result) return null
+
+    return new ChannelEntity(
+      result.id,
+      result.name,
+      PrismaHelper.convertDBChannelType(result.type),
+      result.ownerId,
+      result.inviteCode,
+      result._count.subscribers,
+      result.subscribers.length > 0,
+      result.subscribers[0]?.isAdmin ?? false,
+      result.description ?? undefined,
+      result.imageUrl ?? undefined,
+    )
+  }
 }
