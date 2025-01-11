@@ -44,6 +44,7 @@ import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
+import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
 import { GetSetting } from "@/app/use-cases/settings/get-setting"
 import { UpdateSetting } from "@/app/use-cases/settings/update-setting"
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
@@ -63,6 +64,7 @@ import { GroupMemberRepository } from "@/domains/groups/repositories/group-membe
 import { GroupOptionRepository } from "@/domains/groups/repositories/group-option-repository"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
+import { RoomRepository } from "@/domains/rooms/repositories/room-repository"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
 import { ProfileRepository } from "@/domains/users/repositories/profile-repository"
@@ -78,6 +80,7 @@ import { GroupMemberRepositoryImpl } from "../repositories/groups/group-member-r
 import { GroupOptionRepositoryImpl } from "../repositories/groups/group-option-repository-impl"
 import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
 import { PrivateChatOptionRepositoryImpl } from "../repositories/private-chat/private-chat-option-repository-impl"
+import { RoomRepositoryImpl } from "../repositories/rooms/room-repository-impl"
 import { SettingRepositoryImpl } from "../repositories/setting/setting-repository-impl"
 import { StorageRepositoryImpl } from "../repositories/storage/storage-repository-impl"
 import { ProfileRepositoryImpl } from "../repositories/user/profile-repository-impl"
@@ -227,5 +230,13 @@ container.bind<UnsubscribeChannel>(UnsubscribeChannel).toSelf()
 container.bind<ClearChannelChat>(ClearChannelChat).toSelf()
 container.bind<GetChannelOption>(GetChannelOption).toSelf()
 container.bind<UpdateChannelOption>(UpdateChannelOption).toSelf()
+
+// ROOM
+container
+  .bind<RoomRepository>(KEYS.RoomRepository)
+  .to(RoomRepositoryImpl)
+  .inSingletonScope()
+
+container.bind<GetRooms>(GetRooms).toSelf()
 
 export { container }
