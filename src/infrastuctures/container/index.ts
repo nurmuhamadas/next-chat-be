@@ -24,6 +24,7 @@ import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-cha
 import { SubscribeChannel } from "@/app/use-cases/channels/subscribe-channel"
 import { UnsubscribeChannel } from "@/app/use-cases/channels/unsubscribe-channel"
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
+import { UpdateChannelOption } from "@/app/use-cases/channels/update-channel-option"
 import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
 import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
 import { ClearGroupChat } from "@/app/use-cases/groups/clear-group-chat"
@@ -225,5 +226,6 @@ container.bind<UnsubscribeChannel>(UnsubscribeChannel).toSelf()
 
 container.bind<ClearChannelChat>(ClearChannelChat).toSelf()
 container.bind<GetChannelOption>(GetChannelOption).toSelf()
+container.bind<UpdateChannelOption>(UpdateChannelOption).toSelf()
 
 export { container }

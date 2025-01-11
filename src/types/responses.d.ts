@@ -92,7 +92,7 @@ declare type LeaveGroupResponse = ApiResponse<boolean>
 
 declare type DeleteGroupChatResponse = ApiResponse<boolean>
 
-declare type GetGroupOptionResponse = ApiResponse<GroupOptionDTO | null>
+declare type GetGroupOptionResponse = ApiResponse<GroupOptionDTO>
 
 // CHANNEL API
 declare type GetChannelsResponse = ApiCollectionResponse<ChannelDTO>
@@ -120,4 +120,6 @@ declare type UnsubscribeChannelResponse = ApiResponse<boolean>
 
 declare type ClearChannelChatResponse = ApiResponse<boolean>
 
-declare type GetChannelOptionResponse = ApiResponse<ChannelOptionDTO | null>
+declare type GetChannelOptionResponse = ApiResponse<ChannelOptionDTO>
+
+declare type UpdateChannelOptionResponse = ApiResponse<ChannelOptionDTO>

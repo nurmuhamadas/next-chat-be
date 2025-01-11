@@ -15,15 +15,18 @@ import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-cha
 import { SubscribeChannel } from "@/app/use-cases/channels/subscribe-channel"
 import { UnsubscribeChannel } from "@/app/use-cases/channels/unsubscribe-channel"
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
+import { UpdateChannelOption } from "@/app/use-cases/channels/update-channel-option"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateChannelEntity } from "@/domains/channels/entities/create-channel-entity"
 import { UpdateChannelEntity } from "@/domains/channels/entities/update-channel-entity"
+import { UpdateChannelOptionEntity } from "@/domains/channels/entities/update-channel-option-entity"
 import { container } from "@/infrastuctures/container"
 
 import {
   channelSchema,
   subscribeChannelSchema,
+  updateChannelOptionSchema,
 } from "../schemas/channel-schema"
 import { searchQuerySchema } from "../schemas/common-schema"
 
@@ -264,5 +267,31 @@ const channelRoute = new Hono()
     )
     return c.json(response)
   })
+  .patch(
+    "/:channelId/options",
+    sessionMiddleware,
+    zValidator("json", updateChannelOptionSchema),
+    async (c) => {
+      const { channelId } = c.req.param()
+      const { notification } = c.req.valid("json")
+
+      const session = c.get("userSession")
+
+      const updateChannelOption = container.get(UpdateChannelOption)
+      const channelOption = await updateChannelOption.execute(
+        session,
+        UpdateChannelOptionEntity.fromJSON({
+          channelId,
+          userId: session.userId,
+          notification,
+        }),
+      )
+
+      const response: UpdateChannelOptionResponse = successResponse(
+        channelOption.toDTO(),
+      )
+      return c.json(response)
+    },
+  )
 
 export default channelRoute
