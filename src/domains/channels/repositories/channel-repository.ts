@@ -4,6 +4,7 @@ import { SearchResultEntity } from "@/common/entities/search-result-entity"
 import { ChannelEntity } from "../entities/channel-entity"
 import { ChannelSearchEntity } from "../entities/channel-search-entity"
 import { CreateChannelEntity } from "../entities/create-channel-entity"
+import { UpdateChannelEntity } from "../entities/update-channel-entity"
 
 export abstract class ChannelRepository {
   abstract getSubscribedChannels(
@@ -27,4 +28,14 @@ export abstract class ChannelRepository {
     id: string,
     userId: string,
   ): Promise<ChannelEntity | null>
+
+  abstract getPublicOrJoinedChannelById(
+    id: string,
+    userId: string,
+  ): Promise<ChannelEntity | null>
+
+  abstract updateChannel(
+    userId: string,
+    data: UpdateChannelEntity,
+  ): Promise<ChannelEntity>
 }

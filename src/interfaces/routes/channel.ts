@@ -6,9 +6,11 @@ import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
+import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateChannelEntity } from "@/domains/channels/entities/create-channel-entity"
+import { UpdateChannelEntity } from "@/domains/channels/entities/update-channel-entity"
 import { container } from "@/infrastuctures/container"
 
 import { channelSchema } from "../schemas/channel-schema"
@@ -109,5 +111,30 @@ const channelRoute = new Hono()
     const response: GetChannelResponse = successResponse(result.toDTO())
     return c.json(response)
   })
+  .patch(
+    "/:channelId",
+    sessionMiddleware,
+    zValidator("form", channelSchema.partial()),
+    async (c) => {
+      const { channelId } = c.req.param()
+      const { image, ...form } = c.req.valid("form")
+      const imageFile = image as unknown as File
+
+      const session = c.get("userSession")
+
+      const updateChannel = container.get(UpdateChannel)
+      const result = await updateChannel.execute(
+        session,
+        UpdateChannelEntity.fromJSON({
+          ...form,
+          id: channelId,
+        }),
+        imageFile,
+      )
+
+      const response: PatchChannelResponse = successResponse(result.toDTO())
+      return c.json(response)
+    },
+  )
 
 export default channelRoute

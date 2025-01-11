@@ -7,6 +7,7 @@ import { CommonHelper } from "@/common/lib/common-helper"
 import { ChannelEntity } from "@/domains/channels/entities/channel-entity"
 import { ChannelSearchEntity } from "@/domains/channels/entities/channel-search-entity"
 import { CreateChannelEntity } from "@/domains/channels/entities/create-channel-entity"
+import { UpdateChannelEntity } from "@/domains/channels/entities/update-channel-entity"
 import { ChannelRepository } from "@/domains/channels/repositories/channel-repository"
 import { prisma } from "@/infrastuctures/orm/prisma"
 import { PrismaHelper } from "@/infrastuctures/orm/prisma-helper"
@@ -216,6 +217,60 @@ export class ChannelRepositoryImpl implements ChannelRepository {
     })
 
     if (!result) return null
+
+    return new ChannelEntity(
+      result.id,
+      result.name,
+      PrismaHelper.convertDBChannelType(result.type),
+      result.ownerId,
+      result.inviteCode,
+      result._count.subscribers,
+      result.subscribers.length > 0,
+      result.subscribers[0]?.isAdmin ?? false,
+      result.description ?? undefined,
+      result.imageUrl ?? undefined,
+    )
+  }
+
+  async getPublicOrJoinedChannelById(
+    id: string,
+    userId: string,
+  ): Promise<ChannelEntity | null> {
+    const result = await prisma.channel.findUnique({
+      where: { ...this.getChannelWhere(id, userId) },
+      include: { ...this.getChannelIncludeQuery({ userId }) },
+    })
+
+    if (!result) return null
+
+    return new ChannelEntity(
+      result.id,
+      result.name,
+      PrismaHelper.convertDBChannelType(result.type),
+      result.ownerId,
+      result.inviteCode,
+      result._count.subscribers,
+      result.subscribers.length > 0,
+      result.subscribers[0]?.isAdmin ?? false,
+      result.description ?? undefined,
+      result.imageUrl ?? undefined,
+    )
+  }
+
+  async updateChannel(
+    userId: string,
+    data: UpdateChannelEntity,
+  ): Promise<ChannelEntity> {
+    const result = await prisma.channel.update({
+      where: { id: data.id },
+      data: {
+        name: data.name,
+        type: data.type,
+        description: data.description,
+        imageUrl: data.imageUrl,
+      },
+      include: { ...this.getChannelIncludeQuery({ userId }) },
+    })
 
     return new ChannelEntity(
       result.id,

@@ -15,6 +15,7 @@ import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
+import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
 import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
 import { AddGroupMember } from "@/app/use-cases/groups/add-group-member"
 import { ClearGroupChat } from "@/app/use-cases/groups/clear-group-chat"
@@ -193,5 +194,6 @@ container.bind<CreateChannel>(CreateChannel).toSelf()
 container.bind<GetChannelNameAvailability>(GetChannelNameAvailability).toSelf()
 container.bind<SearchPublicChannels>(SearchPublicChannels).toSelf()
 container.bind<GetChannelById>(GetChannelById).toSelf()
+container.bind<UpdateChannel>(UpdateChannel).toSelf()
 
 export { container }
