@@ -77,4 +77,11 @@ export class ChannelSubscriberRepositoryImpl
       data: { isAdmin: true },
     })
   }
+
+  async removeAdmin(channelId: string, userId: string): Promise<void> {
+    await prisma.channelSubscriber.updateMany({
+      where: { channelId, userId, unsubscribedAt: null },
+      data: { isAdmin: false },
+    })
+  }
 }

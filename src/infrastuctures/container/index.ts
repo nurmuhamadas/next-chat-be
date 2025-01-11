@@ -17,6 +17,7 @@ import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
 import { GetChannelSubscribers } from "@/app/use-cases/channels/get-group-subscribers"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
+import { RemoveChannelAdmin } from "@/app/use-cases/channels/remove-channel-admin"
 import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
 import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
@@ -208,5 +209,6 @@ container.bind<DeleteChannel>(DeleteChannel).toSelf()
 
 container.bind<GetChannelSubscribers>(GetChannelSubscribers).toSelf()
 container.bind<AddChannelAdmin>(AddChannelAdmin).toSelf()
+container.bind<RemoveChannelAdmin>(RemoveChannelAdmin).toSelf()
 
 export { container }

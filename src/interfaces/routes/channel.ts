@@ -8,6 +8,7 @@ import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
 import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
 import { GetChannelSubscribers } from "@/app/use-cases/channels/get-group-subscribers"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
+import { RemoveChannelAdmin } from "@/app/use-cases/channels/remove-channel-admin"
 import { SearchPublicChannels } from "@/app/use-cases/channels/search-public-channels"
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
@@ -186,6 +187,21 @@ const channelRoute = new Hono()
       await addChannelAdmin.execute(session, channelId, addedAdminId)
 
       const response: SetAdminChannelResponse = successResponse(true)
+      return c.json(response)
+    },
+  )
+  .delete(
+    "/:channelId/subscribers/:userId/admin",
+    sessionMiddleware,
+    async (c) => {
+      const { channelId, userId: removedAdminId } = c.req.param()
+
+      const session = c.get("userSession")
+
+      const removeChannelAdmin = container.get(RemoveChannelAdmin)
+      await removeChannelAdmin.execute(session, channelId, removedAdminId)
+
+      const response: UnsetAdminGroupResponse = successResponse(true)
       return c.json(response)
     },
   )

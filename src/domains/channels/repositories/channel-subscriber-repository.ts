@@ -20,4 +20,6 @@ export abstract class ChannelSubscriberRepository {
   ): Promise<boolean>
 
   abstract addAdmin(channelId: string, userId: string): Promise<void>
+
+  abstract removeAdmin(channelId: string, userId: string): Promise<void>
 }
