@@ -48,4 +48,33 @@ export class ChannelSubscriberRepositoryImpl
 
     return new SearchResultEntity(data, data.length, nextCursor)
   }
+
+  async validateUserSubscriptionToChannel(
+    channelId: string,
+    userId: string,
+  ): Promise<boolean> {
+    const result = await prisma.channelSubscriber.count({
+      where: { channelId, userId, unsubscribedAt: null },
+    })
+
+    return result > 0
+  }
+
+  async validateChannelAdmin(
+    channelId: string,
+    userId: string,
+  ): Promise<boolean> {
+    const result = await prisma.channelSubscriber.count({
+      where: { channelId, userId, isAdmin: true, unsubscribedAt: null },
+    })
+
+    return result > 0
+  }
+
+  async addAdmin(channelId: string, userId: string): Promise<void> {
+    await prisma.channelSubscriber.updateMany({
+      where: { channelId, userId, unsubscribedAt: null },
+      data: { isAdmin: true },
+    })
+  }
 }

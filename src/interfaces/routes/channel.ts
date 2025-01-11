@@ -1,6 +1,7 @@
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
+import { AddChannelAdmin } from "@/app/use-cases/channels/add-channel-admin"
 import { CreateChannel } from "@/app/use-cases/channels/create-channel"
 import { DeleteChannel } from "@/app/use-cases/channels/delete-channel"
 import { GetChannelById } from "@/app/use-cases/channels/get-channel-by-id"
@@ -170,6 +171,21 @@ const channelRoute = new Hono()
         result.total,
         result.cursor,
       )
+      return c.json(response)
+    },
+  )
+  .post(
+    "/:channelId/subscribers/:userId/admin",
+    sessionMiddleware,
+    async (c) => {
+      const { channelId, userId: addedAdminId } = c.req.param()
+
+      const session = c.get("userSession")
+
+      const addChannelAdmin = container.get(AddChannelAdmin)
+      await addChannelAdmin.execute(session, channelId, addedAdminId)
+
+      const response: SetAdminChannelResponse = successResponse(true)
       return c.json(response)
     },
   )
