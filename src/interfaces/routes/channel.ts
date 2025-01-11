@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { CreateChannel } from "@/app/use-cases/channels/create-channel"
+import { GetChannelNameAvailability } from "@/app/use-cases/channels/get-channel-name-availability"
 import { GetSubscribedChannels } from "@/app/use-cases/channels/get-subscribed-channels"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
@@ -60,5 +61,19 @@ const channelRoute = new Hono()
       return c.json(response)
     },
   )
+  .get("/name-availability/:channelName", sessionMiddleware, async (c) => {
+    const { channelName } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const getChannelNameAvailability = container.get(GetChannelNameAvailability)
+    const isAvailable = await getChannelNameAvailability.execute(
+      session,
+      channelName,
+    )
+
+    const resposne: GetNameAvailabilityResponse = successResponse(isAvailable)
+    return c.json(resposne)
+  })
 
 export default channelRoute
