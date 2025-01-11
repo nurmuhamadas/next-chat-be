@@ -14,4 +14,9 @@ export abstract class RoomRepository {
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<SearchPrivateRoomEntity>>
+
+  abstract getPinnedRooms(
+    userId: string,
+    params: SearchParamsEntity,
+  ): Promise<SearchResultEntity<RoomEntity>>
 }
