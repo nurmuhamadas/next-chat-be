@@ -72,6 +72,7 @@ import { ChannelSubscriberRepository } from "@/domains/channels/repositories/cha
 import { GroupMemberRepository } from "@/domains/groups/repositories/group-member-repository"
 import { GroupOptionRepository } from "@/domains/groups/repositories/group-option-repository"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
+import { MessageRepository } from "@/domains/messages/repositories/message-repository"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
 import { RoomRepository } from "@/domains/rooms/repositories/room-repository"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
@@ -88,6 +89,7 @@ import { ChannelSubscriberRepositoryImpl } from "../repositories/channels/channe
 import { GroupMemberRepositoryImpl } from "../repositories/groups/group-member-repository-impl"
 import { GroupOptionRepositoryImpl } from "../repositories/groups/group-option-repository-impl"
 import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
+import { MessageRepositoryImpl } from "../repositories/messages/message-repository-impl"
 import { PrivateChatOptionRepositoryImpl } from "../repositories/private-chat/private-chat-option-repository-impl"
 import { RoomRepositoryImpl } from "../repositories/rooms/room-repository-impl"
 import { SettingRepositoryImpl } from "../repositories/setting/setting-repository-impl"
@@ -256,5 +258,11 @@ container.bind<ArchiveRoom>(ArchiveRoom).toSelf()
 container.bind<UnarchiveRoom>(UnarchiveRoom).toSelf()
 container.bind<GetRoomByActionId>(GetRoomByActionId).toSelf()
 container.bind<DeleteRoom>(DeleteRoom).toSelf()
+
+// ROOM
+container
+  .bind<MessageRepository>(KEYS.MessageRepository)
+  .to(MessageRepositoryImpl)
+  .inSingletonScope()
 
 export { container }
