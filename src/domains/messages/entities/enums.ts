@@ -1,0 +1,15 @@
+export enum MessageStatus {
+  DEFAULT = "DEFAULT",
+  DELETED_FOR_ME = "DELETED_FOR_ME",
+  DELETED_FOR_ALL = "DELETED_FOR_ALL",
+  DELETED_BY_ADMIN = "DELETED_BY_ADMIN",
+}
+
+export enum AttachmentType {
+  IMAGE = "IMAGE",
+  VIDEO = "VIDEO",
+  AUDIO = "AUDIO",
+  PDF = "PDF",
+  OTHER = "OTHER",
+  AUDIO_RECORD = "AUDIO_RECORD",
+}
