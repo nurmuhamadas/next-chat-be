@@ -4,6 +4,7 @@ export class BlockedUserEntity {
     public readonly userId: string,
     public readonly blockedUserId: string,
     public readonly name: string,
+    public readonly createdAt: Date,
     public readonly imageUrl?: string,
     public readonly unblockedAt?: Date,
   ) {}

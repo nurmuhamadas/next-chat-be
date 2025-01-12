@@ -15,6 +15,7 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
       select: {
         id: true,
         blockedUserId: true,
+        createdAt: true,
         blockedUser: {
           select: {
             id: true,
@@ -33,6 +34,7 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
         userId,
         result.blockedUserId,
         result.blockedUser.profile?.name ?? "Unknown",
+        result.createdAt,
         result.blockedUser.profile?.imageUrl ?? undefined,
       )
     })
