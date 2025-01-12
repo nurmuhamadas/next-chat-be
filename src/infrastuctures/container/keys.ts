@@ -36,4 +36,7 @@ export const KEYS = {
 
   // ROOM
   RoomRepository: Symbol.for("RoomRepository"),
+
+  // MESSAGE
+  MessageRepository: Symbol.for("MessageRepository"),
 }
