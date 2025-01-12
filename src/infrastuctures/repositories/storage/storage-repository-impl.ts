@@ -30,6 +30,7 @@ export class StorageRepositoryImpl implements StorageRepository {
       uploadedFile.sizeOriginal,
       uploadedFile.mimeType,
       this.appwrite.constructFileUrl(uploadedFile.$id),
+      this.appwrite.constructDownloadUrl(uploadedFile.$id),
     )
   }
 
