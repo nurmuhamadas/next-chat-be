@@ -32,4 +32,6 @@ export abstract class RoomRepository {
   ): Promise<SearchResultEntity<RoomEntity>>
 
   abstract archiveRoom(roomId: string): Promise<void>
+
+  abstract unarchiveRoom(roomId: string): Promise<void>
 }

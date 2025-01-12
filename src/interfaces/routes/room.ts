@@ -7,6 +7,7 @@ import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
 import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
 import { PinRoom } from "@/app/use-cases/rooms/pin-room"
+import { UnarchiveRoom } from "@/app/use-cases/rooms/unarchive-room"
 import { UnpinRoom } from "@/app/use-cases/rooms/unpin-room"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
@@ -133,6 +134,16 @@ const roomRoute = new Hono()
     await archiveRoom.execute(session.userId, roomId)
 
     const response: ArchiveRoomResponse = successResponse(true)
+    return c.json(response)
+  })
+  .delete("/archived/:roomId", sessionMiddleware, async (c) => {
+    const { roomId } = c.req.param()
+    const session = c.get("userSession")
+
+    const unarchiveRoom = container.get(UnarchiveRoom)
+    await unarchiveRoom.execute(session.userId, roomId)
+
+    const response: UnarchiveRoomResponse = successResponse(true)
     return c.json(response)
   })
 

@@ -50,6 +50,7 @@ import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
 import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
 import { PinRoom } from "@/app/use-cases/rooms/pin-room"
+import { UnarchiveRoom } from "@/app/use-cases/rooms/unarchive-room"
 import { UnpinRoom } from "@/app/use-cases/rooms/unpin-room"
 import { GetSetting } from "@/app/use-cases/settings/get-setting"
 import { UpdateSetting } from "@/app/use-cases/settings/update-setting"
@@ -250,5 +251,6 @@ container.bind<PinRoom>(PinRoom).toSelf()
 container.bind<UnpinRoom>(UnpinRoom).toSelf()
 container.bind<GetArchivedRooms>(GetArchivedRooms).toSelf()
 container.bind<ArchiveRoom>(ArchiveRoom).toSelf()
+container.bind<UnarchiveRoom>(UnarchiveRoom).toSelf()
 
 export { container }

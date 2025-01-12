@@ -379,4 +379,11 @@ export class RoomRepositoryImpl implements RoomRepository {
       data: { archivedAt: new Date(), pinnedAt: null },
     })
   }
+
+  async unarchiveRoom(roomId: string): Promise<void> {
+    await prisma.room.update({
+      where: { id: roomId },
+      data: { archivedAt: null },
+    })
+  }
 }
