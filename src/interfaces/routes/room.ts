@@ -5,6 +5,7 @@ import { ArchiveRoom } from "@/app/use-cases/rooms/archive-room"
 import { GetArchivedRooms } from "@/app/use-cases/rooms/get-archived-rooms"
 import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
+import { GetRoomByActionId } from "@/app/use-cases/rooms/get-room-by-action-id"
 import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
 import { PinRoom } from "@/app/use-cases/rooms/pin-room"
 import { UnarchiveRoom } from "@/app/use-cases/rooms/unarchive-room"
@@ -144,6 +145,16 @@ const roomRoute = new Hono()
     await unarchiveRoom.execute(session.userId, roomId)
 
     const response: UnarchiveRoomResponse = successResponse(true)
+    return c.json(response)
+  })
+  .get("/:actionId", sessionMiddleware, async (c) => {
+    const { actionId } = c.req.param()
+    const session = c.get("userSession")
+
+    const getRoomByActionId = container.get(GetRoomByActionId)
+    const result = await getRoomByActionId.execute(session.userId, actionId)
+
+    const response: GetRoomResponse = successResponse(result.toDTO())
     return c.json(response)
   })
 

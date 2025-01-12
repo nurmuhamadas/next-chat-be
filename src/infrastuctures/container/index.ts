@@ -48,6 +48,7 @@ import { ArchiveRoom } from "@/app/use-cases/rooms/archive-room"
 import { GetArchivedRooms } from "@/app/use-cases/rooms/get-archived-rooms"
 import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
+import { GetRoomByActionId } from "@/app/use-cases/rooms/get-room-by-action-id"
 import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
 import { PinRoom } from "@/app/use-cases/rooms/pin-room"
 import { UnarchiveRoom } from "@/app/use-cases/rooms/unarchive-room"
@@ -252,5 +253,6 @@ container.bind<UnpinRoom>(UnpinRoom).toSelf()
 container.bind<GetArchivedRooms>(GetArchivedRooms).toSelf()
 container.bind<ArchiveRoom>(ArchiveRoom).toSelf()
 container.bind<UnarchiveRoom>(UnarchiveRoom).toSelf()
+container.bind<GetRoomByActionId>(GetRoomByActionId).toSelf()
 
 export { container }

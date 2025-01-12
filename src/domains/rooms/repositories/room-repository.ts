@@ -34,4 +34,9 @@ export abstract class RoomRepository {
   abstract archiveRoom(roomId: string): Promise<void>
 
   abstract unarchiveRoom(roomId: string): Promise<void>
+
+  abstract getRoomByActionId(
+    userId: string,
+    actionId: string,
+  ): Promise<RoomEntity | null>
 }

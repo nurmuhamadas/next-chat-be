@@ -137,3 +137,5 @@ declare type UnpinRoomResponse = ApiResponse<boolean>
 declare type ArchiveRoomResponse = ApiResponse<boolean>
 
 declare type UnarchiveRoomResponse = ApiResponse<boolean>
+
+declare type GetRoomResponse = ApiResponse<RoomDTO>

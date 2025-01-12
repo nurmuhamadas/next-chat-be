@@ -386,4 +386,60 @@ export class RoomRepositoryImpl implements RoomRepository {
       data: { archivedAt: null },
     })
   }
+
+  async getRoomByActionId(
+    userId: string,
+    actionId: string,
+  ): Promise<RoomEntity | null> {
+    const result = await prisma.room.findFirst({
+      where: {
+        ownerId: userId,
+        OR: [
+          { privateChat: { user1Id: actionId, user2Id: userId } },
+          { privateChat: { user2Id: actionId, user1Id: userId } },
+          { groupId: actionId },
+          { channelId: actionId },
+        ],
+        deletedAt: null,
+      },
+      include: { ...this.getRoomIncludeQuery({ userId }) },
+    })
+
+    if (!result) return null
+
+    return new RoomEntity(
+      result.id,
+      PrismaHelper.convertDBRoomType(result.type),
+      result.ownerId,
+      !!result.pinnedAt,
+      !!result.archivedAt,
+      result.unreadMessage?.count ?? 0,
+      RoomProfileEntity.fromJSON({
+        id: result.privateChat?.user1.id,
+        name: result.privateChat?.user1.profile?.name,
+        imageUrl: result.privateChat?.user1.profile?.imageUrl,
+        isActive: true,
+      }),
+      RoomProfileEntity.fromJSON({
+        id: result.privateChat?.user2.id,
+        name: result.privateChat?.user2.profile?.name,
+        imageUrl: result.privateChat?.user2.profile?.imageUrl,
+        isActive: true,
+      }),
+      RoomProfileEntity.fromJSON({
+        id: result.groupId,
+        name: result.group?.name,
+        imageUrl: result.group?.imageUrl,
+        isActive: result.group ? result.group?.members.length > 0 : false,
+      }),
+      RoomProfileEntity.fromJSON({
+        id: result.channelId,
+        name: result.channel?.name,
+        imageUrl: result.channel?.imageUrl,
+        isActive: result.channel
+          ? result.channel?.subscribers.length > 0
+          : false,
+      }),
+    )
+  }
 }
