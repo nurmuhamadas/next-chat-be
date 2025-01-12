@@ -305,4 +305,71 @@ export class RoomRepositoryImpl implements RoomRepository {
       data: { pinnedAt: null },
     })
   }
+
+  async getArchivedRooms(
+    userId: string,
+    params: SearchParamsEntity,
+  ): Promise<SearchResultEntity<RoomEntity>> {
+    const { limit, cursor } = params
+
+    const result = await prisma.room.findMany({
+      where: {
+        ownerId: userId,
+        deletedAt: null,
+        pinnedAt: null,
+        archivedAt: { not: null },
+      },
+      include: { ...this.getRoomIncludeQuery({ userId }) },
+      orderBy: [
+        { lastMessageId: { sort: "desc", nulls: "first" } },
+        { createdAt: "desc" },
+      ],
+      take: limit,
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : undefined,
+    })
+
+    let nextCursor: string | undefined
+    if (result.length > limit) {
+      nextCursor = result[result.length - 1].id
+      result.pop()
+    }
+
+    const data = result.map((v) => {
+      return new RoomEntity(
+        v.id,
+        PrismaHelper.convertDBRoomType(v.type),
+        v.ownerId,
+        !!v.pinnedAt,
+        !!v.archivedAt,
+        v.unreadMessage?.count ?? 0,
+        RoomProfileEntity.fromJSON({
+          id: v.privateChat?.user1.id,
+          name: v.privateChat?.user1.profile?.name,
+          imageUrl: v.privateChat?.user1.profile?.imageUrl,
+          isActive: true,
+        }),
+        RoomProfileEntity.fromJSON({
+          id: v.privateChat?.user2.id,
+          name: v.privateChat?.user2.profile?.name,
+          imageUrl: v.privateChat?.user2.profile?.imageUrl,
+          isActive: true,
+        }),
+        RoomProfileEntity.fromJSON({
+          id: v.groupId,
+          name: v.group?.name,
+          imageUrl: v.group?.imageUrl,
+          isActive: v.group ? v.group?.members.length > 0 : false,
+        }),
+        RoomProfileEntity.fromJSON({
+          id: v.channelId,
+          name: v.channel?.name,
+          imageUrl: v.channel?.imageUrl,
+          isActive: v.channel ? v.channel?.subscribers.length > 0 : false,
+        }),
+      )
+    })
+
+    return new SearchResultEntity(data, data.length, nextCursor)
+  }
 }

@@ -25,4 +25,9 @@ export abstract class RoomRepository {
   abstract pinRoom(roomId: string): Promise<void>
 
   abstract unpinRoom(roomId: string): Promise<void>
+
+  abstract getArchivedRooms(
+    userId: string,
+    params: SearchParamsEntity,
+  ): Promise<SearchResultEntity<RoomEntity>>
 }

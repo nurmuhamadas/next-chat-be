@@ -44,6 +44,7 @@ import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
+import { GetArchivedRooms } from "@/app/use-cases/rooms/get-archived-rooms"
 import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
 import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
@@ -246,5 +247,6 @@ container.bind<GetPrivateRooms>(GetPrivateRooms).toSelf()
 container.bind<GetPinnedRooms>(GetPinnedRooms).toSelf()
 container.bind<PinRoom>(PinRoom).toSelf()
 container.bind<UnpinRoom>(UnpinRoom).toSelf()
+container.bind<GetArchivedRooms>(GetArchivedRooms).toSelf()
 
 export { container }

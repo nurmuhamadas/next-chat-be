@@ -1,6 +1,7 @@
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
+import { GetArchivedRooms } from "@/app/use-cases/rooms/get-archived-rooms"
 import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
 import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
@@ -101,5 +102,27 @@ const roomRoute = new Hono()
     const response: UnpinRoomResponse = successResponse(true)
     return c.json(response)
   })
+  .get(
+    "/archived",
+    zValidator("query", searchQuerySchema),
+    sessionMiddleware,
+    async (c) => {
+      const params = c.req.valid("query")
+      const session = c.get("userSession")
+
+      const getArchivedRooms = container.get(GetArchivedRooms)
+      const result = await getArchivedRooms.execute(
+        session.userId,
+        SearchParamsEntity.fromJSON(params),
+      )
+
+      const response: GetRoomListResponse = successCollectionResponse(
+        result.data.map((v) => v.toDTO()),
+        result.total,
+        result.cursor,
+      )
+      return c.json(response)
+    },
+  )
 
 export default roomRoute
