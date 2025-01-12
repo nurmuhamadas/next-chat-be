@@ -26,4 +26,6 @@ export abstract class RoomRepository {
   ): Promise<RoomEntity | null>
 
   abstract pinRoom(roomId: string, userId: string): Promise<void>
+
+  abstract unpinRoom(roomId: string, userId: string): Promise<void>
 }

@@ -5,6 +5,7 @@ import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
 import { GetRooms } from "@/app/use-cases/rooms/get-rooms"
 import { PinRoom } from "@/app/use-cases/rooms/pin-room"
+import { UnpinRoom } from "@/app/use-cases/rooms/unpin-room"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { container } from "@/infrastuctures/container"
@@ -88,6 +89,16 @@ const roomRoute = new Hono()
     await pinRoom.execute(session.userId, roomId)
 
     const response: PinRoomResponse = successResponse(true)
+    return c.json(response)
+  })
+  .delete("/pinned/:roomId", sessionMiddleware, async (c) => {
+    const { roomId } = c.req.param()
+    const session = c.get("userSession")
+
+    const unpinRoom = container.get(UnpinRoom)
+    await unpinRoom.execute(session.userId, roomId)
+
+    const response: UnpinRoomResponse = successResponse(true)
     return c.json(response)
   })
 

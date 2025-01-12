@@ -319,4 +319,21 @@ export class RoomRepositoryImpl implements RoomRepository {
       data: { pinnedAt: new Date() },
     })
   }
+
+  async unpinRoom(roomId: string, userId: string): Promise<void> {
+    const a = await prisma.room.updateMany({
+      where: {
+        ownerId: userId,
+        OR: [
+          { privateChat: { user1Id: roomId, user2Id: userId } },
+          { privateChat: { user2Id: roomId, user1Id: userId } },
+          { groupId: roomId },
+          { channelId: roomId },
+        ],
+        deletedAt: null,
+      },
+      data: { pinnedAt: null },
+    })
+    console.log(userId, roomId, a)
+  }
 }
