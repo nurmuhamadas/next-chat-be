@@ -20,10 +20,7 @@ export abstract class RoomRepository {
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<RoomEntity>>
 
-  abstract getRoomById(
-    userId: string,
-    roomId: string,
-  ): Promise<RoomEntity | null>
+  abstract getRoomById(roomId: string): Promise<RoomEntity | null>
 
   abstract pinRoom(roomId: string, userId: string): Promise<void>
 

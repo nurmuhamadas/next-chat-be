@@ -14,7 +14,7 @@ export class UnpinRoom {
   ) {}
 
   async execute(userId: string, roomId: string): Promise<void> {
-    const room = await this.roomRepository.getRoomById(userId, roomId)
+    const room = await this.roomRepository.getRoomById(roomId)
 
     if (!room) {
       throw new NotFoundError(ERROR.ROOM_NOT_FOUND)

@@ -275,21 +275,9 @@ export class RoomRepositoryImpl implements RoomRepository {
     return new SearchResultEntity(data, data.length, nextCursor)
   }
 
-  async getRoomById(
-    userId: string,
-    roomId: string,
-  ): Promise<RoomEntity | null> {
-    const result = await prisma.room.findFirst({
-      where: {
-        ownerId: userId,
-        OR: [
-          { privateChat: { user1Id: roomId, user2Id: userId } },
-          { privateChat: { user2Id: roomId, user1Id: userId } },
-          { groupId: roomId },
-          { channelId: roomId },
-        ],
-        deletedAt: null,
-      },
+  async getRoomById(roomId: string): Promise<RoomEntity | null> {
+    const result = await prisma.room.findUnique({
+      where: { id: roomId },
     })
 
     if (!result) return null
