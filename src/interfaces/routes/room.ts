@@ -1,6 +1,7 @@
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
+import { ArchiveRoom } from "@/app/use-cases/rooms/archive-room"
 import { GetArchivedRooms } from "@/app/use-cases/rooms/get-archived-rooms"
 import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
@@ -124,5 +125,15 @@ const roomRoute = new Hono()
       return c.json(response)
     },
   )
+  .post("/archived/:roomId", sessionMiddleware, async (c) => {
+    const { roomId } = c.req.param()
+    const session = c.get("userSession")
+
+    const archiveRoom = container.get(ArchiveRoom)
+    await archiveRoom.execute(session.userId, roomId)
+
+    const response: ArchiveRoomResponse = successResponse(true)
+    return c.json(response)
+  })
 
 export default roomRoute

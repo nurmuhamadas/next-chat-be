@@ -30,4 +30,6 @@ export abstract class RoomRepository {
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<RoomEntity>>
+
+  abstract archiveRoom(roomId: string): Promise<void>
 }
