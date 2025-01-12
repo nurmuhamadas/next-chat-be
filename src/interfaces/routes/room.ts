@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { ArchiveRoom } from "@/app/use-cases/rooms/archive-room"
+import { DeleteRoom } from "@/app/use-cases/rooms/delete-room"
 import { GetArchivedRooms } from "@/app/use-cases/rooms/get-archived-rooms"
 import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
@@ -155,6 +156,18 @@ const roomRoute = new Hono()
     const result = await getRoomByActionId.execute(session.userId, actionId)
 
     const response: GetRoomResponse = successResponse(result.toDTO())
+    return c.json(response)
+  })
+  .delete("/:roomId", sessionMiddleware, async (c) => {
+    const { roomId } = c.req.param()
+    const session = c.get("userSession")
+
+    const deleteRoom = container.get(DeleteRoom)
+    const result = await deleteRoom.execute(session.userId, roomId)
+
+    const response: DeleteRoomResponse = successResponse({
+      id: result.id,
+    })
     return c.json(response)
   })
 

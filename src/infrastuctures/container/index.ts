@@ -45,6 +45,7 @@ import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
 import { ArchiveRoom } from "@/app/use-cases/rooms/archive-room"
+import { DeleteRoom } from "@/app/use-cases/rooms/delete-room"
 import { GetArchivedRooms } from "@/app/use-cases/rooms/get-archived-rooms"
 import { GetPinnedRooms } from "@/app/use-cases/rooms/get-pinned-rooms"
 import { GetPrivateRooms } from "@/app/use-cases/rooms/get-private-rooms"
@@ -254,5 +255,6 @@ container.bind<GetArchivedRooms>(GetArchivedRooms).toSelf()
 container.bind<ArchiveRoom>(ArchiveRoom).toSelf()
 container.bind<UnarchiveRoom>(UnarchiveRoom).toSelf()
 container.bind<GetRoomByActionId>(GetRoomByActionId).toSelf()
+container.bind<DeleteRoom>(DeleteRoom).toSelf()
 
 export { container }

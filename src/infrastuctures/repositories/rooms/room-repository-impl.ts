@@ -1,5 +1,6 @@
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
+import { RoomType } from "@/domains/rooms/entities/enums"
 import { RoomEntity } from "@/domains/rooms/entities/room-entity"
 import { RoomProfileEntity } from "@/domains/rooms/entities/room-profile-entity"
 import { SearchPrivateRoomEntity } from "@/domains/rooms/entities/search-private-room-entity"
@@ -441,5 +442,52 @@ export class RoomRepositoryImpl implements RoomRepository {
           : false,
       }),
     )
+  }
+
+  async deleteRoom(
+    id: string,
+    ownerId: string,
+    type: RoomType,
+    userId1?: string,
+    userId2?: string,
+    groupId?: string,
+    channelId?: string,
+  ): Promise<void> {
+    await prisma.$transaction(async (tx) => {
+      if (type === "PRIVATE") {
+        await tx.privateChatOption.deleteMany({
+          where: {
+            privateChat: {
+              user1Id: userId1,
+              user2Id: userId2,
+            },
+            userId: ownerId,
+          },
+        })
+      } else if (type === "GROUP") {
+        await tx.groupMember.deleteMany({ where: { userId: ownerId, groupId } })
+        await tx.groupOption.deleteMany({ where: { userId: ownerId, groupId } })
+      } else if (type === "CHANNEL") {
+        await tx.channelSubscriber.deleteMany({
+          where: { userId: ownerId, channelId },
+        })
+        await tx.channelOption.deleteMany({
+          where: { userId: ownerId, channelId },
+        })
+      }
+
+      await tx.room.update({
+        where: { id },
+        data: {
+          deletedAt: new Date(),
+          unreadMessage: {
+            upsert: {
+              create: { count: 0, userId: ownerId },
+              update: { count: 0 },
+            },
+          },
+        },
+      })
+    })
   }
 }

@@ -139,3 +139,5 @@ declare type ArchiveRoomResponse = ApiResponse<boolean>
 declare type UnarchiveRoomResponse = ApiResponse<boolean>
 
 declare type GetRoomResponse = ApiResponse<RoomDTO>
+
+declare type DeleteRoomResponse = ApiResponse<{ id: string }>

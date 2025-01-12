@@ -5,9 +5,10 @@ import {
   Language as DBLanguage,
   LogActivity as LogActivityModel,
   Notification as DBNotification,
-  PrismaPromise,
+  PrismaClient,
   RoomType as DBRoomType,
 } from "@prisma/client"
+import { ITXClientDenyList } from "@prisma/client/runtime/library"
 
 import { LogActivity } from "@/domains/auth/entities/user-log-entity"
 import { ChannelType } from "@/domains/channels/entities/enums"
@@ -26,8 +27,10 @@ export class PrismaHelper {
     return activity as unknown as LogActivityModel
   }
 
-  static transaction<T>(transactions: PrismaPromise<T>[]) {
-    return prisma.$transaction(transactions)
+  static transaction<T>(
+    fn: (prisma: Omit<PrismaClient, ITXClientDenyList>) => Promise<T>,
+  ) {
+    return prisma.$transaction(fn)
   }
 
   static convertTimeFormat(timeFormat: TimeFormat): DBTimeFormat {

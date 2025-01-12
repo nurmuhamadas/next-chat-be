@@ -1,6 +1,7 @@
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
 
+import { RoomType } from "../entities/enums"
 import { RoomEntity } from "../entities/room-entity"
 import { SearchPrivateRoomEntity } from "../entities/search-private-room-entity"
 
@@ -39,4 +40,14 @@ export abstract class RoomRepository {
     userId: string,
     actionId: string,
   ): Promise<RoomEntity | null>
+
+  abstract deleteRoom(
+    id: string,
+    ownerId: string,
+    type: RoomType,
+    userId1?: string,
+    userId2?: string,
+    groupId?: string,
+    channelId?: string,
+  ): Promise<void>
 }
