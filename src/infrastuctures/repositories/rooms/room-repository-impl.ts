@@ -292,36 +292,17 @@ export class RoomRepositoryImpl implements RoomRepository {
     )
   }
 
-  async pinRoom(userId: string, roomId: string): Promise<void> {
+  async pinRoom(roomId: string): Promise<void> {
     await prisma.room.updateMany({
-      where: {
-        ownerId: userId,
-        OR: [
-          { privateChat: { user1Id: roomId, user2Id: userId } },
-          { privateChat: { user2Id: roomId, user1Id: userId } },
-          { groupId: roomId },
-          { channelId: roomId },
-        ],
-        deletedAt: null,
-      },
+      where: { id: roomId },
       data: { pinnedAt: new Date() },
     })
   }
 
-  async unpinRoom(roomId: string, userId: string): Promise<void> {
-    const a = await prisma.room.updateMany({
-      where: {
-        ownerId: userId,
-        OR: [
-          { privateChat: { user1Id: roomId, user2Id: userId } },
-          { privateChat: { user2Id: roomId, user1Id: userId } },
-          { groupId: roomId },
-          { channelId: roomId },
-        ],
-        deletedAt: null,
-      },
+  async unpinRoom(roomId: string): Promise<void> {
+    await prisma.room.updateMany({
+      where: { id: roomId },
       data: { pinnedAt: null },
     })
-    console.log(userId, roomId, a)
   }
 }

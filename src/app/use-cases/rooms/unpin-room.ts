@@ -26,6 +26,6 @@ export class UnpinRoom {
       throw new InvariantError(ERROR.ROOM_NOT_PINNED)
     }
 
-    await this.roomRepository.unpinRoom(userId, roomId)
+    await this.roomRepository.unpinRoom(roomId)
   }
 }

@@ -29,6 +29,6 @@ export class PinRoom {
       throw new InvariantError(ERROR.ROOM_ALREADY_PINNED)
     }
 
-    await this.roomRepository.pinRoom(userId, roomId)
+    await this.roomRepository.pinRoom(roomId)
   }
 }

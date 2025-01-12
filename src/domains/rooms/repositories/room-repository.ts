@@ -22,7 +22,7 @@ export abstract class RoomRepository {
 
   abstract getRoomById(roomId: string): Promise<RoomEntity | null>
 
-  abstract pinRoom(roomId: string, userId: string): Promise<void>
+  abstract pinRoom(roomId: string): Promise<void>
 
-  abstract unpinRoom(roomId: string, userId: string): Promise<void>
+  abstract unpinRoom(roomId: string): Promise<void>
 }
