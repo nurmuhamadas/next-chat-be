@@ -41,6 +41,8 @@ export class ChannelSubscriberRepositoryImpl
           subscriber.userId,
           subscriber.user.profile?.name ?? "Unknown",
           subscriber.isAdmin,
+          subscriber.createdAt,
+          subscriber.unsubscribedAt ?? undefined,
           subscriber.user.profile?.imageUrl ?? undefined,
           subscriber.user.profile?.lastSeenAt ?? undefined,
         ),
