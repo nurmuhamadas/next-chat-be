@@ -3,6 +3,8 @@ export class GroupMemberEntity {
     public readonly id: string,
     public readonly name: string,
     public readonly isAdmin: boolean,
+    public readonly createdAt: Date,
+    public readonly leftAt?: Date,
     public readonly imageUrl?: string,
     public readonly lastSeenAt?: Date,
   ) {}
