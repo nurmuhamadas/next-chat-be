@@ -16,15 +16,15 @@ export class RoomEntity {
   ) {}
 
   public toDTO(): RoomDTO {
-    let id = ""
     let name = ""
     let imageUrl: string | null = null
     let isActive = false
+    let actionId = ""
 
     if (this.type === RoomType.PRIVATE) {
       const user = this.user1?.id === this.ownerId ? this.user2 : this.user1
-      id = user?.id ?? ""
       imageUrl = user?.imageUrl ?? ""
+      actionId = user?.id ?? ""
 
       if (this.user1?.id === this.user2?.id) {
         name = "Saved Messages"
@@ -32,19 +32,20 @@ export class RoomEntity {
         name = user?.name ?? "Unknown"
       }
     } else if (this.type === RoomType.GROUP && this.group) {
-      id = this.group.id
       name = this.group.name
       imageUrl = this.group?.imageUrl ?? null
       isActive = this.group.isActive
+      actionId = this.group.id
     } else if (this.type === RoomType.CHANNEL && this.channel) {
-      id = this.channel.id
       name = this.channel.name
       imageUrl = this.channel?.imageUrl ?? null
       isActive = this.channel.isActive
+      actionId = this.channel.id
     }
 
     return {
-      id,
+      id: this.id,
+      actionId,
       type: this.type,
       name,
       imageUrl,

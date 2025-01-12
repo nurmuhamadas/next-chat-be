@@ -151,6 +151,8 @@ declare interface ChannelOptionDTO {
 // ROOMS
 declare interface RoomDTO {
   id: string
+  /** userId or groupId or channelId */
+  actionId: string
   type: RoomType
   name: string
   imageUrl: string | null
