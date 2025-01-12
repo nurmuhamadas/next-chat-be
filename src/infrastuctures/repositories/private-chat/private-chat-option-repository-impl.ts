@@ -33,6 +33,8 @@ export class PrivateChatOptionRepositoryImpl
       result.userId,
       result.privateChatId,
       result.notification,
+      result.createdAt,
+      result.deletedAt ?? undefined,
     )
   }
 
@@ -50,6 +52,8 @@ export class PrivateChatOptionRepositoryImpl
       result.userId,
       result.privateChatId,
       result.notification,
+      result.createdAt,
+      result.deletedAt ?? undefined,
     )
   }
 
@@ -74,6 +78,8 @@ export class PrivateChatOptionRepositoryImpl
       newOption.userId,
       newOption.privateChatId,
       newOption.notification,
+      newOption.createdAt,
+      newOption.deletedAt ?? undefined,
     )
   }
 }
