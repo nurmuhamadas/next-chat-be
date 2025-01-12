@@ -3,13 +3,26 @@ import { UploadedFileEntity } from "@/domains/storage/entities/uploaded-file-ent
 
 export class CreateMessageEntity {
   constructor(
-    public readonly receiverId: string,
+    private readonly receiverId: string,
     public readonly roomType: RoomType,
     public readonly isEmojiOnly: boolean,
     public readonly message?: string,
     public readonly parentMessageId?: string,
+    public readonly originalMessageId?: string,
     public attachments: UploadedFileEntity[] = [],
   ) {}
+
+  get privatChatId() {
+    return this.roomType === RoomType.PRIVATE ? this.receiverId : undefined
+  }
+
+  get groupId() {
+    return this.roomType === RoomType.GROUP ? this.receiverId : undefined
+  }
+
+  get channelId() {
+    return this.roomType === RoomType.CHANNEL ? this.receiverId : undefined
+  }
 
   static fromJSON(json: {
     receiverId: string
@@ -24,6 +37,7 @@ export class CreateMessageEntity {
       json.roomType,
       json.isEmojiOnly,
       json.message,
+      json.originalMessageId,
       json.parentMessageId,
     )
   }

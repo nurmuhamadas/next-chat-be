@@ -4,22 +4,22 @@ import { MessageAuthorEntity } from "./message-author-entity"
 
 export class MessageEntity {
   constructor(
-    private readonly id: string,
-    private readonly userId: string,
-    private readonly sender: MessageAuthorEntity,
-    private readonly isEmojiOnly: boolean,
-    private readonly status: MessageStatus,
-    private readonly attachments: AttachmentEntity[],
-    private readonly createdAt: Date,
-    private readonly updatedAt: Date,
-    private readonly message?: string,
-    private readonly privateChatId?: string,
-    private readonly groupId?: string,
-    private readonly channelId?: string,
-    private readonly parentMessageId?: string,
-    private readonly parentMessageName?: string,
-    private readonly parentMessageText?: string,
-    private readonly originalMessageId?: string,
+    public readonly id: string,
+    public readonly userId: string,
+    public readonly sender: MessageAuthorEntity,
+    public readonly isEmojiOnly: boolean,
+    public readonly status: MessageStatus,
+    public readonly attachments: AttachmentEntity[],
+    public readonly createdAt: Date,
+    public readonly updatedAt: Date,
+    public readonly message?: string,
+    public readonly privateChatId?: string,
+    public readonly groupId?: string,
+    public readonly channelId?: string,
+    public readonly parentMessageId?: string,
+    public readonly parentMessageName?: string,
+    public readonly parentMessageText?: string,
+    public readonly originalMessageId?: string,
   ) {}
 
   toDTO(): MessageDTO {
