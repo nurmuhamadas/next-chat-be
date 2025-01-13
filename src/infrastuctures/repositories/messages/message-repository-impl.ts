@@ -22,18 +22,6 @@ import { prisma } from "@/infrastuctures/orm/prisma"
 export class MessageRepositoryImpl implements MessageRepository {
   private getMessageInludeQuery = () => ({
     attachments: true,
-    repliedMessage: {
-      select: {
-        id: true,
-        message: true,
-        sender: {
-          select: {
-            id: true,
-            profile: { select: { name: true } },
-          },
-        },
-      },
-    },
     sender: {
       select: {
         id: true,
@@ -85,13 +73,14 @@ export class MessageRepositoryImpl implements MessageRepository {
   async createMessage(
     userId: string,
     data: CreateMessageEntity,
-    parentMessage: MessageEntity,
+    parentMessage?: MessageEntity,
+    privateChatId?: string,
   ): Promise<MessageEntity> {
     const result = await prisma.message.create({
       data: {
         message: data.message,
         senderId: userId,
-        privateChatId: data.privatChatId,
+        privateChatId,
         groupId: data.groupId,
         channelId: data.channelId,
         originalMessageId: data.originalMessageId,
