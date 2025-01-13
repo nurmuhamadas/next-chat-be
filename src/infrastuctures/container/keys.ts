@@ -33,4 +33,7 @@ export const KEYS = {
   ChannelRepository: Symbol.for("ChannelRepository"),
   ChannelSubscriberRepository: Symbol.for("ChannelSubscriberRepository"),
   ChannelOptionRepository: Symbol.for("ChannelOptionRepository"),
+
+  // ROOM
+  RoomRepository: Symbol.for("RoomRepository"),
 }

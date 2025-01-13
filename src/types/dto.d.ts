@@ -10,6 +10,8 @@ declare type GroupType = "PUBLIC" | "PRIVATE"
 
 declare type ChannelType = "PUBLIC" | "PRIVATE"
 
+declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"
+
 declare interface ProfileDTO {
   id: string
   name: string
@@ -144,4 +146,26 @@ declare interface ChannelOptionDTO {
   userId: string
   channelId: string
   notification: boolean
+}
+
+// ROOMS
+declare interface RoomDTO {
+  id: string
+  /** userId or groupId or channelId */
+  actionId: string
+  type: RoomType
+  name: string
+  imageUrl: string | null
+  pinned: boolean
+  archived: boolean
+  /** determine if user is group members/channel subs or not */
+  isActive: boolean
+  totalUnreadMessages: number
+}
+
+declare interface PrivateRoomDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+  lastSeenAt: string | null
 }

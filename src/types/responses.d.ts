@@ -123,3 +123,21 @@ declare type ClearChannelChatResponse = ApiResponse<boolean>
 declare type GetChannelOptionResponse = ApiResponse<ChannelOptionDTO>
 
 declare type UpdateChannelOptionResponse = ApiResponse<ChannelOptionDTO>
+
+// ROOM API
+/** Include groups and channels chat */
+declare type GetRoomListResponse = ApiCollectionResponse<RoomDTO>
+
+declare type GetPrivateRoomsResponse = ApiCollectionResponse<PrivateRoomDTO>
+
+declare type PinRoomResponse = ApiResponse<boolean>
+
+declare type UnpinRoomResponse = ApiResponse<boolean>
+
+declare type ArchiveRoomResponse = ApiResponse<boolean>
+
+declare type UnarchiveRoomResponse = ApiResponse<boolean>
+
+declare type GetRoomResponse = ApiResponse<RoomDTO>
+
+declare type DeleteRoomResponse = ApiResponse<{ id: string }>

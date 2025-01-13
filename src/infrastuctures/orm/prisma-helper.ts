@@ -5,12 +5,15 @@ import {
   Language as DBLanguage,
   LogActivity as LogActivityModel,
   Notification as DBNotification,
-  PrismaPromise,
+  PrismaClient,
+  RoomType as DBRoomType,
 } from "@prisma/client"
+import { ITXClientDenyList } from "@prisma/client/runtime/library"
 
 import { LogActivity } from "@/domains/auth/entities/user-log-entity"
 import { ChannelType } from "@/domains/channels/entities/enums"
 import { GroupType } from "@/domains/groups/entities/enums"
+import { RoomType } from "@/domains/rooms/entities/enums"
 import {
   Language,
   Notifications,
@@ -24,8 +27,10 @@ export class PrismaHelper {
     return activity as unknown as LogActivityModel
   }
 
-  static transaction<T>(transactions: PrismaPromise<T>[]) {
-    return prisma.$transaction(transactions)
+  static transaction<T>(
+    fn: (prisma: Omit<PrismaClient, ITXClientDenyList>) => Promise<T>,
+  ) {
+    return prisma.$transaction(fn)
   }
 
   static convertTimeFormat(timeFormat: TimeFormat): DBTimeFormat {
@@ -72,5 +77,13 @@ export class PrismaHelper {
 
   static convertDBChannelType(type: DBChannelType): ChannelType {
     return type === "PRIVATE" ? ChannelType.PRIVATE : ChannelType.PUBLIC
+  }
+
+  static convertDBRoomType(type: DBRoomType): RoomType {
+    return type === "PRIVATE"
+      ? RoomType.PRIVATE
+      : type === "GROUP"
+        ? RoomType.GROUP
+        : RoomType.CHANNEL
   }
 }
