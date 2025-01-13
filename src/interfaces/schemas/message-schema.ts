@@ -37,3 +37,12 @@ export const createMessageSchema = z
     message: ERROR.SHOULD_HAVE_MESSAGE_OR_ATTACHMENT,
     path: ["message", "attachment"],
   })
+
+export const getMessageParamSchema = z.object({
+  roomType: z
+    .nativeEnum(RoomType, {
+      invalid_type_error: ERROR.INVALID_ROOM_TYPE,
+    })
+    .transform((v) => v.toUpperCase() as RoomType),
+  receiverId: z.string().min(1, ERROR.REQUIRED),
+})

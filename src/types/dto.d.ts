@@ -207,6 +207,7 @@ declare interface MessageDTO {
   status: MessageStatus
   attachments: AttachmentDTO[]
   isUpdated: boolean
+  createdAt: string
 }
 
 declare interface AttachmentDTO {

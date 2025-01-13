@@ -39,6 +39,7 @@ export class MessageEntity {
       originalMessageId: this.originalMessageId ?? null,
       attachments: this.attachments.map((v) => v.toDTO()),
       isUpdated: this.updatedAt > this.createdAt,
+      createdAt: this.createdAt.toISOString(),
     }
   }
 }
