@@ -40,4 +40,5 @@ export const KEYS = {
 
   // MESSAGE
   MessageRepository: Symbol.for("MessageRepository"),
+  UnreadMessageRepository: Symbol.for("UnreadMessageRepository"),
 }

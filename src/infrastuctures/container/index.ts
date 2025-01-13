@@ -77,6 +77,7 @@ import { GroupMemberRepository } from "@/domains/groups/repositories/group-membe
 import { GroupOptionRepository } from "@/domains/groups/repositories/group-option-repository"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { MessageRepository } from "@/domains/messages/repositories/message-repository"
+import { UnreadMessageRepository } from "@/domains/messages/repositories/unread-message-repository"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
 import { PrivateChatRepository } from "@/domains/private-chat/repositories/private-chat-repository"
 import { RoomRepository } from "@/domains/rooms/repositories/room-repository"
@@ -95,6 +96,7 @@ import { GroupMemberRepositoryImpl } from "../repositories/groups/group-member-r
 import { GroupOptionRepositoryImpl } from "../repositories/groups/group-option-repository-impl"
 import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
 import { MessageRepositoryImpl } from "../repositories/messages/message-repository-impl"
+import { UnreadMessageRepositoryImpl } from "../repositories/messages/unread-message-repository-impl"
 import { PrivateChatOptionRepositoryImpl } from "../repositories/private-chat/private-chat-option-repository-impl"
 import { PrivateChatRepositoryImpl } from "../repositories/private-chat/private-chat-repository-impl"
 import { RoomRepositoryImpl } from "../repositories/rooms/room-repository-impl"
@@ -273,6 +275,10 @@ container.bind<DeleteRoom>(DeleteRoom).toSelf()
 container
   .bind<MessageRepository>(KEYS.MessageRepository)
   .to(MessageRepositoryImpl)
+  .inSingletonScope()
+container
+  .bind<UnreadMessageRepository>(KEYS.UnreadMessageRepository)
+  .to(UnreadMessageRepositoryImpl)
   .inSingletonScope()
 
 container.bind<CreatePrivateMessage>(CreatePrivateMessage).toSelf()
