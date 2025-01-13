@@ -82,4 +82,33 @@ export class PrivateChatOptionRepositoryImpl
       newOption.deletedAt ?? undefined,
     )
   }
+
+  async getOptionsHistory(
+    userId: string,
+    userPairId: string,
+  ): Promise<PrivateChatOptionEntity[]> {
+    const result = await prisma.privateChatOption.findMany({
+      where: {
+        userId,
+        privateChat: {
+          OR: [
+            { user1Id: userPairId, user2Id: userId },
+            { user2Id: userPairId, user1Id: userId },
+          ],
+        },
+      },
+    })
+
+    return result.map(
+      (opt) =>
+        new PrivateChatOptionEntity(
+          opt.id,
+          opt.userId,
+          opt.privateChatId,
+          opt.notification,
+          opt.createdAt,
+          opt.deletedAt ?? undefined,
+        ),
+    )
+  }
 }
