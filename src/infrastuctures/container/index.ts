@@ -41,6 +41,7 @@ import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { UpdateGroup } from "@/app/use-cases/groups/update-group"
 import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
+import { CreateChannelMessage } from "@/app/use-cases/messages/create-channel-message"
 import { CreateGroupMessage } from "@/app/use-cases/messages/create-group-message"
 import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-message"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
@@ -275,5 +276,6 @@ container
 
 container.bind<CreatePrivateMessage>(CreatePrivateMessage).toSelf()
 container.bind<CreateGroupMessage>(CreateGroupMessage).toSelf()
+container.bind<CreateChannelMessage>(CreateChannelMessage).toSelf()
 
 export { container }
