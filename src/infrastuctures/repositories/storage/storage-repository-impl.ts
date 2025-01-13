@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify"
 import { ID } from "node-appwrite"
 
+import { AttachmentType } from "@/domains/messages/entities/enums"
 import { UploadedFileEntity } from "@/domains/storage/entities/uploaded-file-entity"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
@@ -28,7 +29,7 @@ export class StorageRepositoryImpl implements StorageRepository {
       uploadedFile.$id,
       uploadedFile.name,
       uploadedFile.sizeOriginal,
-      uploadedFile.mimeType,
+      uploadedFile.mimeType as AttachmentType,
       this.appwrite.constructFileUrl(uploadedFile.$id),
       this.appwrite.constructDownloadUrl(uploadedFile.$id),
     )
