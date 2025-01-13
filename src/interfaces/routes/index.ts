@@ -4,6 +4,7 @@ import authRoute from "./auth"
 import blockedUserRoute from "./blocked-user"
 import channelRoute from "./channel"
 import groupRoute from "./group"
+import messageRoute from "./message"
 import privateChatRoute from "./private-chat"
 import roomRoute from "./room"
 import settingRoute from "./setting"
@@ -18,4 +19,5 @@ export const createRouter = (app: Hono) => {
   app.route("/groups", groupRoute)
   app.route("/channels", channelRoute)
   app.route("/rooms", roomRoute)
+  app.route("/messages", messageRoute)
 }

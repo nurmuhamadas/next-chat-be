@@ -1,0 +1,39 @@
+import { z } from "zod"
+
+import { ERROR } from "@/common/constants/errors"
+import { RoomType } from "@/domains/rooms/entities/enums"
+
+import { attachmentSchema } from "./common-schema"
+
+export const createMessageSchema = z
+  .object({
+    message: z
+      .string({
+        invalid_type_error: ERROR.INVALID_TYPE,
+      })
+      .max(1048576, ERROR.MESSAGE_TOO_LONG)
+      .optional()
+      .transform((v) => (v === "undefined" ? undefined : v)),
+    receiverId: z.string({ invalid_type_error: ERROR.INVALID_TYPE }),
+    roomType: z.nativeEnum(RoomType),
+    parentMessageId: z
+      .string({ invalid_type_error: ERROR.INVALID_TYPE })
+      .optional()
+      .transform((v) => (v === "undefined" ? undefined : v)),
+    originalMessageId: z
+      .string({ invalid_type_error: ERROR.INVALID_TYPE })
+      .optional()
+      .transform((v) => (v === "undefined" ? undefined : v)),
+    isEmojiOnly: z
+      .string({ invalid_type_error: ERROR.INVALID_TYPE })
+      .transform((text) => (text?.toLowerCase() === "true" ? true : false))
+      .optional(),
+    attachments: z.union([
+      attachmentSchema,
+      z.array(attachmentSchema).optional().default([]),
+    ]),
+  })
+  .refine((value) => value.message || !!value.attachments, {
+    message: ERROR.SHOULD_HAVE_MESSAGE_OR_ATTACHMENT,
+    path: ["message", "attachment"],
+  })

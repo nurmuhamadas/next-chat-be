@@ -41,6 +41,7 @@ import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { UpdateGroup } from "@/app/use-cases/groups/update-group"
 import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
+import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-message"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
@@ -270,5 +271,7 @@ container
   .bind<MessageRepository>(KEYS.MessageRepository)
   .to(MessageRepositoryImpl)
   .inSingletonScope()
+
+container.bind<CreatePrivateMessage>(CreatePrivateMessage).toSelf()
 
 export { container }

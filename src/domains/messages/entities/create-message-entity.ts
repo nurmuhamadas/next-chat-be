@@ -12,7 +12,7 @@ export class CreateMessageEntity {
     public attachments: UploadedFileEntity[] = [],
   ) {}
 
-  get privatChatId() {
+  get userReceiverId() {
     return this.roomType === RoomType.PRIVATE ? this.receiverId : undefined
   }
 
