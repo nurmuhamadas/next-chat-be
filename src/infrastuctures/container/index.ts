@@ -74,6 +74,7 @@ import { GroupOptionRepository } from "@/domains/groups/repositories/group-optio
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { MessageRepository } from "@/domains/messages/repositories/message-repository"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
+import { PrivateChatRepository } from "@/domains/private-chat/repositories/private-chat-repository"
 import { RoomRepository } from "@/domains/rooms/repositories/room-repository"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
@@ -91,6 +92,7 @@ import { GroupOptionRepositoryImpl } from "../repositories/groups/group-option-r
 import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
 import { MessageRepositoryImpl } from "../repositories/messages/message-repository-impl"
 import { PrivateChatOptionRepositoryImpl } from "../repositories/private-chat/private-chat-option-repository-impl"
+import { PrivateChatRepositoryImpl } from "../repositories/private-chat/private-chat-repository-impl"
 import { RoomRepositoryImpl } from "../repositories/rooms/room-repository-impl"
 import { SettingRepositoryImpl } from "../repositories/setting/setting-repository-impl"
 import { StorageRepositoryImpl } from "../repositories/storage/storage-repository-impl"
@@ -170,6 +172,10 @@ container.bind<UnblockUser>(UnblockUser).toSelf()
 container
   .bind<PrivateChatOptionRepository>(KEYS.PrivateChatOptionRepository)
   .to(PrivateChatOptionRepositoryImpl)
+  .inSingletonScope()
+container
+  .bind<PrivateChatRepository>(KEYS.PrivateChatRepository)
+  .to(PrivateChatRepositoryImpl)
   .inSingletonScope()
 
 container.bind<GetPrivateChatOption>(GetPrivateChatOption).toSelf()

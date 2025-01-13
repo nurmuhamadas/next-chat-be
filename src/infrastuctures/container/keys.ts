@@ -23,6 +23,7 @@ export const KEYS = {
 
   // PRIVATE CHAT
   PrivateChatOptionRepository: Symbol.for("PrivateChatOptionRepository"),
+  PrivateChatRepository: Symbol.for("PrivateChatRepository"),
 
   // GROUPS
   GroupRepository: Symbol.for("GroupRepository"),
