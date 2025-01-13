@@ -46,3 +46,13 @@ export const getMessageParamSchema = z.object({
     .transform((v) => v.toUpperCase() as RoomType),
   receiverId: z.string().min(1, ERROR.REQUIRED),
 })
+
+export const updateMessageSchema = z.object({
+  message: z
+    .string({
+      required_error: ERROR.MESSAGE_REQUIRED,
+      invalid_type_error: ERROR.INVALID_TYPE,
+    })
+    .max(1048576, ERROR.MESSAGE_TOO_LONG),
+  isEmojiOnly: z.boolean({ invalid_type_error: ERROR.INVALID_TYPE }).optional(),
+})

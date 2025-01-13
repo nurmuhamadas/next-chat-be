@@ -6,9 +6,11 @@ import { CreateGroupMessage } from "@/app/use-cases/messages/create-group-messag
 import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-message"
 import { GetMessages } from "@/app/use-cases/messages/get-messages"
 import { ReadMessage } from "@/app/use-cases/messages/read-message"
+import { UpdateMessage } from "@/app/use-cases/messages/update-message"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
+import { UpdateMessageEntity } from "@/domains/messages/entities/update-message-entity"
 import { RoomType } from "@/domains/rooms/entities/enums"
 import { container } from "@/infrastuctures/container"
 
@@ -16,6 +18,7 @@ import { searchQuerySchema } from "../schemas/common-schema"
 import {
   createMessageSchema,
   getMessageParamSchema,
+  updateMessageSchema,
 } from "../schemas/message-schema"
 
 import { sessionMiddleware } from "./middleware/session-middleware"
@@ -91,6 +94,28 @@ const messageRoute = new Hono()
       await readMessage.execute(session, receiverId)
 
       const response: MarkMessageAsReadResponse = successResponse(true)
+      return c.json(response)
+    },
+  )
+  .put(
+    "/:messageId",
+    sessionMiddleware,
+    zValidator("json", updateMessageSchema),
+    async (c) => {
+      const { messageId } = c.req.param()
+      const data = c.req.valid("json")
+
+      const session = c.get("userSession")
+
+      const updateMessage = container.get(UpdateMessage)
+
+      const result = await updateMessage.execute(
+        session,
+        messageId,
+        UpdateMessageEntity.fromJSON(data),
+      )
+
+      const response: UpdateMessageResponse = successResponse(result.toDTO())
       return c.json(response)
     },
   )
