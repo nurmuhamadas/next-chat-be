@@ -8,6 +8,8 @@ declare type NotificationsDTO = "PRIVATE" | "GROUP" | "CHANNEL"
 
 declare type GroupType = "PUBLIC" | "PRIVATE"
 
+declare type ChannelType = "PUBLIC" | "PRIVATE"
+
 declare interface ProfileDTO {
   id: string
   name: string
@@ -99,5 +101,47 @@ declare interface GroupOptionDTO {
   id: string
   userId: string
   groupId: string
+  notification: boolean
+}
+
+// CHANNEL
+declare interface ChannelOwnerDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+}
+
+declare interface ChannelDTO {
+  id: string
+  name: string
+  description: string | null
+  type: ChannelType
+  ownerId: string
+  imageUrl: string | null
+  inviteCode: string
+  totalSubscribers: number
+  isSubscriber: boolean
+  isAdmin: boolean
+}
+
+declare interface ChannelSearchDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+  totalSubscribers: number
+}
+
+declare interface ChannelSubscriberDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+  isAdmin: boolean
+  lastSeenAt: string | null
+}
+
+declare interface ChannelOptionDTO {
+  id: string
+  userId: string
+  channelId: string
   notification: boolean
 }

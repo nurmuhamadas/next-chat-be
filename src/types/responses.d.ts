@@ -92,4 +92,34 @@ declare type LeaveGroupResponse = ApiResponse<boolean>
 
 declare type DeleteGroupChatResponse = ApiResponse<boolean>
 
-declare type GetGroupOptionResponse = ApiResponse<GroupOptionDTO | null>
+declare type GetGroupOptionResponse = ApiResponse<GroupOptionDTO>
+
+// CHANNEL API
+declare type GetChannelsResponse = ApiCollectionResponse<ChannelDTO>
+
+declare type CreateChannelResponse = ApiResponse<ChannelDTO>
+
+declare type SearchChannelsResponse = ApiCollectionResponse<ChannelSearchDTO>
+
+declare type GetChannelResponse = ApiResponse<ChannelDTO>
+
+declare type PatchChannelResponse = ApiResponse<ChannelDTO>
+
+declare type DeleteChannelResponse = ApiResponse<{ id: string }>
+
+declare type GetChannelSubscribersResponse =
+  ApiCollectionResponse<ChannelSubscriberDTO>
+
+declare type SetAdminChannelResponse = ApiResponse<boolean>
+
+declare type UnsetAdminChannelResponse = ApiResponse<boolean>
+
+declare type SubscribeChannelResponse = ApiResponse<boolean>
+
+declare type UnsubscribeChannelResponse = ApiResponse<boolean>
+
+declare type ClearChannelChatResponse = ApiResponse<boolean>
+
+declare type GetChannelOptionResponse = ApiResponse<ChannelOptionDTO>
+
+declare type UpdateChannelOptionResponse = ApiResponse<ChannelOptionDTO>

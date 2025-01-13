@@ -16,11 +16,7 @@ export class LeaveGroup {
     private groupMemberRepository: GroupMemberRepository,
   ) {}
 
-  async execute(
-    session: SessionTokenEntity,
-    groupId: string,
-    code?: string,
-  ): Promise<void> {
+  async execute(session: SessionTokenEntity, groupId: string): Promise<void> {
     const group = await this.groupRepository.getGeneralGroupById(
       groupId,
       session.userId,
@@ -34,12 +30,9 @@ export class LeaveGroup {
       throw new InvariantError(ERROR.NOT_GROUP_MEMBER)
     }
 
-    if (group.type === "PRIVATE" && group.inviteCode !== code) {
-      throw new InvariantError(ERROR.INVALID_JOIN_CODE)
-    }
-
     if (group.totalMembers === 1) {
       await this.groupRepository.softDeleteGroup(groupId)
+      return
     }
 
     const totalAdmins = await this.groupMemberRepository.getTotalAdmins(groupId)

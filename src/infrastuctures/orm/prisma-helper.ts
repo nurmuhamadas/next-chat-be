@@ -1,4 +1,5 @@
 import {
+  ChannelType as DBChannelType,
   DBTimeFormat,
   GroupType as DBGroupType,
   Language as DBLanguage,
@@ -8,6 +9,7 @@ import {
 } from "@prisma/client"
 
 import { LogActivity } from "@/domains/auth/entities/user-log-entity"
+import { ChannelType } from "@/domains/channels/entities/enums"
 import { GroupType } from "@/domains/groups/entities/enums"
 import {
   Language,
@@ -66,5 +68,9 @@ export class PrismaHelper {
 
   static convertDBGroupType(type: DBGroupType): GroupType {
     return type === "PRIVATE" ? GroupType.PRIVATE : GroupType.PUBLIC
+  }
+
+  static convertDBChannelType(type: DBChannelType): ChannelType {
+    return type === "PRIVATE" ? ChannelType.PRIVATE : ChannelType.PUBLIC
   }
 }

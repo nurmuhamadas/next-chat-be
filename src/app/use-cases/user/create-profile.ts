@@ -86,12 +86,12 @@ export class CreateProfile {
       CookieHelper.setAuthCookies(c, newSession)
 
       return profile
-    } catch {
+    } catch (e) {
       if (fileId) {
         await this.storageRepository.deleteFile(fileId)
       }
 
-      throw new Error(ERROR.INTERNAL_SERVER_ERROR)
+      throw e
     }
   }
 }

@@ -5,47 +5,49 @@ import AuthorizationError from "@/common/exceptions/authorization-error"
 import InvariantError from "@/common/exceptions/invariant-error"
 import NotFoundError from "@/common/exceptions/not-found-error"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
-import { GroupEntity } from "@/domains/groups/entities/group-entity"
-import { UpdateGroupEntity } from "@/domains/groups/entities/update-group-entity"
-import { GroupRepository } from "@/domains/groups/repositories/group-repository"
+import { ChannelEntity } from "@/domains/channels/entities/channel-entity"
+import { UpdateChannelEntity } from "@/domains/channels/entities/update-channel-entity"
+import { ChannelRepository } from "@/domains/channels/repositories/channel-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
 
 @injectable()
-export class UpdateGroup {
+export class UpdateChannel {
   constructor(
-    @inject(KEYS.GroupRepository) private groupRepository: GroupRepository,
+    @inject(KEYS.ChannelRepository)
+    private channelRepository: ChannelRepository,
     @inject(KEYS.StorageRepository)
     private storageRepository: StorageRepository,
   ) {}
 
   async execute(
     session: SessionTokenEntity,
-    data: UpdateGroupEntity,
+    data: UpdateChannelEntity,
     imageFile?: File,
-  ): Promise<GroupEntity> {
-    const currentGroup = await this.groupRepository.getPublicOrJoinedGroupById(
-      data.id,
-      session.userId,
-    )
+  ): Promise<ChannelEntity> {
+    const currentChannel =
+      await this.channelRepository.getPublicOrJoinedChannelById(
+        data.id,
+        session.userId,
+      )
 
-    if (!currentGroup) {
-      throw new NotFoundError(ERROR.GROUP_NOT_FOUND)
+    if (!currentChannel) {
+      throw new NotFoundError(ERROR.CHANNEL_NOT_FOUND)
     }
 
-    if (!currentGroup.isAdmin) {
+    if (!currentChannel.isAdmin) {
       throw new AuthorizationError(ERROR.UNAUTHORIZE)
     }
 
-    if (data.name && data.name !== currentGroup.name) {
+    if (data.name && data.name !== currentChannel.name) {
       const isNameAvailable =
-        await this.groupRepository.checkGroupNameAvailability(
+        await this.channelRepository.checkChannelNameAvailability(
           session.userId,
           data.name,
         )
 
       if (!isNameAvailable) {
-        throw new InvariantError(ERROR.GROUP_NAME_DUPLICATED)
+        throw new InvariantError(ERROR.CHANNEL_NAME_DUPLICATED)
       }
     }
 
@@ -57,14 +59,14 @@ export class UpdateGroup {
     }
 
     try {
-      const result = await this.groupRepository.updateGroup(
+      const result = await this.channelRepository.updateChannel(
         session.userId,
         data,
       )
 
       // DELETE OLD IMAGE IF NEW IMAGE UPLOADED
-      if (fileId && currentGroup.imageUrl) {
-        await this.storageRepository.deleteFileByUrl(currentGroup.imageUrl)
+      if (fileId && currentChannel.imageUrl) {
+        await this.storageRepository.deleteFileByUrl(currentChannel.imageUrl)
       }
 
       return result

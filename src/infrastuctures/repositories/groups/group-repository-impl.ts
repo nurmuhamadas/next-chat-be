@@ -182,7 +182,7 @@ export class GroupRepositoryImpl implements GroupRepository {
       PrismaHelper.convertDBGroupType(result.type),
       result.ownerId,
       result.inviteCode,
-      0,
+      0, //TODO: CHANGE
       true,
       true,
       result.description ?? undefined,
