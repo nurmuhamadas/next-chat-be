@@ -7,6 +7,7 @@ import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-me
 import { DeleteMessageByAdmin } from "@/app/use-cases/messages/delete-message-by-admin"
 import { DeleteMessageForAll } from "@/app/use-cases/messages/delete-message-for-all"
 import { DeleteMessageForMe } from "@/app/use-cases/messages/delete-message-for-me"
+import { ForwardMessage } from "@/app/use-cases/messages/forward-message"
 import { GetMessages } from "@/app/use-cases/messages/get-messages"
 import { ReadMessage } from "@/app/use-cases/messages/read-message"
 import { UpdateMessage } from "@/app/use-cases/messages/update-message"
@@ -20,6 +21,7 @@ import { container } from "@/infrastuctures/container"
 import { searchQuerySchema } from "../schemas/common-schema"
 import {
   createMessageSchema,
+  forwardMessageSchema,
   getMessageParamSchema,
   updateMessageSchema,
 } from "../schemas/message-schema"
@@ -164,5 +166,28 @@ const messageRoute = new Hono()
     })
     return c.json(response)
   })
+  .delete(
+    "/:messageId/forwarded",
+    zValidator("json", forwardMessageSchema),
+    sessionMiddleware,
+    async (c) => {
+      const { messageId } = c.req.param()
+      const { receiverId, roomType } = c.req.valid("json")
+
+      const session = c.get("userSession")
+
+      const forwardMessage = container.get(ForwardMessage)
+
+      const result = await forwardMessage.execute(
+        session,
+        receiverId,
+        messageId,
+        roomType,
+      )
+
+      const response: ForwardMessageResponse = successResponse(result.toDTO())
+      return c.json(response)
+    },
+  )
 
 export default messageRoute

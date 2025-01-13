@@ -56,3 +56,8 @@ export const updateMessageSchema = z.object({
     .max(1048576, ERROR.MESSAGE_TOO_LONG),
   isEmojiOnly: z.boolean({ invalid_type_error: ERROR.INVALID_TYPE }).optional(),
 })
+
+export const forwardMessageSchema = z.object({
+  roomType: z.nativeEnum(RoomType),
+  receiverId: z.string().min(1, ERROR.REQUIRED),
+})

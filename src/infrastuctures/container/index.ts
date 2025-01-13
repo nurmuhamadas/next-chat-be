@@ -47,6 +47,7 @@ import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-me
 import { DeleteMessageByAdmin } from "@/app/use-cases/messages/delete-message-by-admin"
 import { DeleteMessageForAll } from "@/app/use-cases/messages/delete-message-for-all"
 import { DeleteMessageForMe } from "@/app/use-cases/messages/delete-message-for-me"
+import { ForwardMessage } from "@/app/use-cases/messages/forward-message"
 import { GetMessages } from "@/app/use-cases/messages/get-messages"
 import { ReadMessage } from "@/app/use-cases/messages/read-message"
 import { UpdateMessage } from "@/app/use-cases/messages/update-message"
@@ -295,5 +296,6 @@ container.bind<UpdateMessage>(UpdateMessage).toSelf()
 container.bind<DeleteMessageForMe>(DeleteMessageForMe).toSelf()
 container.bind<DeleteMessageForAll>(DeleteMessageForAll).toSelf()
 container.bind<DeleteMessageByAdmin>(DeleteMessageByAdmin).toSelf()
+container.bind<ForwardMessage>(ForwardMessage).toSelf()
 
 export { container }
