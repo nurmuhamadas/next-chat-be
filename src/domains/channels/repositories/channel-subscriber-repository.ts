@@ -28,4 +28,9 @@ export abstract class ChannelSubscriberRepository {
   abstract unsubscribeChannel(channelId: string, userId: string): Promise<void>
 
   abstract getTotalAdmins(channelId: string): Promise<number>
+
+  abstract getSubscriberHistory(
+    channelId: string,
+    userId: string,
+  ): Promise<ChannelSubscriberEntity[]>
 }
