@@ -97,4 +97,33 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
       select: { userId: true },
     })
   }
+
+  async getBlockedHistory(
+    userId: string,
+    blockedUserId: string,
+  ): Promise<BlockedUserEntity[]> {
+    const result = await prisma.blockedUser.findMany({
+      where: { userId, blockedUserId },
+      include: {
+        blockedUser: {
+          select: {
+            id: true,
+            profile: { select: { name: true, imageUrl: true } },
+          },
+        },
+      },
+    })
+
+    return result.map(
+      (blocked) =>
+        new BlockedUserEntity(
+          blocked.id,
+          blocked.userId,
+          blocked.blockedUserId,
+          blocked.blockedUser.profile?.name ?? "Unknown",
+          blocked.createdAt,
+          blocked.blockedUser.profile?.imageUrl ?? undefined,
+        ),
+    )
+  }
 }
