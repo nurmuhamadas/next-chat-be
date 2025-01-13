@@ -4,6 +4,7 @@ import { Hono } from "hono"
 import { CreateChannelMessage } from "@/app/use-cases/messages/create-channel-message"
 import { CreateGroupMessage } from "@/app/use-cases/messages/create-group-message"
 import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-message"
+import { DeleteMessageForMe } from "@/app/use-cases/messages/delete-message-for-me"
 import { GetMessages } from "@/app/use-cases/messages/get-messages"
 import { ReadMessage } from "@/app/use-cases/messages/read-message"
 import { UpdateMessage } from "@/app/use-cases/messages/update-message"
@@ -119,5 +120,19 @@ const messageRoute = new Hono()
       return c.json(response)
     },
   )
+  .delete("/:messageId/me", sessionMiddleware, async (c) => {
+    const { messageId } = c.req.param()
+
+    const session = c.get("userSession")
+
+    const deleteMessage = container.get(DeleteMessageForMe)
+
+    await deleteMessage.execute(session, messageId)
+
+    const response: DeleteMessageResponse = successResponse({
+      id: messageId,
+    })
+    return c.json(response)
+  })
 
 export default messageRoute

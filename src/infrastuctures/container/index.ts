@@ -44,6 +44,7 @@ import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
 import { CreateChannelMessage } from "@/app/use-cases/messages/create-channel-message"
 import { CreateGroupMessage } from "@/app/use-cases/messages/create-group-message"
 import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-message"
+import { DeleteMessageForMe } from "@/app/use-cases/messages/delete-message-for-me"
 import { GetMessages } from "@/app/use-cases/messages/get-messages"
 import { ReadMessage } from "@/app/use-cases/messages/read-message"
 import { UpdateMessage } from "@/app/use-cases/messages/update-message"
@@ -289,5 +290,6 @@ container.bind<CreateChannelMessage>(CreateChannelMessage).toSelf()
 container.bind<GetMessages>(GetMessages).toSelf()
 container.bind<ReadMessage>(ReadMessage).toSelf()
 container.bind<UpdateMessage>(UpdateMessage).toSelf()
+container.bind<DeleteMessageForMe>(DeleteMessageForMe).toSelf()
 
 export { container }
