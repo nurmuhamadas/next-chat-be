@@ -45,6 +45,7 @@ import { CreateChannelMessage } from "@/app/use-cases/messages/create-channel-me
 import { CreateGroupMessage } from "@/app/use-cases/messages/create-group-message"
 import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-message"
 import { GetMessages } from "@/app/use-cases/messages/get-messages"
+import { ReadMessage } from "@/app/use-cases/messages/read-message"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
@@ -285,5 +286,6 @@ container.bind<CreatePrivateMessage>(CreatePrivateMessage).toSelf()
 container.bind<CreateGroupMessage>(CreateGroupMessage).toSelf()
 container.bind<CreateChannelMessage>(CreateChannelMessage).toSelf()
 container.bind<GetMessages>(GetMessages).toSelf()
+container.bind<ReadMessage>(ReadMessage).toSelf()
 
 export { container }

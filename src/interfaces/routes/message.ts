@@ -5,6 +5,7 @@ import { CreateChannelMessage } from "@/app/use-cases/messages/create-channel-me
 import { CreateGroupMessage } from "@/app/use-cases/messages/create-group-message"
 import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-message"
 import { GetMessages } from "@/app/use-cases/messages/get-messages"
+import { ReadMessage } from "@/app/use-cases/messages/read-message"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
@@ -74,6 +75,22 @@ const messageRoute = new Hono()
         result.total,
         result.cursor,
       )
+      return c.json(response)
+    },
+  )
+  .post(
+    "/:roomType/:receiverId/read",
+    zValidator("param", getMessageParamSchema),
+    sessionMiddleware,
+    async (c) => {
+      const { receiverId } = c.req.valid("param")
+
+      const session = c.get("userSession")
+
+      const readMessage = container.get(ReadMessage)
+      await readMessage.execute(session, receiverId)
+
+      const response: MarkMessageAsReadResponse = successResponse(true)
       return c.json(response)
     },
   )
