@@ -134,4 +134,36 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
     })
     return result
   }
+
+  async getMemberHistory(
+    groupId: string,
+    userId: string,
+  ): Promise<GroupMemberEntity[]> {
+    const result = await prisma.groupMember.findMany({
+      where: { groupId, userId, leftAt: null },
+      include: {
+        user: {
+          select: {
+            profile: {
+              select: { name: true, imageUrl: true, lastSeenAt: true },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    })
+
+    return result.map(
+      (member) =>
+        new GroupMemberEntity(
+          member.userId,
+          member.user.profile?.name ?? "Unknown",
+          member.isAdmin,
+          member.createdAt,
+          member.leftAt ?? undefined,
+          member.user.profile?.imageUrl ?? undefined,
+          member.user.profile?.lastSeenAt ?? undefined,
+        ),
+    )
+  }
 }
