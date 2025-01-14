@@ -1,4 +1,5 @@
 import { RoomType } from "./enums"
+import { LastMessageEntity } from "./last-message-entity"
 import { RoomProfileEntity } from "./room-profile-entity"
 
 export class RoomEntity {
@@ -13,6 +14,7 @@ export class RoomEntity {
     public readonly user2?: RoomProfileEntity,
     public readonly group?: RoomProfileEntity,
     public readonly channel?: RoomProfileEntity,
+    public readonly lastMessage?: LastMessageEntity,
   ) {}
 
   public toDTO(): RoomDTO {
@@ -53,6 +55,7 @@ export class RoomEntity {
       archived: this.archived,
       isActive,
       totalUnreadMessages: this.totalUnreadMessage,
+      lastMessage: this.lastMessage?.toDTO() ?? null,
     }
   }
 }

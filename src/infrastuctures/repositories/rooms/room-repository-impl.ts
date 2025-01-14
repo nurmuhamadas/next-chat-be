@@ -2,6 +2,7 @@ import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
 import { CreateRoomEntity } from "@/domains/rooms/entities/create-room-entity"
 import { RoomType } from "@/domains/rooms/entities/enums"
+import { LastMessageEntity } from "@/domains/rooms/entities/last-message-entity"
 import { RoomEntity } from "@/domains/rooms/entities/room-entity"
 import { RoomProfileEntity } from "@/domains/rooms/entities/room-profile-entity"
 import { SearchPrivateRoomEntity } from "@/domains/rooms/entities/search-private-room-entity"
@@ -116,6 +117,14 @@ export class RoomRepositoryImpl implements RoomRepository {
           imageUrl: v.channel?.imageUrl,
           isActive: v.channel ? v.channel?.subscribers.length > 0 : false,
         }),
+        v.lastMessage
+          ? new LastMessageEntity(
+              v.lastMessage.id,
+              v.lastMessage.createdAt,
+              v.lastMessage.sender.profile?.name ?? "Unknown",
+              v.lastMessage.message ?? undefined,
+            )
+          : undefined,
       )
     })
 

@@ -163,6 +163,12 @@ declare interface ChannelOptionDTO {
 }
 
 // ROOMS
+declare interface LastMessageDTO {
+  id: string
+  name: string
+  message: string | null
+  time: string
+}
 declare interface RoomDTO {
   id: string
   /** userId or groupId or channelId */
@@ -175,6 +181,7 @@ declare interface RoomDTO {
   /** determine if user is group members/channel subs or not */
   isActive: boolean
   totalUnreadMessages: number
+  lastMessage: LastMessageDTO | null
 }
 
 declare interface PrivateRoomDTO {
