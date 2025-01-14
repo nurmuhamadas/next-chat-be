@@ -1,5 +1,6 @@
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
+import { CreateRoomEntity } from "@/domains/rooms/entities/create-room-entity"
 import { RoomType } from "@/domains/rooms/entities/enums"
 import { RoomEntity } from "@/domains/rooms/entities/room-entity"
 import { RoomProfileEntity } from "@/domains/rooms/entities/room-profile-entity"
@@ -489,5 +490,70 @@ export class RoomRepositoryImpl implements RoomRepository {
         },
       })
     })
+  }
+
+  async updateLastMessage(roomId: string, messageId: string): Promise<void> {
+    await prisma.room.update({
+      where: { id: roomId },
+      data: { deletedAt: null, lastMessageId: messageId },
+    })
+  }
+
+  async createRoom(data: CreateRoomEntity): Promise<RoomEntity> {
+    const result = await prisma.room.create({
+      data: {
+        type: data.type,
+        ownerId: data.ownerId,
+        privateChatId:
+          data.type === "PRIVATE" && data.privateChatId
+            ? data.privateChatId
+            : undefined,
+        groupId:
+          data.type === "GROUP" && data.groupId ? data.groupId : undefined,
+        channelId:
+          data.type === "CHANNEL" && data.channelId
+            ? data.channelId
+            : undefined,
+        unreadMessage: {
+          create: { count: data.totalUnreadMessage, userId: data.ownerId },
+        },
+      },
+      include: { ...this.getRoomIncludeQuery({ userId: data.ownerId }) },
+    })
+
+    return new RoomEntity(
+      result.id,
+      PrismaHelper.convertDBRoomType(result.type),
+      result.ownerId,
+      !!result.pinnedAt,
+      !!result.archivedAt,
+      result.unreadMessage?.count ?? 0,
+      RoomProfileEntity.fromJSON({
+        id: result.privateChat?.user1.id,
+        name: result.privateChat?.user1.profile?.name,
+        imageUrl: result.privateChat?.user1.profile?.imageUrl,
+        isActive: true,
+      }),
+      RoomProfileEntity.fromJSON({
+        id: result.privateChat?.user2.id,
+        name: result.privateChat?.user2.profile?.name,
+        imageUrl: result.privateChat?.user2.profile?.imageUrl,
+        isActive: true,
+      }),
+      RoomProfileEntity.fromJSON({
+        id: result.groupId,
+        name: result.group?.name,
+        imageUrl: result.group?.imageUrl,
+        isActive: result.group ? result.group?.members.length > 0 : false,
+      }),
+      RoomProfileEntity.fromJSON({
+        id: result.channelId,
+        name: result.channel?.name,
+        imageUrl: result.channel?.imageUrl,
+        isActive: result.channel
+          ? result.channel?.subscribers.length > 0
+          : false,
+      }),
+    )
   }
 }
