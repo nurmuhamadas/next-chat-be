@@ -20,4 +20,10 @@ export abstract class PrivateChatOptionRepository {
     userId: string,
     userPairId: string,
   ): Promise<PrivateChatOptionEntity[]>
+
+  abstract updateOrCreatePrivateChatOption(
+    id: string,
+    privateChatId: string,
+    option: UpdatePrivateChatOptionEntity,
+  ): Promise<PrivateChatOptionEntity>
 }

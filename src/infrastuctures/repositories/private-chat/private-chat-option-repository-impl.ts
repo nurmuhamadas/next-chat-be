@@ -111,4 +111,31 @@ export class PrivateChatOptionRepositoryImpl
         ),
     )
   }
+
+  async updateOrCreatePrivateChatOption(
+    id: string = "",
+    privateChatId: string,
+    option: UpdatePrivateChatOptionEntity,
+  ): Promise<PrivateChatOptionEntity> {
+    const result = await prisma.privateChatOption.upsert({
+      where: { id },
+      create: {
+        userId: option.userId,
+        privateChatId,
+        notification: option.notification,
+      },
+      update: {
+        notification: option.notification,
+      },
+    })
+
+    return new PrivateChatOptionEntity(
+      result.id,
+      result.userId,
+      result.privateChatId,
+      result.notification,
+      result.createdAt,
+      result.deletedAt ?? undefined,
+    )
+  }
 }
