@@ -75,4 +75,34 @@ export class UnreadMessageRepositoryImpl implements UnreadMessageRepository {
       },
     })
   }
+
+  async incrementGroupUnreadMessageCountExceptOwner(
+    userId: string,
+    groupId: string,
+  ): Promise<void> {
+    await prisma.userUnreadMessage.updateMany({
+      where: {
+        room: {
+          ownerId: { not: userId },
+          groupId,
+        },
+      },
+      data: { count: { increment: 1 } },
+    })
+  }
+
+  async incrementChannelUnreadMessageCountExceptOwner(
+    userId: string,
+    channelId: string,
+  ): Promise<void> {
+    await prisma.userUnreadMessage.updateMany({
+      where: {
+        room: {
+          ownerId: { not: userId },
+          channelId,
+        },
+      },
+      data: { count: { increment: 1 } },
+    })
+  }
 }
