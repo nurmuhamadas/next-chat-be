@@ -1,10 +1,8 @@
-import { ChannelType as IChannelType } from "./enums"
-
 export class UpdateChannelEntity {
   constructor(
     public readonly id: string,
     public readonly name?: string,
-    public readonly type?: IChannelType,
+    public readonly type?: ChannelType,
     public readonly description?: string,
     public imageUrl?: string,
   ) {}
@@ -19,7 +17,7 @@ export class UpdateChannelEntity {
     return new UpdateChannelEntity(
       json.id,
       json.name,
-      json.type === "PUBLIC" ? IChannelType.PUBLIC : IChannelType.PRIVATE,
+      json.type,
       json.description,
       json.imageUrl,
     )

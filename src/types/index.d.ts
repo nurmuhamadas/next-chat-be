@@ -25,3 +25,5 @@ declare type LogActivity =
   | "REACT_MESSAGE"
   | "BLOCK_USER"
   | "UNBLOCK_USER"
+
+declare type ChannelType = "PUBLIC" | "PRIVATE"

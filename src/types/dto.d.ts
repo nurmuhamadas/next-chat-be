@@ -8,8 +8,6 @@ declare type NotificationsDTO = "PRIVATE" | "GROUP" | "CHANNEL"
 
 declare type GroupType = "PUBLIC" | "PRIVATE"
 
-declare type ChannelType = "PUBLIC" | "PRIVATE"
-
 declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"
 
 declare type MessageStatus =

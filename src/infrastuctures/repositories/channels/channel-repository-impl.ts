@@ -87,8 +87,8 @@ export class ChannelRepositoryImpl implements ChannelRepository {
         v._count.subscribers,
         v.subscribers.length > 0,
         v.subscribers[0]?.isAdmin ?? false,
-        v.description ?? undefined,
-        v.imageUrl ?? undefined,
+        v.description,
+        v.imageUrl,
       )
     })
 
@@ -154,8 +154,8 @@ export class ChannelRepositoryImpl implements ChannelRepository {
       1,
       true,
       true,
-      result.description ?? undefined,
-      result.imageUrl ?? undefined,
+      result.description,
+      result.imageUrl,
     )
   }
 
@@ -195,7 +195,7 @@ export class ChannelRepositoryImpl implements ChannelRepository {
         v.id,
         v.name,
         v._count.subscribers,
-        v.imageUrl ?? undefined,
+        v.imageUrl,
       )
     })
 
@@ -225,8 +225,8 @@ export class ChannelRepositoryImpl implements ChannelRepository {
       result._count.subscribers,
       result.subscribers.length > 0,
       result.subscribers[0]?.isAdmin ?? false,
-      result.description ?? undefined,
-      result.imageUrl ?? undefined,
+      result.description,
+      result.imageUrl,
     )
   }
 
@@ -250,8 +250,8 @@ export class ChannelRepositoryImpl implements ChannelRepository {
       result._count.subscribers,
       result.subscribers.length > 0,
       result.subscribers[0]?.isAdmin ?? false,
-      result.description ?? undefined,
-      result.imageUrl ?? undefined,
+      result.description,
+      result.imageUrl,
     )
   }
 
@@ -279,8 +279,8 @@ export class ChannelRepositoryImpl implements ChannelRepository {
       result._count.subscribers,
       result.subscribers.length > 0,
       result.subscribers[0]?.isAdmin ?? false,
-      result.description ?? undefined,
-      result.imageUrl ?? undefined,
+      result.description,
+      result.imageUrl,
     )
   }
 
@@ -324,8 +324,8 @@ export class ChannelRepositoryImpl implements ChannelRepository {
       result._count.subscribers,
       result.subscribers.length > 0,
       result.subscribers[0]?.isAdmin ?? false,
-      result.description ?? undefined,
-      result.imageUrl ?? undefined,
+      result.description,
+      result.imageUrl,
     )
   }
 }

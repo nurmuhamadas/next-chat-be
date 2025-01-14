@@ -10,7 +10,6 @@ import {
 } from "@prisma/client"
 import { ITXClientDenyList } from "@prisma/client/runtime/library"
 
-import { ChannelType } from "@/domains/channels/entities/enums"
 import { GroupType } from "@/domains/groups/entities/enums"
 import { RoomType } from "@/domains/rooms/entities/enums"
 import {
@@ -75,7 +74,7 @@ export class PrismaHelper {
   }
 
   static convertDBChannelType(type: DBChannelType): ChannelType {
-    return type === "PRIVATE" ? ChannelType.PRIVATE : ChannelType.PUBLIC
+    return type
   }
 
   static convertDBRoomType(type: DBRoomType): RoomType {
