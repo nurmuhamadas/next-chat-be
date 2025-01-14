@@ -9,7 +9,18 @@ import { prisma } from "@/infrastuctures/orm/prisma"
 export class PrivateChatRepositoryImpl implements PrivateChatRepository {
   async create(data: CreatePrivateChatEntity): Promise<PrivateChatEntity> {
     const result = await prisma.privateChat.create({
-      data: { user1Id: data.userId1, user2Id: data.userId2 },
+      data: {
+        user1Id: data.userId1,
+        user2Id: data.userId2,
+        usersOption: {
+          createMany: {
+            data: [
+              { userId: data.userId1, notification: true },
+              { userId: data.userId2, notification: true },
+            ],
+          },
+        },
+      },
     })
 
     return new PrivateChatEntity(result.id, result.user1Id, result.user2Id)
