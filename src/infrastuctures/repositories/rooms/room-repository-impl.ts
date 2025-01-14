@@ -556,4 +556,24 @@ export class RoomRepositoryImpl implements RoomRepository {
       }),
     )
   }
+
+  async updateGroupLastMessage(
+    groupId: string,
+    messageId: string,
+  ): Promise<void> {
+    await prisma.room.updateMany({
+      where: { groupId, type: "GROUP" },
+      data: { lastMessageId: messageId },
+    })
+  }
+
+  async updateChannelLastMessage(
+    groupId: string,
+    messageId: string,
+  ): Promise<void> {
+    await prisma.room.updateMany({
+      where: { channelId: groupId, type: "CHANNEL" },
+      data: { lastMessageId: messageId },
+    })
+  }
 }

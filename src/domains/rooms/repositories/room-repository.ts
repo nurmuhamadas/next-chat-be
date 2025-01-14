@@ -55,4 +55,14 @@ export abstract class RoomRepository {
   abstract updateLastMessage(roomId: string, messageId: string): Promise<void>
 
   abstract createRoom(data: CreateRoomEntity): Promise<RoomEntity>
+
+  abstract updateGroupLastMessage(
+    groupId: string,
+    messageId: string,
+  ): Promise<void>
+
+  abstract updateChannelLastMessage(
+    groupId: string,
+    messageId: string,
+  ): Promise<void>
 }
