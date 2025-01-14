@@ -3,16 +3,16 @@ export class BlockedUserEntity {
     public readonly id: string,
     public readonly userId: string,
     public readonly blockedUserId: string,
-    public readonly name: string,
     public readonly createdAt: Date,
-    public readonly imageUrl?: string,
-    public readonly unblockedAt?: Date,
+    public readonly name?: string | null,
+    public readonly imageUrl?: string | null,
+    public readonly unblockedAt?: Date | null,
   ) {}
 
   public toDTO(): BlockedUserDTO {
     return {
       id: this.blockedUserId,
-      name: this.name,
+      name: this.name ?? "Unknown",
       imageUrl: this.imageUrl ?? null,
     }
   }

@@ -38,9 +38,9 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
         result.id,
         userId,
         result.blockedUserId,
-        result.blockedUser.profile?.name ?? "Unknown",
         result.createdAt,
-        result.blockedUser.profile?.imageUrl ?? undefined,
+        result.blockedUser.profile?.name,
+        result.blockedUser.profile?.imageUrl,
       )
     })
 
@@ -119,9 +119,9 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
           blocked.id,
           blocked.userId,
           blocked.blockedUserId,
-          blocked.blockedUser.profile?.name ?? "Unknown",
           blocked.createdAt,
-          blocked.blockedUser.profile?.imageUrl ?? undefined,
+          blocked.blockedUser.profile?.name,
+          blocked.blockedUser.profile?.imageUrl,
         ),
     )
   }
