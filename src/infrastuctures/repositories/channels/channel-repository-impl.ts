@@ -72,6 +72,11 @@ export class ChannelRepositoryImpl implements ChannelRepository {
       skip: cursor ? 1 : undefined,
     })
 
+    let nextCursor: string | undefined
+    if (result.length > limit) {
+      nextCursor = result.pop()?.id
+    }
+
     const data = result.map((v) => {
       return new ChannelEntity(
         v.id,
@@ -86,12 +91,6 @@ export class ChannelRepositoryImpl implements ChannelRepository {
         v.imageUrl ?? undefined,
       )
     })
-
-    let nextCursor: string | undefined
-    if (result.length > limit) {
-      nextCursor = result[result.length - 1].id
-      result.pop()
-    }
 
     return new SearchResultEntity(data, data.length, nextCursor)
   }
@@ -188,8 +187,7 @@ export class ChannelRepositoryImpl implements ChannelRepository {
 
     let nextCursor: string | undefined
     if (result.length > limit) {
-      nextCursor = result[result.length - 1].id
-      result.pop()
+      nextCursor = result.pop()?.id
     }
 
     const data = result.map((v) => {

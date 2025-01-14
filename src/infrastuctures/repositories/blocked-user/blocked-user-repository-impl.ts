@@ -28,6 +28,11 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
       skip: cursor ? 1 : undefined,
     })
 
+    let nextCursor: string | undefined
+    if (result.length > limit) {
+      nextCursor = result.pop()?.id
+    }
+
     const data = result.map((result) => {
       return new BlockedUserEntity(
         result.id,
@@ -38,12 +43,6 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
         result.blockedUser.profile?.imageUrl ?? undefined,
       )
     })
-
-    let nextCursor: string | undefined
-    if (data.length > limit) {
-      nextCursor = data[data.length - 1].id
-      data.pop()
-    }
 
     return new SearchResultEntity(data, data.length, nextCursor)
   }

@@ -31,8 +31,7 @@ export class ChannelSubscriberRepositoryImpl
 
     let nextCursor: string | undefined
     if (result.length > limit) {
-      nextCursor = result[result.length - 1].id
-      result.pop()
+      nextCursor = result.pop()?.id
     }
 
     const data = result.map(

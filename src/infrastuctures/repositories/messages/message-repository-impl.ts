@@ -186,9 +186,9 @@ export class MessageRepositoryImpl implements MessageRepository {
       skip: cursor ? 1 : undefined,
     })
 
-    let nextCursor: string | undefined = undefined
+    let nextCursor: string | undefined
     if (result.length === limit + 1) {
-      nextCursor = result.pop()?.id ?? undefined
+      nextCursor = result.pop()?.id
     }
 
     const data = result.map((result) => {
@@ -258,9 +258,9 @@ export class MessageRepositoryImpl implements MessageRepository {
       skip: cursor ? 1 : undefined,
     })
 
-    let nextCursor: string | undefined = undefined
+    let nextCursor: string | undefined
     if (result.length === limit + 1) {
-      nextCursor = result.pop()?.id ?? undefined
+      nextCursor = result.pop()?.id
     }
 
     const data = result.map((result) => {
@@ -330,9 +330,9 @@ export class MessageRepositoryImpl implements MessageRepository {
       skip: cursor ? 1 : undefined,
     })
 
-    let nextCursor: string | undefined = undefined
+    let nextCursor: string | undefined
     if (result.length === limit + 1) {
-      nextCursor = result.pop()?.id ?? undefined
+      nextCursor = result.pop()?.id
     }
 
     const data = result.map((result) => {

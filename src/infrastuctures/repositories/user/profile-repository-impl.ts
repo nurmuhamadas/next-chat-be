@@ -109,7 +109,7 @@ export class ProfileRepositoryImpl implements ProfileRepository {
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<SearchUserEntity>> {
-    const results = await prisma.profile.findMany({
+    const result = await prisma.profile.findMany({
       where: {
         userId: { not: userId },
         OR: [
@@ -128,23 +128,22 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       skip: params.cursor ? 1 : undefined,
     })
 
-    const data = results.map(
-      (result) =>
+    let nextCursor: string | undefined
+    if (result.length > params.limit) {
+      nextCursor = result.pop()?.userId
+    }
+
+    const data = result.map(
+      (v) =>
         new SearchUserEntity(
-          result.userId,
-          result.name,
-          result.imageUrl ?? undefined,
-          result.lastSeenAt ?? undefined,
+          v.userId,
+          v.name,
+          v.imageUrl ?? undefined,
+          v.lastSeenAt ?? undefined,
         ),
     )
 
-    let nextCursor: string | undefined
-    if (data.length > params.limit) {
-      nextCursor = data[data.length - 1].id
-      data.pop()
-    }
-
-    return new SearchResultEntity(data, results.length, nextCursor)
+    return new SearchResultEntity(data, result.length, nextCursor)
   }
 
   async searchForMember(
@@ -176,6 +175,11 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       skip: cursor ? 1 : undefined,
     })
 
+    let nextCursor: string | undefined
+    if (result.length > params.limit) {
+      nextCursor = result.pop()?.userId
+    }
+
     const data = result.map(
       (result) =>
         new SearchUserForMemberEntity(
@@ -186,12 +190,6 @@ export class ProfileRepositoryImpl implements ProfileRepository {
           result.lastSeenAt ?? undefined,
         ),
     )
-
-    let nextCursor: string | undefined
-    if (data.length > params.limit) {
-      nextCursor = data[data.length - 1].id
-      data.pop()
-    }
 
     return new SearchResultEntity(data, result.length, nextCursor)
   }
