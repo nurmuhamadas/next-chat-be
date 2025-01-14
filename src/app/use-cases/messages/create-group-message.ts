@@ -9,6 +9,8 @@ import { AttachmentEntity } from "@/domains/messages/entities/attachment-entity"
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
 import { MessageEntity } from "@/domains/messages/entities/message-entity"
 import { MessageRepository } from "@/domains/messages/repositories/message-repository"
+import { UnreadMessageRepository } from "@/domains/messages/repositories/unread-message-repository"
+import { RoomRepository } from "@/domains/rooms/repositories/room-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
 
@@ -27,6 +29,10 @@ export class CreateGroupMessage {
     private storageRepository: StorageRepository,
     @inject(KEYS.GroupRepository)
     private groupRepository: GroupRepository,
+    @inject(KEYS.RoomRepository)
+    private roomRepository: RoomRepository,
+    @inject(KEYS.UnreadMessageRepository)
+    private unreadMessageRepository: UnreadMessageRepository,
   ) {}
 
   async execute(
@@ -96,6 +102,15 @@ export class CreateGroupMessage {
         session.userId,
         message,
         parentMessage ?? undefined,
+      )
+
+      await this.roomRepository.updateGroupLastMessage(
+        data.groupId,
+        createdMessage.id,
+      )
+      await this.unreadMessageRepository.incrementGroupUnreadMessageCountExceptOwner(
+        session.userId,
+        data.groupId,
       )
 
       return createdMessage
