@@ -9,6 +9,8 @@ import { AttachmentEntity } from "@/domains/messages/entities/attachment-entity"
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
 import { MessageEntity } from "@/domains/messages/entities/message-entity"
 import { MessageRepository } from "@/domains/messages/repositories/message-repository"
+import { UnreadMessageRepository } from "@/domains/messages/repositories/unread-message-repository"
+import { RoomRepository } from "@/domains/rooms/repositories/room-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
 
@@ -27,6 +29,10 @@ export class CreateChannelMessage {
     private storageRepository: StorageRepository,
     @inject(KEYS.ChannelRepository)
     private channelRepository: ChannelRepository,
+    @inject(KEYS.RoomRepository)
+    private roomRepository: RoomRepository,
+    @inject(KEYS.UnreadMessageRepository)
+    private unreadMessageRepository: UnreadMessageRepository,
   ) {}
 
   async execute(
@@ -34,20 +40,20 @@ export class CreateChannelMessage {
     data: CreateMessageEntity,
     attachments: File[] = [],
   ): Promise<MessageEntity> {
-    if (!data.groupId) {
+    if (!data.channelId) {
       throw new InvariantError(ERROR.INVALID_TYPE, ["roomType"])
     }
 
     const channel = await this.channelRepository.getPublicOrJoinedChannelById(
-      data.groupId,
+      data.channelId,
       session.userId,
     )
     if (!channel) {
-      throw new InvariantError(ERROR.GROUP_NOT_FOUND, ["receiverId"])
+      throw new InvariantError(ERROR.CHANNEL_NOT_FOUND, ["receiverId"])
     }
 
     if (!channel.isSubscriber) {
-      throw new AuthorizationError(ERROR.NOT_GROUP_MEMBER)
+      throw new AuthorizationError(ERROR.USER_IS_NOT_SUBSCRIBER)
     }
 
     const parentMessage = data.parentMessageId
@@ -96,6 +102,15 @@ export class CreateChannelMessage {
         session.userId,
         message,
         parentMessage ?? undefined,
+      )
+
+      await this.roomRepository.updateChannelLastMessage(
+        data.channelId,
+        createdMessage.id,
+      )
+      await this.unreadMessageRepository.incrementChannelUnreadMessageCountExceptOwner(
+        session.userId,
+        data.channelId,
       )
 
       return createdMessage
