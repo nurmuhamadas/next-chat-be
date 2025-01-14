@@ -10,7 +10,6 @@ import {
 } from "@prisma/client"
 import { ITXClientDenyList } from "@prisma/client/runtime/library"
 
-import { LogActivity } from "@/domains/auth/entities/user-log-entity"
 import { ChannelType } from "@/domains/channels/entities/enums"
 import { GroupType } from "@/domains/groups/entities/enums"
 import { RoomType } from "@/domains/rooms/entities/enums"
@@ -24,7 +23,7 @@ import { prisma } from "./prisma"
 
 export class PrismaHelper {
   static convertLogActivity(activity: LogActivity): LogActivityModel {
-    return activity as unknown as LogActivityModel
+    return activity
   }
 
   static transaction<T>(

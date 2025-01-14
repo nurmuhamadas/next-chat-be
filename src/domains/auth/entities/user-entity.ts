@@ -4,12 +4,12 @@ import { ProfileEntity } from "@/domains/users/entities/profile-entity"
 export class UserEntity {
   constructor(
     public readonly id: string,
-    public username: string,
-    public email: string,
-    public password: string,
-    public emailVerifiedAt: Date | null,
-    public setting?: Partial<SettingEntity>,
-    public profile?: Partial<ProfileEntity>,
+    public readonly username: string,
+    public readonly email: string,
+    public readonly password: string,
+    public readonly emailVerifiedAt?: Date | null,
+    public readonly setting?: Partial<SettingEntity> | null,
+    public readonly profile?: Partial<ProfileEntity> | null,
   ) {}
 
   get isVerified() {
