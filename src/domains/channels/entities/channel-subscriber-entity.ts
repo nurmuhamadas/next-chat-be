@@ -3,6 +3,8 @@ export class ChannelSubscriberEntity {
     public readonly id: string,
     public readonly name: string,
     public readonly isAdmin: boolean,
+    public readonly createdAt: Date,
+    public readonly unsubscribedAt?: Date,
     public readonly imageUrl?: string,
     public readonly lastSeenAt?: Date,
   ) {}

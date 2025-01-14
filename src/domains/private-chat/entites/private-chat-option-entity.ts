@@ -4,6 +4,8 @@ export class PrivateChatOptionEntity {
     public readonly userId: string,
     public readonly privateChatId: string,
     public readonly notification: boolean,
+    public readonly createdAt: Date,
+    public readonly deletedAt?: Date,
   ) {}
 
   public toDTO(): PrivateChatOptionDTO {

@@ -41,6 +41,16 @@ import { RemoveGroupAdmin } from "@/app/use-cases/groups/remove-group-admin"
 import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { UpdateGroup } from "@/app/use-cases/groups/update-group"
 import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
+import { CreateChannelMessage } from "@/app/use-cases/messages/create-channel-message"
+import { CreateGroupMessage } from "@/app/use-cases/messages/create-group-message"
+import { CreatePrivateMessage } from "@/app/use-cases/messages/create-private-message"
+import { DeleteMessageByAdmin } from "@/app/use-cases/messages/delete-message-by-admin"
+import { DeleteMessageForAll } from "@/app/use-cases/messages/delete-message-for-all"
+import { DeleteMessageForMe } from "@/app/use-cases/messages/delete-message-for-me"
+import { ForwardMessage } from "@/app/use-cases/messages/forward-message"
+import { GetMessages } from "@/app/use-cases/messages/get-messages"
+import { ReadMessage } from "@/app/use-cases/messages/read-message"
+import { UpdateMessage } from "@/app/use-cases/messages/update-message"
 import { ClearChat } from "@/app/use-cases/private-chat/clear-chat"
 import { GetPrivateChatOption } from "@/app/use-cases/private-chat/get-private-chat-option"
 import { UpdatePrivateChatOption } from "@/app/use-cases/private-chat/update-private-chat-option"
@@ -72,7 +82,10 @@ import { ChannelSubscriberRepository } from "@/domains/channels/repositories/cha
 import { GroupMemberRepository } from "@/domains/groups/repositories/group-member-repository"
 import { GroupOptionRepository } from "@/domains/groups/repositories/group-option-repository"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
+import { MessageRepository } from "@/domains/messages/repositories/message-repository"
+import { UnreadMessageRepository } from "@/domains/messages/repositories/unread-message-repository"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
+import { PrivateChatRepository } from "@/domains/private-chat/repositories/private-chat-repository"
 import { RoomRepository } from "@/domains/rooms/repositories/room-repository"
 import { SettingRepository } from "@/domains/settings/repositories/setting-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
@@ -88,7 +101,10 @@ import { ChannelSubscriberRepositoryImpl } from "../repositories/channels/channe
 import { GroupMemberRepositoryImpl } from "../repositories/groups/group-member-repository-impl"
 import { GroupOptionRepositoryImpl } from "../repositories/groups/group-option-repository-impl"
 import { GroupRepositoryImpl } from "../repositories/groups/group-repository-impl"
+import { MessageRepositoryImpl } from "../repositories/messages/message-repository-impl"
+import { UnreadMessageRepositoryImpl } from "../repositories/messages/unread-message-repository-impl"
 import { PrivateChatOptionRepositoryImpl } from "../repositories/private-chat/private-chat-option-repository-impl"
+import { PrivateChatRepositoryImpl } from "../repositories/private-chat/private-chat-repository-impl"
 import { RoomRepositoryImpl } from "../repositories/rooms/room-repository-impl"
 import { SettingRepositoryImpl } from "../repositories/setting/setting-repository-impl"
 import { StorageRepositoryImpl } from "../repositories/storage/storage-repository-impl"
@@ -168,6 +184,10 @@ container.bind<UnblockUser>(UnblockUser).toSelf()
 container
   .bind<PrivateChatOptionRepository>(KEYS.PrivateChatOptionRepository)
   .to(PrivateChatOptionRepositoryImpl)
+  .inSingletonScope()
+container
+  .bind<PrivateChatRepository>(KEYS.PrivateChatRepository)
+  .to(PrivateChatRepositoryImpl)
   .inSingletonScope()
 
 container.bind<GetPrivateChatOption>(GetPrivateChatOption).toSelf()
@@ -256,5 +276,26 @@ container.bind<ArchiveRoom>(ArchiveRoom).toSelf()
 container.bind<UnarchiveRoom>(UnarchiveRoom).toSelf()
 container.bind<GetRoomByActionId>(GetRoomByActionId).toSelf()
 container.bind<DeleteRoom>(DeleteRoom).toSelf()
+
+// ROOM
+container
+  .bind<MessageRepository>(KEYS.MessageRepository)
+  .to(MessageRepositoryImpl)
+  .inSingletonScope()
+container
+  .bind<UnreadMessageRepository>(KEYS.UnreadMessageRepository)
+  .to(UnreadMessageRepositoryImpl)
+  .inSingletonScope()
+
+container.bind<CreatePrivateMessage>(CreatePrivateMessage).toSelf()
+container.bind<CreateGroupMessage>(CreateGroupMessage).toSelf()
+container.bind<CreateChannelMessage>(CreateChannelMessage).toSelf()
+container.bind<GetMessages>(GetMessages).toSelf()
+container.bind<ReadMessage>(ReadMessage).toSelf()
+container.bind<UpdateMessage>(UpdateMessage).toSelf()
+container.bind<DeleteMessageForMe>(DeleteMessageForMe).toSelf()
+container.bind<DeleteMessageForAll>(DeleteMessageForAll).toSelf()
+container.bind<DeleteMessageByAdmin>(DeleteMessageByAdmin).toSelf()
+container.bind<ForwardMessage>(ForwardMessage).toSelf()
 
 export { container }

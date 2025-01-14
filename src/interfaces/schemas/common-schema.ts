@@ -39,3 +39,5 @@ export const searchQuerySchema = z.object({
     .transform((v) => (isNaN(Number(v)) ? 20 : Number(v))),
   cursor: z.string().trim().optional(),
 })
+
+export const attachmentSchema = z.any().optional()

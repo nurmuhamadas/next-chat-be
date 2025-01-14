@@ -25,4 +25,9 @@ export abstract class GroupMemberRepository {
   abstract removeAdmin(groupId: string, userId: string): Promise<void>
 
   abstract getTotalAdmins(groupId: string): Promise<number>
+
+  abstract getMemberHistory(
+    groupId: string,
+    userId: string,
+  ): Promise<GroupMemberEntity[]>
 }

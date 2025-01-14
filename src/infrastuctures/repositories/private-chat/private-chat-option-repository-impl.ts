@@ -33,6 +33,8 @@ export class PrivateChatOptionRepositoryImpl
       result.userId,
       result.privateChatId,
       result.notification,
+      result.createdAt,
+      result.deletedAt ?? undefined,
     )
   }
 
@@ -50,6 +52,8 @@ export class PrivateChatOptionRepositoryImpl
       result.userId,
       result.privateChatId,
       result.notification,
+      result.createdAt,
+      result.deletedAt ?? undefined,
     )
   }
 
@@ -74,6 +78,64 @@ export class PrivateChatOptionRepositoryImpl
       newOption.userId,
       newOption.privateChatId,
       newOption.notification,
+      newOption.createdAt,
+      newOption.deletedAt ?? undefined,
+    )
+  }
+
+  async getOptionsHistory(
+    userId: string,
+    userPairId: string,
+  ): Promise<PrivateChatOptionEntity[]> {
+    const result = await prisma.privateChatOption.findMany({
+      where: {
+        userId,
+        privateChat: {
+          OR: [
+            { user1Id: userPairId, user2Id: userId },
+            { user2Id: userPairId, user1Id: userId },
+          ],
+        },
+      },
+    })
+
+    return result.map(
+      (opt) =>
+        new PrivateChatOptionEntity(
+          opt.id,
+          opt.userId,
+          opt.privateChatId,
+          opt.notification,
+          opt.createdAt,
+          opt.deletedAt ?? undefined,
+        ),
+    )
+  }
+
+  async updateOrCreatePrivateChatOption(
+    id: string = "",
+    privateChatId: string,
+    option: UpdatePrivateChatOptionEntity,
+  ): Promise<PrivateChatOptionEntity> {
+    const result = await prisma.privateChatOption.upsert({
+      where: { id },
+      create: {
+        userId: option.userId,
+        privateChatId,
+        notification: option.notification,
+      },
+      update: {
+        notification: option.notification,
+      },
+    })
+
+    return new PrivateChatOptionEntity(
+      result.id,
+      result.userId,
+      result.privateChatId,
+      result.notification,
+      result.createdAt,
+      result.deletedAt ?? undefined,
     )
   }
 }

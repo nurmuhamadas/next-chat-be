@@ -12,6 +12,20 @@ declare type ChannelType = "PUBLIC" | "PRIVATE"
 
 declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"
 
+declare type MessageStatus =
+  | "DEFAULT"
+  | "DELETED_FOR_ME"
+  | "DELETED_FOR_ALL"
+  | "DELETED_BY_ADMIN"
+
+declare type AttachmentType =
+  | "IMAGE"
+  | "VIDEO"
+  | "AUDIO"
+  | "PDF"
+  | "OTHER"
+  | "AUDIO_RECORD"
+
 declare interface ProfileDTO {
   id: string
   name: string
@@ -168,4 +182,39 @@ declare interface PrivateRoomDTO {
   name: string
   imageUrl: string | null
   lastSeenAt: string | null
+}
+
+// MESSAGES
+declare interface MessageAuthorDTO {
+  id: string
+  name: string
+  imageUrl: string | null
+}
+
+declare interface MessageDTO {
+  id: string
+  message: string | null
+  sender: MessageAuthorDTO
+  isSender: boolean
+  privateChatId: string | null
+  groupId: string | null
+  channelId: string | null
+  parentMessageId: string | null
+  parentMessageName: string | null
+  parentMessageText: string | null
+  originalMessageId: string | null
+  isEmojiOnly: boolean
+  status: MessageStatus
+  attachments: AttachmentDTO[]
+  isUpdated: boolean
+  createdAt: string
+}
+
+declare interface AttachmentDTO {
+  id: string
+  url: string
+  downloadUrl: string
+  name: string
+  type: AttachmentType
+  size: number
 }

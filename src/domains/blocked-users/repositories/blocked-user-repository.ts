@@ -27,4 +27,9 @@ export abstract class BlockedUserRepository {
     userId: string,
     userIds: string[],
   ): Promise<Pick<BlockedUserEntity, "userId">[]>
+
+  abstract getBlockedHistory(
+    userId: string,
+    blockedUserId: string,
+  ): Promise<BlockedUserEntity[]>
 }

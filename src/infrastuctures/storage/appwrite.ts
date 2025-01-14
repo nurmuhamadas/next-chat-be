@@ -30,4 +30,8 @@ export class AppwriteClient {
   destructFileId = (fileUrl: string) => {
     return fileUrl.split(APPWRITE_ENDPOINT)[1].split("/")[5]
   }
+
+  constructDownloadUrl = (bucketFileId: string) => {
+    return `${APPWRITE_ENDPOINT}/storage/buckets/${STORAGE_ID}/files/${bucketFileId}/download?project=${APPWRITE_PROJECT_ID}`
+  }
 }

@@ -41,6 +41,8 @@ export class ChannelSubscriberRepositoryImpl
           subscriber.userId,
           subscriber.user.profile?.name ?? "Unknown",
           subscriber.isAdmin,
+          subscriber.createdAt,
+          subscriber.unsubscribedAt ?? undefined,
           subscriber.user.profile?.imageUrl ?? undefined,
           subscriber.user.profile?.lastSeenAt ?? undefined,
         ),
@@ -141,5 +143,36 @@ export class ChannelSubscriberRepositoryImpl
     return await prisma.channelSubscriber.count({
       where: { channelId, isAdmin: true, unsubscribedAt: null },
     })
+  }
+
+  async getSubscriberHistory(
+    channelId: string,
+    userId: string,
+  ): Promise<ChannelSubscriberEntity[]> {
+    const result = await prisma.channelSubscriber.findMany({
+      where: { channelId, userId, unsubscribedAt: null },
+      include: {
+        user: {
+          select: {
+            profile: {
+              select: { name: true, imageUrl: true, lastSeenAt: true },
+            },
+          },
+        },
+      },
+    })
+
+    return result.map(
+      (subscriber) =>
+        new ChannelSubscriberEntity(
+          subscriber.userId,
+          subscriber.user.profile?.name ?? "Unknown",
+          subscriber.isAdmin,
+          subscriber.createdAt,
+          subscriber.unsubscribedAt ?? undefined,
+          subscriber.user.profile?.imageUrl ?? undefined,
+          subscriber.user.profile?.lastSeenAt ?? undefined,
+        ),
+    )
   }
 }

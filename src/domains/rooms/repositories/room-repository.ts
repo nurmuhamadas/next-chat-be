@@ -1,6 +1,7 @@
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
 
+import { CreateRoomEntity } from "../entities/create-room-entity"
 import { RoomType } from "../entities/enums"
 import { RoomEntity } from "../entities/room-entity"
 import { SearchPrivateRoomEntity } from "../entities/search-private-room-entity"
@@ -49,5 +50,19 @@ export abstract class RoomRepository {
     userId2?: string,
     groupId?: string,
     channelId?: string,
+  ): Promise<void>
+
+  abstract updateLastMessage(roomId: string, messageId: string): Promise<void>
+
+  abstract createRoom(data: CreateRoomEntity): Promise<RoomEntity>
+
+  abstract updateGroupLastMessage(
+    groupId: string,
+    messageId: string,
+  ): Promise<void>
+
+  abstract updateChannelLastMessage(
+    groupId: string,
+    messageId: string,
   ): Promise<void>
 }

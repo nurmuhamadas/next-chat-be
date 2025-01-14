@@ -141,3 +141,16 @@ declare type UnarchiveRoomResponse = ApiResponse<boolean>
 declare type GetRoomResponse = ApiResponse<RoomDTO>
 
 declare type DeleteRoomResponse = ApiResponse<{ id: string }>
+
+// MESSAGE API
+declare type CreateMessageResponse = ApiResponse<MessageDTO>
+
+declare type GetMessagesResponse = ApiCollectionResponse<MessageDTO>
+
+declare type ForwardMessageResponse = ApiResponse<MessageDTO>
+
+declare type UpdateMessageResponse = ApiResponse<MessageDTO>
+
+declare type DeleteMessageResponse = ApiResponse<{ id: string }>
+
+declare type MarkMessageAsReadResponse = ApiResponse<boolean>

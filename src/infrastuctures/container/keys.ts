@@ -23,6 +23,7 @@ export const KEYS = {
 
   // PRIVATE CHAT
   PrivateChatOptionRepository: Symbol.for("PrivateChatOptionRepository"),
+  PrivateChatRepository: Symbol.for("PrivateChatRepository"),
 
   // GROUPS
   GroupRepository: Symbol.for("GroupRepository"),
@@ -36,4 +37,8 @@ export const KEYS = {
 
   // ROOM
   RoomRepository: Symbol.for("RoomRepository"),
+
+  // MESSAGE
+  MessageRepository: Symbol.for("MessageRepository"),
+  UnreadMessageRepository: Symbol.for("UnreadMessageRepository"),
 }
