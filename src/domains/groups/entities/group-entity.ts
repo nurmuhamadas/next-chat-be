@@ -1,5 +1,3 @@
-import { GroupType } from "./enums"
-
 export class GroupEntity {
   constructor(
     public readonly id: string,
@@ -10,9 +8,9 @@ export class GroupEntity {
     public readonly totalMembers: number,
     public readonly isMember: boolean,
     public readonly isAdmin: boolean,
-    public readonly description?: string,
-    public readonly imageUrl?: string,
-    public readonly deletedAt?: Date,
+    public readonly description?: string | null,
+    public readonly imageUrl?: string | null,
+    public readonly deletedAt?: Date | null,
   ) {}
 
   get isDeleted() {
@@ -29,8 +27,8 @@ export class GroupEntity {
       0,
       this.isMember,
       this.isAdmin,
-      undefined,
-      undefined,
+      null,
+      null,
       this.deletedAt,
     )
   }

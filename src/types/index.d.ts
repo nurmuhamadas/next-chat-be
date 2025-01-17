@@ -27,3 +27,5 @@ declare type LogActivity =
   | "UNBLOCK_USER"
 
 declare type ChannelType = "PUBLIC" | "PRIVATE"
+
+declare type GroupType = "PUBLIC" | "PRIVATE"

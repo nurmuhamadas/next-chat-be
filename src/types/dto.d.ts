@@ -6,8 +6,6 @@ declare type LanguageDTO = "en_US" | "id_ID"
 
 declare type NotificationsDTO = "PRIVATE" | "GROUP" | "CHANNEL"
 
-declare type GroupType = "PUBLIC" | "PRIVATE"
-
 declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"
 
 declare type MessageStatus =

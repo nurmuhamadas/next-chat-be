@@ -42,9 +42,9 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
           member.user.profile?.name ?? "Unknown",
           member.isAdmin,
           member.createdAt,
-          member.leftAt ?? undefined,
-          member.user.profile?.imageUrl ?? undefined,
-          member.user.profile?.lastSeenAt ?? undefined,
+          member.leftAt,
+          member.user.profile?.imageUrl,
+          member.user.profile?.lastSeenAt,
         ),
     )
 
@@ -159,9 +159,9 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
           member.user.profile?.name ?? "Unknown",
           member.isAdmin,
           member.createdAt,
-          member.leftAt ?? undefined,
-          member.user.profile?.imageUrl ?? undefined,
-          member.user.profile?.lastSeenAt ?? undefined,
+          member.leftAt,
+          member.user.profile?.imageUrl,
+          member.user.profile?.lastSeenAt,
         ),
     )
   }

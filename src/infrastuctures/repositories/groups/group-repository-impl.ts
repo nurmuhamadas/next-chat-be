@@ -87,8 +87,8 @@ export class GroupRepositoryImpl implements GroupRepository {
         v._count.members,
         v.members.length > 0,
         v.members[0]?.isAdmin ?? false,
-        v.description ?? undefined,
-        v.imageUrl ?? undefined,
+        v.description,
+        v.imageUrl,
       )
     })
 
@@ -184,8 +184,8 @@ export class GroupRepositoryImpl implements GroupRepository {
       0, //TODO: CHANGE
       true,
       true,
-      result.description ?? undefined,
-      result.imageUrl ?? undefined,
+      result.description,
+      result.imageUrl,
     )
   }
 
@@ -222,12 +222,7 @@ export class GroupRepositoryImpl implements GroupRepository {
     }
 
     const data = result.map((v) => {
-      return new GroupSearchEntity(
-        v.id,
-        v.name,
-        v._count.members,
-        v.imageUrl ?? undefined,
-      )
+      return new GroupSearchEntity(v.id, v.name, v._count.members, v.imageUrl)
     })
 
     return new SearchResultEntity(data, data.length, nextCursor)
@@ -253,8 +248,8 @@ export class GroupRepositoryImpl implements GroupRepository {
       result._count.members,
       result.members.length > 0,
       result.members[0]?.isAdmin ?? false,
-      result.description ?? undefined,
-      result.imageUrl ?? undefined,
+      result.description,
+      result.imageUrl,
     )
   }
 
@@ -278,8 +273,8 @@ export class GroupRepositoryImpl implements GroupRepository {
       result._count.members,
       result.members.length > 0,
       result.members[0]?.isAdmin ?? false,
-      result.description ?? undefined,
-      result.imageUrl ?? undefined,
+      result.description,
+      result.imageUrl,
     )
   }
 
@@ -290,8 +285,8 @@ export class GroupRepositoryImpl implements GroupRepository {
     const result = await prisma.group.update({
       where: { id: data.id },
       data: {
-        name: data.name,
-        type: data.type,
+        name: data.name ?? undefined,
+        type: data.type ?? undefined,
         description: data.description,
         imageUrl: data.imageUrl,
       },
@@ -307,8 +302,8 @@ export class GroupRepositoryImpl implements GroupRepository {
       result._count.members,
       result.members.length > 0,
       result.members[0]?.isAdmin ?? false,
-      result.description ?? undefined,
-      result.imageUrl ?? undefined,
+      result.description,
+      result.imageUrl,
     )
   }
 
@@ -352,8 +347,8 @@ export class GroupRepositoryImpl implements GroupRepository {
       group._count.members,
       group.members.length > 0,
       group.members[0]?.isAdmin ?? false,
-      group.description ?? undefined,
-      group.imageUrl ?? undefined,
+      group.description,
+      group.imageUrl,
     )
   }
 }
