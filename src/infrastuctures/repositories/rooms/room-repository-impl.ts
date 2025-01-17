@@ -1,7 +1,6 @@
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
 import { CreateRoomEntity } from "@/domains/rooms/entities/create-room-entity"
-import { RoomType } from "@/domains/rooms/entities/enums"
 import { LastMessageEntity } from "@/domains/rooms/entities/last-message-entity"
 import { RoomEntity } from "@/domains/rooms/entities/room-entity"
 import { RoomProfileEntity } from "@/domains/rooms/entities/room-profile-entity"
@@ -122,7 +121,7 @@ export class RoomRepositoryImpl implements RoomRepository {
               v.lastMessage.id,
               v.lastMessage.createdAt,
               v.lastMessage.sender.profile?.name ?? "Unknown",
-              v.lastMessage.message ?? undefined,
+              v.lastMessage.message,
             )
           : undefined,
       )

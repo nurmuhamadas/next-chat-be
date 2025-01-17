@@ -2,8 +2,8 @@ export class LastMessageEntity {
   constructor(
     public readonly id: string,
     public readonly time: Date,
-    public readonly name?: string,
-    public readonly message?: string,
+    public readonly name?: string | null,
+    public readonly message?: string | null,
   ) {}
 
   toDTO(): LastMessageDTO {

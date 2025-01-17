@@ -3,9 +3,9 @@ export class CreateRoomEntity {
     public readonly type: RoomType,
     public readonly ownerId: string,
     public readonly totalUnreadMessage: number,
-    public readonly lastMessageId?: string,
-    public readonly privateChatId?: string,
-    public readonly groupId?: string,
-    public readonly channelId?: string,
+    public readonly lastMessageId?: string | null,
+    public readonly privateChatId?: string | null,
+    public readonly groupId?: string | null,
+    public readonly channelId?: string | null,
   ) {}
 }

@@ -43,3 +43,5 @@ declare type MessageStatus =
   | "DELETED_FOR_ME"
   | "DELETED_FOR_ALL"
   | "DELETED_BY_ADMIN"
+
+declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"

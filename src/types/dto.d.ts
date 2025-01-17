@@ -6,8 +6,6 @@ declare type LanguageDTO = "en_US" | "id_ID"
 
 declare type NotificationsDTO = "PRIVATE" | "GROUP" | "CHANNEL"
 
-declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"
-
 declare interface ProfileDTO {
   id: string
   name: string
