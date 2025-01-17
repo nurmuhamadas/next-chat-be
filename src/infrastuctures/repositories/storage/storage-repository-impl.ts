@@ -1,7 +1,6 @@
 import { inject, injectable } from "inversify"
 import { ID } from "node-appwrite"
 
-import { AttachmentType } from "@/domains/messages/entities/enums"
 import { UploadedFileEntity } from "@/domains/storage/entities/uploaded-file-entity"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
 import { KEYS } from "@/infrastuctures/container/keys"

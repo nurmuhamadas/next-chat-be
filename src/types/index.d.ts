@@ -29,3 +29,17 @@ declare type LogActivity =
 declare type ChannelType = "PUBLIC" | "PRIVATE"
 
 declare type GroupType = "PUBLIC" | "PRIVATE"
+
+declare type AttachmentType =
+  | "IMAGE"
+  | "VIDEO"
+  | "AUDIO"
+  | "PDF"
+  | "OTHER"
+  | "AUDIO_RECORD"
+
+declare type MessageStatus =
+  | "DEFAULT"
+  | "DELETED_FOR_ME"
+  | "DELETED_FOR_ALL"
+  | "DELETED_BY_ADMIN"

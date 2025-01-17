@@ -1,5 +1,3 @@
-import { AttachmentType } from "./enums"
-
 export class AttachmentEntity {
   constructor(
     public readonly id: string,

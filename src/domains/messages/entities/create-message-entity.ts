@@ -6,9 +6,9 @@ export class CreateMessageEntity {
     private readonly receiverId: string,
     public readonly roomType: RoomType,
     public readonly isEmojiOnly: boolean,
-    public readonly message?: string,
-    public readonly parentMessageId?: string,
-    public readonly originalMessageId?: string,
+    public readonly message?: string | null,
+    public readonly parentMessageId?: string | null,
+    public readonly originalMessageId?: string | null,
     public attachments: UploadedFileEntity[] = [],
   ) {}
 

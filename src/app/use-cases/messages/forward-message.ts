@@ -41,8 +41,8 @@ export class ForwardMessage {
         roomType,
         originalMessage.isEmojiOnly,
         originalMessage.message,
-        undefined,
-        originalMessage.sender.id === session.userId ? undefined : messageId,
+        null,
+        originalMessage.sender.id === session.userId ? null : messageId,
         originalMessage.attachments,
       ),
     )

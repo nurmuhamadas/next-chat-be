@@ -1,5 +1,3 @@
-import { AttachmentType } from "@/domains/messages/entities/enums"
-
 export class UploadedFileEntity {
   constructor(
     public readonly id: string,

@@ -8,20 +8,6 @@ declare type NotificationsDTO = "PRIVATE" | "GROUP" | "CHANNEL"
 
 declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"
 
-declare type MessageStatus =
-  | "DEFAULT"
-  | "DELETED_FOR_ME"
-  | "DELETED_FOR_ALL"
-  | "DELETED_BY_ADMIN"
-
-declare type AttachmentType =
-  | "IMAGE"
-  | "VIDEO"
-  | "AUDIO"
-  | "PDF"
-  | "OTHER"
-  | "AUDIO_RECORD"
-
 declare interface ProfileDTO {
   id: string
   name: string
