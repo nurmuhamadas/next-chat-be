@@ -107,7 +107,7 @@ export class PrivateChatOptionRepositoryImpl
           opt.privateChatId,
           opt.notification,
           opt.createdAt,
-          opt.deletedAt ?? undefined,
+          opt.deletedAt,
         ),
     )
   }
