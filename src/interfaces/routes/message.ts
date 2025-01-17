@@ -15,7 +15,6 @@ import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { successCollectionResponse, successResponse } from "@/common/lib/utils"
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
 import { UpdateMessageEntity } from "@/domains/messages/entities/update-message-entity"
-import { RoomType } from "@/domains/rooms/entities/enums"
 import { container } from "@/infrastuctures/container"
 
 import { searchQuerySchema } from "../schemas/common-schema"
@@ -39,9 +38,9 @@ const messageRoute = new Hono()
       const session = c.get("userSession")
 
       const createMessage =
-        form.roomType === RoomType.PRIVATE
+        form.roomType === "PRIVATE"
           ? container.get(CreatePrivateMessage)
-          : form.roomType === RoomType.GROUP
+          : form.roomType === "GROUP"
             ? container.get(CreateGroupMessage)
             : container.get(CreateChannelMessage)
 

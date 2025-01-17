@@ -1,11 +1,5 @@
 declare type Gender = "MALE" | "FEMALE"
 
-declare type TimeFormatDTO = "12-HOUR" | "24-HOUR"
-
-declare type LanguageDTO = "en_US" | "id_ID"
-
-declare type NotificationsDTO = "PRIVATE" | "GROUP" | "CHANNEL"
-
 declare interface ProfileDTO {
   id: string
   name: string
@@ -36,9 +30,9 @@ declare interface UserSearchForMemberDTO {
 declare interface SettingDTO {
   id: string
   userId: string
-  timeFormat: TimeFormatDTO
-  language: LanguageDTO
-  notifications: NotificationsDTO[]
+  timeFormat: TimeFormat
+  language: Language
+  notifications: Notifications[]
   enable2FA: boolean
   showLastSeen: boolean
   allowAddToGroup: boolean

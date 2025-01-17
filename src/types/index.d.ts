@@ -45,3 +45,9 @@ declare type MessageStatus =
   | "DELETED_BY_ADMIN"
 
 declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"
+
+declare type TimeFormat = "12-HOUR" | "24-HOUR"
+
+declare type Language = "en_US" | "id_ID"
+
+declare type Notifications = "PRIVATE" | "GROUP" | "CHANNEL"

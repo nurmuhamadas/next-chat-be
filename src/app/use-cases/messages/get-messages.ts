@@ -9,7 +9,6 @@ import { GroupMemberRepository } from "@/domains/groups/repositories/group-membe
 import { MessageEntity } from "@/domains/messages/entities/message-entity"
 import { MessageRepository } from "@/domains/messages/repositories/message-repository"
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
-import { RoomType } from "@/domains/rooms/entities/enums"
 import { KEYS } from "@/infrastuctures/container/keys"
 
 @injectable()
@@ -33,7 +32,7 @@ export class GetMessages {
     roomType: RoomType,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<MessageEntity>> {
-    if (roomType === RoomType.PRIVATE) {
+    if (roomType === "PRIVATE") {
       const optionsHistory =
         await this.privateChatOptionRepository.getOptionsHistory(
           session.userId,
@@ -54,7 +53,7 @@ export class GetMessages {
       )
 
       return result
-    } else if (roomType === RoomType.GROUP) {
+    } else if (roomType === "GROUP") {
       const memberHistory = await this.groupMemberRepository.getMemberHistory(
         receiverId,
         session.userId,

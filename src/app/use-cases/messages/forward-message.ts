@@ -7,7 +7,6 @@ import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
 import { MessageEntity } from "@/domains/messages/entities/message-entity"
 import { MessageRepository } from "@/domains/messages/repositories/message-repository"
-import { RoomType } from "@/domains/rooms/entities/enums"
 import { KEYS } from "@/infrastuctures/container/keys"
 
 @injectable()
