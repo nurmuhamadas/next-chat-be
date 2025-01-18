@@ -10,6 +10,7 @@ import { ForwardMessage } from "@/app/use-cases/messages/forward-message"
 import { GetMessages } from "@/app/use-cases/messages/get-messages"
 import { ReadMessage } from "@/app/use-cases/messages/read-message"
 import { UpdateMessage } from "@/app/use-cases/messages/update-message"
+import { DTO_TO_ROOM_TYPE } from "@/common/constants/types"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import {
   successCollectionResponse,
@@ -40,14 +41,13 @@ const messageRoute = new Hono()
 
       const session = c.get("userSession")
 
-      const createMessage =
-        form.roomType === "PRIVATE"
-          ? container.get(CreatePrivateMessage)
-          : form.roomType === "GROUP"
-            ? container.get(CreateGroupMessage)
-            : container.get(CreateChannelMessage)
+      const createMessage = {
+        chat: container.get(CreatePrivateMessage),
+        group: container.get(CreateGroupMessage),
+        channel: container.get(CreateChannelMessage),
+      }
 
-      const result = await createMessage.execute(
+      const result = await createMessage[form.roomType].execute(
         session,
         CreateMessageEntity.fromJSON({
           ...form,
@@ -76,7 +76,7 @@ const messageRoute = new Hono()
       const result = await createMessage.execute(
         session,
         receiverId,
-        roomType,
+        DTO_TO_ROOM_TYPE[roomType],
         SearchParamsEntity.fromJSON(params),
       )
 
@@ -184,7 +184,7 @@ const messageRoute = new Hono()
         session,
         receiverId,
         messageId,
-        roomType,
+        DTO_TO_ROOM_TYPE[roomType],
       )
 
       const response: ForwardMessageResponse = successResponse(result.toDTO())

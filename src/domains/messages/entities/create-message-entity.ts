@@ -1,3 +1,4 @@
+import { DTO_TO_ROOM_TYPE } from "@/common/constants/types"
 import { UploadedFileEntity } from "@/domains/storage/entities/uploaded-file-entity"
 
 export class CreateMessageEntity {
@@ -25,7 +26,7 @@ export class CreateMessageEntity {
 
   static fromJSON(json: {
     receiverId: string
-    roomType: RoomType
+    roomType: RoomTypeDTO
     isEmojiOnly: boolean
     message?: string
     parentMessageId?: string
@@ -33,7 +34,7 @@ export class CreateMessageEntity {
   }) {
     return new CreateMessageEntity(
       json.receiverId,
-      json.roomType,
+      DTO_TO_ROOM_TYPE[json.roomType],
       json.isEmojiOnly,
       json.message,
       json.originalMessageId,
