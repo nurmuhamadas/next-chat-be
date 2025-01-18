@@ -1,5 +1,6 @@
 import { inject, injectable } from "inversify"
 
+import { WebSocketManager } from "@/app/socket/web-socket-manager"
 import { ERROR } from "@/common/constants/errors"
 import InvariantError from "@/common/exceptions/invariant-error"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
@@ -51,6 +52,8 @@ export class CreatePrivateMessage {
     private roomRepository: RoomRepository,
     @inject(KEYS.UnreadMessageRepository)
     private unreadMessageRepository: UnreadMessageRepository,
+    @inject(KEYS.WebSocketManager)
+    private webSocketManager: WebSocketManager,
   ) {}
 
   async execute(
@@ -176,6 +179,17 @@ export class CreatePrivateMessage {
           )
         }
 
+        const receivers = [session.userId]
+
+        if (!isBlocked) {
+          receivers.push(data.userReceiverId)
+        }
+
+        this.webSocketManager.broadcastMessage(
+          JSON.stringify(createdMessage),
+          receivers,
+        )
+
         return createdMessage
       }
 
@@ -187,13 +201,26 @@ export class CreatePrivateMessage {
         parentMessage ?? undefined,
       )
 
-      await this.roomRepository.updateLastMessage(
+      const senderRoom = await this.roomRepository.getRoomByActionId(
         session.userId,
-        createdMessage.id,
+        data.userReceiverId,
       )
-      if (!isBlocked) {
+
+      const receiverRoom = await this.roomRepository.getRoomByActionId(
+        data.userReceiverId,
+        session.userId,
+      )
+
+      if (senderRoom) {
         await this.roomRepository.updateLastMessage(
-          data.userReceiverId,
+          senderRoom?.id,
+          createdMessage.id,
+        )
+      }
+
+      if (!isBlocked && receiverRoom) {
+        await this.roomRepository.updateLastMessage(
+          receiverRoom.id,
           createdMessage.id,
         )
       }
@@ -223,10 +250,6 @@ export class CreatePrivateMessage {
       }
 
       if (createdMessage.sender.id !== data.userReceiverId && !isBlocked) {
-        const receiverRoom = await this.roomRepository.getRoomByActionId(
-          data.userReceiverId,
-          session.userId,
-        )
         if (receiverRoom) {
           await this.unreadMessageRepository.incrementUnreadMessageCount(
             data.userReceiverId,
@@ -234,6 +257,17 @@ export class CreatePrivateMessage {
           )
         }
       }
+
+      const receivers = [session.userId]
+
+      if (!isBlocked) {
+        receivers.push(data.userReceiverId)
+      }
+
+      this.webSocketManager.broadcastMessage(
+        JSON.stringify(createdMessage),
+        receivers,
+      )
 
       return createdMessage
     } catch (e) {

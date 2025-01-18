@@ -6,28 +6,34 @@ import { WebSocketManager } from "@/app/socket/web-socket-manager"
 import { container } from "@/infrastuctures/container"
 import { KEYS } from "@/infrastuctures/container/keys"
 
+import { sessionMiddleware } from "./middleware/session-middleware"
+
 const { upgradeWebSocket } = createBunWebSocket<ServerWebSocket>()
 
 export const wsRoute = new Hono().get(
   "/",
-  upgradeWebSocket(() => {
+  sessionMiddleware,
+  upgradeWebSocket((c) => {
+    const session = c.get("userSession")
+
     return {
       onOpen(_, ws) {
+        if (!session) {
+          ws.close(1008, "Unauthorized")
+          return
+        }
+
         const websocket = container.get<WebSocketManager>(KEYS.WebSocketManager)
         const rawWs = ws.raw as ServerWebSocket
 
+        websocket.saveConnection(rawWs, session.userId)
         websocket.subscribeTopic(rawWs)
-      },
-      onMessage(event) {
-        const websocket = container.get<WebSocketManager>(KEYS.WebSocketManager)
-
-        // TODO: change later
-        websocket.broadcastMessage(event.data.toString())
       },
       onClose: (_, ws) => {
         const websocket = container.get<WebSocketManager>(KEYS.WebSocketManager)
         const rawWs = ws.raw as ServerWebSocket
 
+        websocket.removeConnection(session.userId)
         websocket.unsubscribeTopic(rawWs)
       },
     }

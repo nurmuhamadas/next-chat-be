@@ -128,7 +128,10 @@ container
   .bind<AuthTokenManager>(KEYS.AuthTokenManager)
   .to(JWTTokenManager)
   .inSingletonScope()
-container.bind<WebSocketManager>(KEYS.WebSocketManager).to(HonoWebSocket)
+container
+  .bind<WebSocketManager>(KEYS.WebSocketManager)
+  .to(HonoWebSocket)
+  .inSingletonScope()
 container
   .bind<AppwriteClient>(KEYS.AppwriteClient)
   .to(AppwriteClient)
