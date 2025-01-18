@@ -1,17 +1,25 @@
-export type TimeFormat = "12-HOUR" | "24-HOUR"
-
-export type Language = "en_US" | "id_ID"
-
-export type Notification = "PRIVATE" | "GROUP" | "CHANNEl"
-
 export class SettingEntity {
   constructor(
+    public readonly id: string,
     public readonly userId: string,
-    public timeFormat: TimeFormat,
-    public language: Language,
-    public notifications: Notification[],
-    public enable2FA: boolean,
-    public showLastSeen: boolean,
-    public allowAddToGroup: boolean,
+    public readonly timeFormat: TimeFormat,
+    public readonly language: Language,
+    public readonly notifications: Notifications[],
+    public readonly enable2FA: boolean,
+    public readonly showLastSeen: boolean,
+    public readonly allowAddToGroup: boolean,
   ) {}
+
+  public toDTO(): SettingDTO {
+    return {
+      id: this.id,
+      userId: this.userId,
+      timeFormat: this.timeFormat,
+      language: this.language,
+      notifications: this.notifications,
+      enable2FA: this.enable2FA,
+      showLastSeen: this.showLastSeen,
+      allowAddToGroup: this.allowAddToGroup,
+    }
+  }
 }

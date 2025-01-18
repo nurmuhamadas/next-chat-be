@@ -1,0 +1,55 @@
+declare type LogActivity =
+  | "LOGIN"
+  | "LOGOUT"
+  | "RESET_PASSWORD"
+  | "LOGIN_NEW_DEVICE"
+  | "CREATE_PROFILE"
+  | "UPDATE_PROFILE"
+  | "UPDATE_SETTING"
+  | "UPDATE_PRIVATE_CHAT_OPTION"
+  | "CREATE_GROUP"
+  | "UPDATE_GROUP"
+  | "UPDATE_GROUP_OPTION"
+  | "JOIN_GROUP"
+  | "LEFT_GROUP"
+  | "ADD_GROUP_MEMBER"
+  | "REMOVE_GROUP_MEMBER"
+  | "CREATE_CHANNEL"
+  | "UPDATE_CHANNEL"
+  | "UPDATE_CHANNEL_OPTION"
+  | "SUBCRIBE_CHANNEL"
+  | "UNSUBSCRIBE_CHANNEL"
+  | "SEND_MESSAGE"
+  | "UPDATE_MESSAGE"
+  | "DELETE_MESSAGE"
+  | "REACT_MESSAGE"
+  | "BLOCK_USER"
+  | "UNBLOCK_USER"
+
+declare type ChannelType = "PUBLIC" | "PRIVATE"
+
+declare type GroupType = "PUBLIC" | "PRIVATE"
+
+declare type AttachmentType =
+  | "IMAGE"
+  | "VIDEO"
+  | "AUDIO"
+  | "PDF"
+  | "OTHER"
+  | "AUDIO_RECORD"
+
+declare type MessageStatus =
+  | "DEFAULT"
+  | "DELETED_FOR_ME"
+  | "DELETED_FOR_ALL"
+  | "DELETED_BY_ADMIN"
+
+declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"
+
+declare type TimeFormat = "12-HOUR" | "24-HOUR"
+
+declare type Language = "en_US" | "id_ID"
+
+declare type Notifications = "PRIVATE" | "GROUP" | "CHANNEL"
+
+declare type Gender = "MALE" | "FEMALE"

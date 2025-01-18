@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "bun run --hot src/app.ts",
     "eslint": "bunx eslint ./src",
-    "typecheck": "tsc",
+    "typecheck": "tsc --noEmit",
     "migration:create": "prisma migrate dev --create-only",
     "migrate": "prisma migrate dev",
     "migrate:prod": "prisma migrate deploy",
@@ -15,6 +15,7 @@
     "date-fns": "^4.1.0",
     "hono": "^4.6.14",
     "inversify": "^6.2.1",
+    "node-appwrite": "^14.1.0",
     "random-words": "^2.0.1",
     "reflect-metadata": "^0.2.2",
     "uuid": "^11.0.3",
@@ -32,5 +33,8 @@
     "prettier": "^3.4.2",
     "prisma": "^6.1.0",
     "typescript-eslint": "^8.19.0"
+  },
+  "prisma": {
+    "seed": "bun run prisma/seed.ts"
   }
 }

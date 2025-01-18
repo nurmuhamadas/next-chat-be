@@ -1,12 +1,13 @@
-import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
-import { SignUp } from "@/app/use-cases/sign-up"
-import { ValidateUsernameAvailability } from "@/app/use-cases/validate-username-availability"
-import { successResponse } from "@/common/lib/utils"
+import { SignIn } from "@/app/use-cases/auth/sign-in"
+import { SignOut } from "@/app/use-cases/auth/sign-out"
+import { SignUp } from "@/app/use-cases/auth/sign-up"
+import { ValidateUsernameAvailability } from "@/app/use-cases/auth/validate-username-availability"
+import { successResponse, zValidator } from "@/common/lib/utils"
 import { container } from "@/infrastuctures/container"
 
-import { signUpSchema } from "../schemas/auth-schema"
+import { signInSchema, signUpSchema } from "../schemas/auth-schema"
 
 const authRoute = new Hono()
   .get("/username-availability/:username", async (c) => {
@@ -35,6 +36,34 @@ const authRoute = new Hono()
       username: createdUser.username,
       email: createdUser.email,
     })
+    return c.json(response)
+  })
+  .post("/sign-in", zValidator("json", signInSchema), async (c) => {
+    const { email, password } = c.req.valid("json")
+    const userAgent = c.req.header("User-Agent") ?? "Unknown"
+
+    const signIn = container.get(SignIn)
+
+    const status = await signIn.execute(
+      c,
+      {
+        email,
+        password,
+      },
+      userAgent,
+    )
+
+    const response: SignInResponse = successResponse({
+      status,
+    })
+    return c.json(response)
+  })
+  .post("/sign-out", async (c) => {
+    const signOut = container.get(SignOut)
+
+    await signOut.execute(c)
+
+    const response: LogoutResponse = successResponse(true)
     return c.json(response)
   })
 
