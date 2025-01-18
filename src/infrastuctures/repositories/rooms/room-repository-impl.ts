@@ -71,8 +71,7 @@ export class RoomRepositoryImpl implements RoomRepository {
       },
       orderBy: [
         { pinnedAt: { sort: "asc", nulls: "last" } },
-        { lastMessageId: { sort: "desc", nulls: "last" } },
-        { createdAt: "desc" },
+        { updatedAt: "desc" },
       ],
       take: limit + 1,
       cursor: cursor ? { id: cursor } : undefined,
