@@ -1,3 +1,5 @@
+import { ROOM_TYPE_TO_DTO } from "@/common/constants/types"
+
 import { LastMessageEntity } from "./last-message-entity"
 import { RoomProfileEntity } from "./room-profile-entity"
 
@@ -47,7 +49,7 @@ export class RoomEntity {
     return {
       id: this.id,
       actionId,
-      type: this.type,
+      type: ROOM_TYPE_TO_DTO[this.type],
       name,
       imageUrl,
       pinned: this.pinned,

@@ -1,4 +1,4 @@
-declare type Gender = "MALE" | "FEMALE"
+declare type RoomTypeDTO = "chat" | "group" | "channel"
 
 declare interface ProfileDTO {
   id: string
@@ -143,11 +143,12 @@ declare interface LastMessageDTO {
   message: string | null
   time: string
 }
+
 declare interface RoomDTO {
   id: string
   /** userId or groupId or channelId */
   actionId: string
-  type: RoomType
+  type: RoomTypeDTO
   name: string
   imageUrl: string | null
   pinned: boolean
