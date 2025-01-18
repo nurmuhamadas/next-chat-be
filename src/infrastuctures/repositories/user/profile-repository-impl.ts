@@ -25,9 +25,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       result.userId,
       result.name,
       result.gender,
-      result.bio ?? undefined,
-      result.imageUrl ?? undefined,
-      result.lastSeenAt ?? undefined,
+      result.bio,
+      result.imageUrl,
+      result.lastSeenAt,
     )
   }
 
@@ -40,8 +40,8 @@ export class ProfileRepositoryImpl implements ProfileRepository {
           userId: profile.userId,
           name: profile.name,
           gender: profile.gender,
-          bio: profile.bio ?? undefined,
-          imageUrl: profile.imageUrl ?? undefined,
+          bio: profile.bio,
+          imageUrl: profile.imageUrl,
         },
       }),
       prisma.setting.create({
@@ -63,9 +63,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
         profileResult.userId,
         profileResult.name,
         profileResult.gender,
-        profileResult.bio ?? undefined,
-        profileResult.imageUrl ?? undefined,
-        profileResult.lastSeenAt ?? undefined,
+        profileResult.bio,
+        profileResult.imageUrl,
+        profileResult.lastSeenAt,
       ),
       new SettingEntity(
         settingResult.id,
@@ -99,9 +99,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       result.userId,
       result.name,
       result.gender,
-      result.bio ?? undefined,
-      result.imageUrl ?? undefined,
-      result.lastSeenAt ?? undefined,
+      result.bio,
+      result.imageUrl,
+      result.lastSeenAt,
     )
   }
 
@@ -109,7 +109,7 @@ export class ProfileRepositoryImpl implements ProfileRepository {
     userId: string,
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<SearchUserEntity>> {
-    const results = await prisma.profile.findMany({
+    const result = await prisma.profile.findMany({
       where: {
         userId: { not: userId },
         OR: [
@@ -128,23 +128,16 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       skip: params.cursor ? 1 : undefined,
     })
 
-    const data = results.map(
-      (result) =>
-        new SearchUserEntity(
-          result.userId,
-          result.name,
-          result.imageUrl ?? undefined,
-          result.lastSeenAt ?? undefined,
-        ),
-    )
-
     let nextCursor: string | undefined
-    if (data.length > params.limit) {
-      nextCursor = data[data.length - 1].id
-      data.pop()
+    if (result.length > params.limit) {
+      nextCursor = result.pop()?.userId
     }
 
-    return new SearchResultEntity(data, results.length, nextCursor)
+    const data = result.map(
+      (v) => new SearchUserEntity(v.userId, v.name, v.imageUrl, v.lastSeenAt),
+    )
+
+    return new SearchResultEntity(data, result.length, nextCursor)
   }
 
   async searchForMember(
@@ -176,22 +169,21 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       skip: cursor ? 1 : undefined,
     })
 
+    let nextCursor: string | undefined
+    if (result.length > params.limit) {
+      nextCursor = result.pop()?.userId
+    }
+
     const data = result.map(
       (result) =>
         new SearchUserForMemberEntity(
           result.userId,
           result.name,
           result.user.setting?.allowAddToGroup ?? false,
-          result.imageUrl ?? undefined,
-          result.lastSeenAt ?? undefined,
+          result.imageUrl,
+          result.lastSeenAt,
         ),
     )
-
-    let nextCursor: string | undefined
-    if (data.length > params.limit) {
-      nextCursor = data[data.length - 1].id
-      data.pop()
-    }
 
     return new SearchResultEntity(data, result.length, nextCursor)
   }
@@ -212,9 +204,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       result.name,
       result.gender,
       result.user.username,
-      result.bio ?? undefined,
-      result.imageUrl ?? undefined,
-      result.lastSeenAt ?? undefined,
+      result.bio,
+      result.imageUrl,
+      result.lastSeenAt,
     )
   }
 

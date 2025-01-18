@@ -35,7 +35,7 @@ const settingRoute = new Hono()
       } = c.req.valid("json")
       const session = c.get("userSession")
 
-      const setting = UpdateSettingEntity.fromDTO(session.userId, {
+      const setting = UpdateSettingEntity.fromJSON(session.userId, {
         timeFormat,
         language,
         notifications,

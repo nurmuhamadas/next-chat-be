@@ -28,22 +28,21 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
       skip: cursor ? 1 : undefined,
     })
 
+    let nextCursor: string | undefined
+    if (result.length > limit) {
+      nextCursor = result.pop()?.id
+    }
+
     const data = result.map((result) => {
       return new BlockedUserEntity(
         result.id,
         userId,
         result.blockedUserId,
-        result.blockedUser.profile?.name ?? "Unknown",
         result.createdAt,
-        result.blockedUser.profile?.imageUrl ?? undefined,
+        result.blockedUser.profile?.name,
+        result.blockedUser.profile?.imageUrl,
       )
     })
-
-    let nextCursor: string | undefined
-    if (data.length > limit) {
-      nextCursor = data[data.length - 1].id
-      data.pop()
-    }
 
     return new SearchResultEntity(data, data.length, nextCursor)
   }
@@ -120,9 +119,9 @@ export class BlockedUserRepositoryImpl implements BlockedUserRepository {
           blocked.id,
           blocked.userId,
           blocked.blockedUserId,
-          blocked.blockedUser.profile?.name ?? "Unknown",
           blocked.createdAt,
-          blocked.blockedUser.profile?.imageUrl ?? undefined,
+          blocked.blockedUser.profile?.name,
+          blocked.blockedUser.profile?.imageUrl,
         ),
     )
   }

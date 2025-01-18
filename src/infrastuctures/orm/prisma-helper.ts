@@ -10,21 +10,11 @@ import {
 } from "@prisma/client"
 import { ITXClientDenyList } from "@prisma/client/runtime/library"
 
-import { LogActivity } from "@/domains/auth/entities/user-log-entity"
-import { ChannelType } from "@/domains/channels/entities/enums"
-import { GroupType } from "@/domains/groups/entities/enums"
-import { RoomType } from "@/domains/rooms/entities/enums"
-import {
-  Language,
-  Notifications,
-  TimeFormat,
-} from "@/domains/settings/entities/enums"
-
 import { prisma } from "./prisma"
 
 export class PrismaHelper {
   static convertLogActivity(activity: LogActivity): LogActivityModel {
-    return activity as unknown as LogActivityModel
+    return activity
   }
 
   static transaction<T>(
@@ -40,50 +30,34 @@ export class PrismaHelper {
   }
 
   static convertDBTimeFormat(timeFormat: DBTimeFormat): TimeFormat {
-    return timeFormat === DBTimeFormat.HALF_DAY
-      ? TimeFormat.HALF_DAY
-      : TimeFormat.FULL_DAY
+    return timeFormat === DBTimeFormat.HALF_DAY ? "12-HOUR" : "24-HOUR"
   }
 
   static convertLanguage(language: Language): DBLanguage {
-    return language === Language.ENGLISH ? DBLanguage.en_US : DBLanguage.id_ID
+    return language
   }
 
   static convertDBLanguage(language: DBLanguage): Language {
-    return language === DBLanguage.en_US
-      ? Language.ENGLISH
-      : Language.INDONESIAN
+    return language
   }
 
   static convertNotifications(notification: Notifications): DBNotification {
-    return notification === Notifications.PRIVATE
-      ? DBNotification.PRIVATE
-      : notification === Notifications.GROUP
-        ? DBNotification.GROUP
-        : DBNotification.CHANNEL
+    return notification
   }
 
   static convertDBNotification(notification: DBNotification): Notifications {
-    return notification === DBNotification.PRIVATE
-      ? Notifications.PRIVATE
-      : notification === DBNotification.GROUP
-        ? Notifications.GROUP
-        : Notifications.CHANNEL
+    return notification
   }
 
   static convertDBGroupType(type: DBGroupType): GroupType {
-    return type === "PRIVATE" ? GroupType.PRIVATE : GroupType.PUBLIC
+    return type
   }
 
   static convertDBChannelType(type: DBChannelType): ChannelType {
-    return type === "PRIVATE" ? ChannelType.PRIVATE : ChannelType.PUBLIC
+    return type
   }
 
   static convertDBRoomType(type: DBRoomType): RoomType {
-    return type === "PRIVATE"
-      ? RoomType.PRIVATE
-      : type === "GROUP"
-        ? RoomType.GROUP
-        : RoomType.CHANNEL
+    return type
   }
 }

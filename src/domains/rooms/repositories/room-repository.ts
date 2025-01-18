@@ -2,7 +2,6 @@ import { SearchParamsEntity } from "@/common/entities/search-params-entity"
 import { SearchResultEntity } from "@/common/entities/search-result-entity"
 
 import { CreateRoomEntity } from "../entities/create-room-entity"
-import { RoomType } from "../entities/enums"
 import { RoomEntity } from "../entities/room-entity"
 import { SearchPrivateRoomEntity } from "../entities/search-private-room-entity"
 

@@ -1,30 +1,4 @@
-declare type Gender = "MALE" | "FEMALE"
-
-declare type TimeFormatDTO = "12-HOUR" | "24-HOUR"
-
-declare type LanguageDTO = "en_US" | "id_ID"
-
-declare type NotificationsDTO = "PRIVATE" | "GROUP" | "CHANNEL"
-
-declare type GroupType = "PUBLIC" | "PRIVATE"
-
-declare type ChannelType = "PUBLIC" | "PRIVATE"
-
-declare type RoomType = "GROUP" | "CHANNEL" | "PRIVATE"
-
-declare type MessageStatus =
-  | "DEFAULT"
-  | "DELETED_FOR_ME"
-  | "DELETED_FOR_ALL"
-  | "DELETED_BY_ADMIN"
-
-declare type AttachmentType =
-  | "IMAGE"
-  | "VIDEO"
-  | "AUDIO"
-  | "PDF"
-  | "OTHER"
-  | "AUDIO_RECORD"
+declare type RoomTypeDTO = "chat" | "group" | "channel"
 
 declare interface ProfileDTO {
   id: string
@@ -56,9 +30,9 @@ declare interface UserSearchForMemberDTO {
 declare interface SettingDTO {
   id: string
   userId: string
-  timeFormat: TimeFormatDTO
-  language: LanguageDTO
-  notifications: NotificationsDTO[]
+  timeFormat: TimeFormat
+  language: Language
+  notifications: Notifications[]
   enable2FA: boolean
   showLastSeen: boolean
   allowAddToGroup: boolean
@@ -163,11 +137,18 @@ declare interface ChannelOptionDTO {
 }
 
 // ROOMS
+declare interface LastMessageDTO {
+  id: string
+  name: string
+  message: string | null
+  time: string
+}
+
 declare interface RoomDTO {
   id: string
   /** userId or groupId or channelId */
   actionId: string
-  type: RoomType
+  type: RoomTypeDTO
   name: string
   imageUrl: string | null
   pinned: boolean
@@ -175,6 +156,7 @@ declare interface RoomDTO {
   /** determine if user is group members/channel subs or not */
   isActive: boolean
   totalUnreadMessages: number
+  lastMessage: LastMessageDTO | null
 }
 
 declare interface PrivateRoomDTO {

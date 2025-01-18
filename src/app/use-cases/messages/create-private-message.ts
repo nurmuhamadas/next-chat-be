@@ -14,7 +14,6 @@ import { UpdatePrivateChatOptionEntity } from "@/domains/private-chat/entites/up
 import { PrivateChatOptionRepository } from "@/domains/private-chat/repositories/private-chat-option-repository"
 import { PrivateChatRepository } from "@/domains/private-chat/repositories/private-chat-repository"
 import { CreateRoomEntity } from "@/domains/rooms/entities/create-room-entity"
-import { RoomType } from "@/domains/rooms/entities/enums"
 import { RoomRepository } from "@/domains/rooms/repositories/room-repository"
 import { StorageRepository } from "@/domains/storage/repositories/storage-repository"
 import { KEYS } from "@/infrastuctures/container/keys"
@@ -146,7 +145,7 @@ export class CreatePrivateMessage {
 
         await this.roomRepository.createRoom(
           new CreateRoomEntity(
-            RoomType.PRIVATE,
+            "PRIVATE",
             session.userId,
             0,
             createdMessage.id,
@@ -157,7 +156,7 @@ export class CreatePrivateMessage {
         if (!isBlocked) {
           await this.roomRepository.createRoom(
             new CreateRoomEntity(
-              RoomType.PRIVATE,
+              "PRIVATE",
               data.userReceiverId,
               1,
               createdMessage.id,

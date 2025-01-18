@@ -4,9 +4,9 @@ export class ProfileEntity {
     public readonly userId: string,
     public name: string,
     public gender: Gender,
-    public bio?: string,
-    public imageUrl?: string,
-    public lastSeenAt?: Date,
+    public bio?: string | null,
+    public imageUrl?: string | null,
+    public lastSeenAt?: Date | null,
   ) {}
 
   public toProfileDTO(username: string, email: string): ProfileDTO {

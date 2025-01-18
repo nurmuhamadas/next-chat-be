@@ -7,10 +7,6 @@ import { ChannelSubscriberEntity } from "@/domains/channels/entities/channel-sub
 import { GroupMemberEntity } from "@/domains/groups/entities/group-member-entity"
 import { AttachmentEntity } from "@/domains/messages/entities/attachment-entity"
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
-import {
-  AttachmentType,
-  MessageStatus,
-} from "@/domains/messages/entities/enums"
 import { MessageAuthorEntity } from "@/domains/messages/entities/message-author-entity"
 import { MessageEntity } from "@/domains/messages/entities/message-entity"
 import { UpdateMessageEntity } from "@/domains/messages/entities/update-message-entity"
@@ -44,7 +40,7 @@ export class MessageRepositoryImpl implements MessageRepository {
           attachement.id,
           attachement.name,
           attachement.size,
-          AttachmentType[attachement.type],
+          attachement.type,
           attachement.url,
           attachement.downloadUrl,
         ),
@@ -56,17 +52,17 @@ export class MessageRepositoryImpl implements MessageRepository {
       new MessageAuthorEntity(
         result.sender.id,
         result.sender.profile?.name,
-        result.sender.profile?.imageUrl ?? undefined,
+        result.sender.profile?.imageUrl,
       ),
       result.isEmojiOnly,
-      MessageStatus[result.status],
+      result.status,
       attachements,
       result.createdAt,
       result.updatedAt,
-      result.message ?? undefined,
-      result.privateChatId ?? undefined,
-      result.groupId ?? undefined,
-      result.channelId ?? undefined,
+      result.message,
+      result.privateChatId,
+      result.groupId,
+      result.channelId,
     )
   }
 
@@ -113,31 +109,31 @@ export class MessageRepositoryImpl implements MessageRepository {
       new MessageAuthorEntity(
         result.senderId,
         result.sender.profile?.name,
-        result.sender.profile?.imageUrl ?? undefined,
+        result.sender.profile?.imageUrl,
       ),
       result.isEmojiOnly,
-      MessageStatus[result.status],
+      result.status,
       result.attachments.map(
         (att) =>
           new AttachmentEntity(
             att.id,
             att.name,
             att.size,
-            AttachmentType[att.type],
+            att.type,
             att.url,
             att.downloadUrl,
           ),
       ),
       result.createdAt,
       result.updatedAt,
-      result.message ?? undefined,
-      result.privateChatId ?? undefined,
-      result.groupId ?? undefined,
-      result.channelId ?? undefined,
-      result.parentMessageId ?? undefined,
-      result.parentMessageName ?? undefined,
-      result.parentMessageText ?? undefined,
-      result.originalMessageId ?? undefined,
+      result.message,
+      result.privateChatId,
+      result.groupId,
+      result.channelId,
+      result.parentMessageId,
+      result.parentMessageName,
+      result.parentMessageText,
+      result.originalMessageId,
     )
   }
 
@@ -186,9 +182,9 @@ export class MessageRepositoryImpl implements MessageRepository {
       skip: cursor ? 1 : undefined,
     })
 
-    let nextCursor: string | undefined = undefined
+    let nextCursor: string | undefined
     if (result.length === limit + 1) {
-      nextCursor = result.pop()?.id ?? undefined
+      nextCursor = result.pop()?.id
     }
 
     const data = result.map((result) => {
@@ -198,31 +194,31 @@ export class MessageRepositoryImpl implements MessageRepository {
         new MessageAuthorEntity(
           result.senderId,
           result.sender.profile?.name,
-          result.sender.profile?.imageUrl ?? undefined,
+          result.sender.profile?.imageUrl,
         ),
         result.isEmojiOnly,
-        MessageStatus[result.status],
+        result.status,
         result.attachments.map(
           (att) =>
             new AttachmentEntity(
               att.id,
               att.name,
               att.size,
-              AttachmentType[att.type],
+              att.type,
               att.url,
               att.downloadUrl,
             ),
         ),
         result.createdAt,
         result.updatedAt,
-        result.message ?? undefined,
-        result.privateChatId ?? undefined,
-        result.groupId ?? undefined,
-        result.channelId ?? undefined,
-        result.parentMessageId ?? undefined,
-        result.parentMessageName ?? undefined,
-        result.parentMessageText ?? undefined,
-        result.originalMessageId ?? undefined,
+        result.message,
+        result.privateChatId,
+        result.groupId,
+        result.channelId,
+        result.parentMessageId,
+        result.parentMessageName,
+        result.parentMessageText,
+        result.originalMessageId,
       )
     })
 
@@ -258,9 +254,9 @@ export class MessageRepositoryImpl implements MessageRepository {
       skip: cursor ? 1 : undefined,
     })
 
-    let nextCursor: string | undefined = undefined
+    let nextCursor: string | undefined
     if (result.length === limit + 1) {
-      nextCursor = result.pop()?.id ?? undefined
+      nextCursor = result.pop()?.id
     }
 
     const data = result.map((result) => {
@@ -270,31 +266,31 @@ export class MessageRepositoryImpl implements MessageRepository {
         new MessageAuthorEntity(
           result.senderId,
           result.sender.profile?.name,
-          result.sender.profile?.imageUrl ?? undefined,
+          result.sender.profile?.imageUrl,
         ),
         result.isEmojiOnly,
-        MessageStatus[result.status],
+        result.status,
         result.attachments.map(
           (att) =>
             new AttachmentEntity(
               att.id,
               att.name,
               att.size,
-              AttachmentType[att.type],
+              att.type,
               att.url,
               att.downloadUrl,
             ),
         ),
         result.createdAt,
         result.updatedAt,
-        result.message ?? undefined,
-        result.privateChatId ?? undefined,
-        result.groupId ?? undefined,
-        result.channelId ?? undefined,
-        result.parentMessageId ?? undefined,
-        result.parentMessageName ?? undefined,
-        result.parentMessageText ?? undefined,
-        result.originalMessageId ?? undefined,
+        result.message,
+        result.privateChatId,
+        result.groupId,
+        result.channelId,
+        result.parentMessageId,
+        result.parentMessageName,
+        result.parentMessageText,
+        result.originalMessageId,
       )
     })
 
@@ -330,9 +326,9 @@ export class MessageRepositoryImpl implements MessageRepository {
       skip: cursor ? 1 : undefined,
     })
 
-    let nextCursor: string | undefined = undefined
+    let nextCursor: string | undefined
     if (result.length === limit + 1) {
-      nextCursor = result.pop()?.id ?? undefined
+      nextCursor = result.pop()?.id
     }
 
     const data = result.map((result) => {
@@ -342,31 +338,31 @@ export class MessageRepositoryImpl implements MessageRepository {
         new MessageAuthorEntity(
           result.senderId,
           result.sender.profile?.name,
-          result.sender.profile?.imageUrl ?? undefined,
+          result.sender.profile?.imageUrl,
         ),
         result.isEmojiOnly,
-        MessageStatus[result.status],
+        result.status,
         result.attachments.map(
           (att) =>
             new AttachmentEntity(
               att.id,
               att.name,
               att.size,
-              AttachmentType[att.type],
+              att.type,
               att.url,
               att.downloadUrl,
             ),
         ),
         result.createdAt,
         result.updatedAt,
-        result.message ?? undefined,
-        result.privateChatId ?? undefined,
-        result.groupId ?? undefined,
-        result.channelId ?? undefined,
-        result.parentMessageId ?? undefined,
-        result.parentMessageName ?? undefined,
-        result.parentMessageText ?? undefined,
-        result.originalMessageId ?? undefined,
+        result.message,
+        result.privateChatId,
+        result.groupId,
+        result.channelId,
+        result.parentMessageId,
+        result.parentMessageName,
+        result.parentMessageText,
+        result.originalMessageId,
       )
     })
 
@@ -379,7 +375,10 @@ export class MessageRepositoryImpl implements MessageRepository {
   ): Promise<MessageEntity> {
     const result = await prisma.message.update({
       where: { id: messageId },
-      data: { message: data.message, isEmojiOnly: data.isEmojiOnly },
+      data: {
+        message: data.message,
+        isEmojiOnly: data.isEmojiOnly ?? undefined,
+      },
       include: { ...this.getMessageInludeQuery() },
     })
 
@@ -389,31 +388,31 @@ export class MessageRepositoryImpl implements MessageRepository {
       new MessageAuthorEntity(
         result.senderId,
         result.sender.profile?.name,
-        result.sender.profile?.imageUrl ?? undefined,
+        result.sender.profile?.imageUrl,
       ),
       result.isEmojiOnly,
-      MessageStatus[result.status],
+      result.status,
       result.attachments.map(
         (att) =>
           new AttachmentEntity(
             att.id,
             att.name,
             att.size,
-            AttachmentType[att.type],
+            att.type,
             att.url,
             att.downloadUrl,
           ),
       ),
       result.createdAt,
       result.updatedAt,
-      result.message ?? undefined,
-      result.privateChatId ?? undefined,
-      result.groupId ?? undefined,
-      result.channelId ?? undefined,
-      result.parentMessageId ?? undefined,
-      result.parentMessageName ?? undefined,
-      result.parentMessageText ?? undefined,
-      result.originalMessageId ?? undefined,
+      result.message,
+      result.privateChatId,
+      result.groupId,
+      result.channelId,
+      result.parentMessageId,
+      result.parentMessageName,
+      result.parentMessageText,
+      result.originalMessageId,
     )
   }
 

@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 import { ERROR } from "@/common/constants/errors"
-import { ChannelType } from "@/domains/channels/entities/enums"
+import { CHANNEL_TYPES } from "@/common/constants/types"
 
 import { imageProfileSchema } from "./common-schema"
 
@@ -16,7 +16,7 @@ export const channelSchema = z.object({
     .trim()
     .max(2048, ERROR.CHANNEL_DESC_TOO_LONG)
     .optional(),
-  type: z.nativeEnum(ChannelType, {
+  type: z.nativeEnum(CHANNEL_TYPES, {
     required_error: ERROR.CHANNEL_TYPE_REQUIRED,
     invalid_type_error: ERROR.INVALID_CHANNEL_TYPE,
   }),

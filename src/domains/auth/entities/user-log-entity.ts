@@ -1,38 +1,9 @@
-export enum LogActivity {
-  LOGIN = "LOGIN",
-  LOGOUT = "LOGOUT",
-  RESET_PASSWORD = "RESET_PASSWORD",
-  LOGIN_NEW_DEVICE = "LOGIN_NEW_DEVICE",
-  CREATE_PROFILE = "CREATE_PROFILE",
-  UPDATE_PROFILE = "UPDATE_PROFILE",
-  UPDATE_SETTING = "UPDATE_SETTING",
-  UPDATE_PRIVATE_CHAT_OPTION = "UPDATE_PRIVATE_CHAT_OPTION",
-  CREATE_GROUP = "CREATE_GROUP",
-  UPDATE_GROUP = "UPDATE_GROUP",
-  UPDATE_GROUP_OPTION = "UPDATE_GROUP_OPTION",
-  JOIN_GROUP = "JOIN_GROUP",
-  LEFT_GROUP = "LEFT_GROUP",
-  ADD_GROUP_MEMBER = "ADD_GROUP_MEMBER",
-  REMOVE_GROUP_MEMBER = "REMOVE_GROUP_MEMBER",
-  CREATE_CHANNEL = "CREATE_CHANNEL",
-  UPDATE_CHANNEL = "UPDATE_CHANNEL",
-  UPDATE_CHANNEL_OPTION = "UPDATE_CHANNEL_OPTION",
-  SUBCRIBE_CHANNEL = "SUBCRIBE_CHANNEL",
-  UNSUBSCRIBE_CHANNEL = "UNSUBSCRIBE_CHANNEL",
-  SEND_MESSAGE = "SEND_MESSAGE",
-  UPDATE_MESSAGE = "UPDATE_MESSAGE",
-  DELETE_MESSAGE = "DELETE_MESSAGE",
-  REACT_MESSAGE = "REACT_MESSAGE",
-  BLOCK_USER = "BLOCK_USER",
-  UNBLOCK_USER = "UNBLOCK_USER",
-}
-
 export class UserLogEntity {
   constructor(
     public readonly id: string,
     public readonly userId: string,
     public readonly sessionId: string,
-    public activity: LogActivity,
-    public description: string | null,
+    public readonly activity: LogActivity,
+    public readonly description?: string | null,
   ) {}
 }

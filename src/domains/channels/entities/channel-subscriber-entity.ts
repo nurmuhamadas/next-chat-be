@@ -4,9 +4,9 @@ export class ChannelSubscriberEntity {
     public readonly name: string,
     public readonly isAdmin: boolean,
     public readonly createdAt: Date,
-    public readonly unsubscribedAt?: Date,
-    public readonly imageUrl?: string,
-    public readonly lastSeenAt?: Date,
+    public readonly unsubscribedAt?: Date | null,
+    public readonly imageUrl?: string | null,
+    public readonly lastSeenAt?: Date | null,
   ) {}
 
   public toDTO(): ChannelSubscriberDTO {

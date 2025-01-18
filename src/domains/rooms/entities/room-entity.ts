@@ -1,4 +1,6 @@
-import { RoomType } from "./enums"
+import { ROOM_TYPE_TO_DTO } from "@/common/constants/types"
+
+import { LastMessageEntity } from "./last-message-entity"
 import { RoomProfileEntity } from "./room-profile-entity"
 
 export class RoomEntity {
@@ -9,10 +11,11 @@ export class RoomEntity {
     public readonly pinned: boolean,
     public readonly archived: boolean,
     public readonly totalUnreadMessage: number,
-    public readonly user1?: RoomProfileEntity,
-    public readonly user2?: RoomProfileEntity,
-    public readonly group?: RoomProfileEntity,
-    public readonly channel?: RoomProfileEntity,
+    public readonly user1?: RoomProfileEntity | null,
+    public readonly user2?: RoomProfileEntity | null,
+    public readonly group?: RoomProfileEntity | null,
+    public readonly channel?: RoomProfileEntity | null,
+    public readonly lastMessage?: LastMessageEntity | null,
   ) {}
 
   public toDTO(): RoomDTO {
@@ -21,7 +24,7 @@ export class RoomEntity {
     let isActive = false
     let actionId = ""
 
-    if (this.type === RoomType.PRIVATE) {
+    if (this.type === "PRIVATE") {
       const user = this.user1?.id === this.ownerId ? this.user2 : this.user1
       imageUrl = user?.imageUrl ?? ""
       actionId = user?.id ?? ""
@@ -31,12 +34,12 @@ export class RoomEntity {
       } else {
         name = user?.name ?? "Unknown"
       }
-    } else if (this.type === RoomType.GROUP && this.group) {
+    } else if (this.type === "GROUP" && this.group) {
       name = this.group.name
       imageUrl = this.group?.imageUrl ?? null
       isActive = this.group.isActive
       actionId = this.group.id
-    } else if (this.type === RoomType.CHANNEL && this.channel) {
+    } else if (this.type === "CHANNEL" && this.channel) {
       name = this.channel.name
       imageUrl = this.channel?.imageUrl ?? null
       isActive = this.channel.isActive
@@ -46,13 +49,14 @@ export class RoomEntity {
     return {
       id: this.id,
       actionId,
-      type: this.type,
+      type: ROOM_TYPE_TO_DTO[this.type],
       name,
       imageUrl,
       pinned: this.pinned,
       archived: this.archived,
       isActive,
       totalUnreadMessages: this.totalUnreadMessage,
+      lastMessage: this.lastMessage?.toDTO() ?? null,
     }
   }
 }

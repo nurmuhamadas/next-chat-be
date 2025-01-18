@@ -2,17 +2,17 @@ import { z } from "zod"
 
 import { ERROR } from "@/common/constants/errors"
 
-export const TIME_FORMAT: Record<TimeFormatDTO, TimeFormatDTO> = {
+export const TIME_FORMAT: Record<TimeFormat, TimeFormat> = {
   "12-HOUR": "12-HOUR",
   "24-HOUR": "24-HOUR",
 }
 
-export const LANGUAGE: Record<LanguageDTO, LanguageDTO> = {
+export const LANGUAGE: Record<Language, Language> = {
   en_US: "en_US",
   id_ID: "id_ID",
 }
 
-export const NOTIFICATION: Record<NotificationsDTO, NotificationsDTO> = {
+export const NOTIFICATION: Record<Notifications, Notifications> = {
   PRIVATE: "PRIVATE",
   GROUP: "GROUP",
   CHANNEL: "CHANNEL",

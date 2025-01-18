@@ -1,8 +1,8 @@
 export class MessageAuthorEntity {
   constructor(
-    public readonly id?: string,
-    public readonly name?: string,
-    public readonly imageUrl?: string,
+    public readonly id?: string | null,
+    public readonly name?: string | null,
+    public readonly imageUrl?: string | null,
   ) {}
 
   toDTO(): MessageAuthorDTO {

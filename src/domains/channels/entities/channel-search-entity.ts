@@ -3,7 +3,7 @@ export class ChannelSearchEntity {
     public readonly id: string,
     public readonly name: string,
     public readonly totalSubscribers: number,
-    public readonly imageUrl?: string,
+    public readonly imageUrl?: string | null,
   ) {}
 
   public toDTO(): ChannelSearchDTO {

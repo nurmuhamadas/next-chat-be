@@ -3,7 +3,7 @@ export class CreateProfileEntity {
     public readonly userId: string,
     public name: string,
     public gender: Gender,
-    public bio?: string,
-    public imageUrl?: string,
+    public bio?: string | null,
+    public imageUrl?: string | null,
   ) {}
 }

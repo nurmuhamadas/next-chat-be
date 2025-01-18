@@ -1,7 +1,6 @@
 import { injectable } from "inversify"
 
 import { SessionEntity } from "@/domains/auth/entities/session-entity"
-import { LogActivity } from "@/domains/auth/entities/user-log-entity"
 import { SessionRepository } from "@/domains/auth/repositories/session-repository"
 
 import { prisma } from "../../orm/prisma"
@@ -46,9 +45,7 @@ export class SessionRepositoryImpl implements SessionRepository {
         userLogs: {
           create: {
             ...userLogs,
-            activity: PrismaHelper.convertLogActivity(
-              LogActivity.LOGIN_NEW_DEVICE,
-            ),
+            activity: PrismaHelper.convertLogActivity("LOGIN_NEW_DEVICE"),
           },
         },
       },
@@ -58,7 +55,7 @@ export class SessionRepositoryImpl implements SessionRepository {
         userLogs: {
           create: {
             ...userLogs,
-            activity: PrismaHelper.convertLogActivity(LogActivity.LOGIN),
+            activity: PrismaHelper.convertLogActivity("LOGIN"),
           },
         },
       },

@@ -1,5 +1,4 @@
 import { AttachmentEntity } from "./attachment-entity"
-import { MessageStatus } from "./enums"
 import { MessageAuthorEntity } from "./message-author-entity"
 
 export class MessageEntity {
@@ -12,14 +11,14 @@ export class MessageEntity {
     public readonly attachments: AttachmentEntity[],
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
-    public readonly message?: string,
-    public readonly privateChatId?: string,
-    public readonly groupId?: string,
-    public readonly channelId?: string,
-    public readonly parentMessageId?: string,
-    public readonly parentMessageName?: string,
-    public readonly parentMessageText?: string,
-    public readonly originalMessageId?: string,
+    public readonly message?: string | null,
+    public readonly privateChatId?: string | null,
+    public readonly groupId?: string | null,
+    public readonly channelId?: string | null,
+    public readonly parentMessageId?: string | null,
+    public readonly parentMessageName?: string | null,
+    public readonly parentMessageText?: string | null,
+    public readonly originalMessageId?: string | null,
   ) {}
 
   toDTO(): MessageDTO {

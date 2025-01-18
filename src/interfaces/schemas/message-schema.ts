@@ -1,9 +1,14 @@
 import { z } from "zod"
 
 import { ERROR } from "@/common/constants/errors"
-import { RoomType } from "@/domains/rooms/entities/enums"
 
 import { attachmentSchema } from "./common-schema"
+
+export const ROOM_TYPE: Record<RoomType, RoomType> = {
+  GROUP: "GROUP",
+  CHANNEL: "CHANNEL",
+  PRIVATE: "PRIVATE",
+}
 
 export const createMessageSchema = z
   .object({
@@ -15,7 +20,7 @@ export const createMessageSchema = z
       .optional()
       .transform((v) => (v === "undefined" ? undefined : v)),
     receiverId: z.string({ invalid_type_error: ERROR.INVALID_TYPE }),
-    roomType: z.nativeEnum(RoomType),
+    roomType: z.nativeEnum(ROOM_TYPE),
     parentMessageId: z
       .string({ invalid_type_error: ERROR.INVALID_TYPE })
       .optional()
@@ -40,7 +45,7 @@ export const createMessageSchema = z
 
 export const getMessageParamSchema = z.object({
   roomType: z
-    .nativeEnum(RoomType, {
+    .nativeEnum(ROOM_TYPE, {
       invalid_type_error: ERROR.INVALID_ROOM_TYPE,
     })
     .transform((v) => v.toUpperCase() as RoomType),
@@ -58,6 +63,6 @@ export const updateMessageSchema = z.object({
 })
 
 export const forwardMessageSchema = z.object({
-  roomType: z.nativeEnum(RoomType),
+  roomType: z.nativeEnum(ROOM_TYPE),
   receiverId: z.string().min(1, ERROR.REQUIRED),
 })

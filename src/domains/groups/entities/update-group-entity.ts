@@ -1,12 +1,10 @@
-import { GroupType as IGroupType } from "./enums"
-
 export class UpdateGroupEntity {
   constructor(
     public readonly id: string,
-    public readonly name?: string,
-    public readonly type?: IGroupType,
-    public readonly description?: string,
-    public imageUrl?: string,
+    public readonly name?: string | null,
+    public readonly type?: GroupType | null,
+    public readonly description?: string | null,
+    public imageUrl?: string | null,
   ) {}
 
   static fromJSON(json: {
@@ -19,7 +17,7 @@ export class UpdateGroupEntity {
     return new UpdateGroupEntity(
       json.id,
       json.name,
-      json.type === "PUBLIC" ? IGroupType.PUBLIC : IGroupType.PRIVATE,
+      json.type,
       json.description,
       json.imageUrl,
     )

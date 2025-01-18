@@ -1,5 +1,3 @@
-import { ChannelType } from "./enums"
-
 export class ChannelEntity {
   constructor(
     public readonly id: string,
@@ -10,9 +8,9 @@ export class ChannelEntity {
     public readonly totalSubscribers: number,
     public readonly isSubscriber: boolean,
     public readonly isAdmin: boolean,
-    public readonly description?: string,
-    public readonly imageUrl?: string,
-    public readonly deletedAt?: Date,
+    public readonly description?: string | null,
+    public readonly imageUrl?: string | null,
+    public readonly deletedAt?: Date | null,
   ) {}
 
   get isDeleted() {
@@ -29,8 +27,8 @@ export class ChannelEntity {
       0,
       this.isSubscriber,
       this.isAdmin,
-      undefined,
-      undefined,
+      null,
+      null,
       this.deletedAt,
     )
   }
