@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { AddGroupAdmin } from "@/app/use-cases/groups/add-group-admin"
@@ -19,7 +18,11 @@ import { SearchPublicGroups } from "@/app/use-cases/groups/search-public-groups"
 import { UpdateGroup } from "@/app/use-cases/groups/update-group"
 import { UpdateGroupOption } from "@/app/use-cases/groups/update-group-option"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
-import { successCollectionResponse, successResponse } from "@/common/lib/utils"
+import {
+  successCollectionResponse,
+  successResponse,
+  zValidator,
+} from "@/common/lib/utils"
 import { CreateGroupEntity } from "@/domains/groups/entities/create-group-entity"
 import { UpdateGroupEntity } from "@/domains/groups/entities/update-group-entity"
 import { UpdateGroupOptionEntity } from "@/domains/groups/entities/update-group-option-entity"

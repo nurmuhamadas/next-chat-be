@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { ArchiveRoom } from "@/app/use-cases/rooms/archive-room"
@@ -12,7 +11,11 @@ import { PinRoom } from "@/app/use-cases/rooms/pin-room"
 import { UnarchiveRoom } from "@/app/use-cases/rooms/unarchive-room"
 import { UnpinRoom } from "@/app/use-cases/rooms/unpin-room"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
-import { successCollectionResponse, successResponse } from "@/common/lib/utils"
+import {
+  successCollectionResponse,
+  successResponse,
+  zValidator,
+} from "@/common/lib/utils"
 import { container } from "@/infrastuctures/container"
 
 import { searchQuerySchema } from "../schemas/common-schema"

@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { AddChannelAdmin } from "@/app/use-cases/channels/add-channel-admin"
@@ -17,7 +16,11 @@ import { UnsubscribeChannel } from "@/app/use-cases/channels/unsubscribe-channel
 import { UpdateChannel } from "@/app/use-cases/channels/update-channel"
 import { UpdateChannelOption } from "@/app/use-cases/channels/update-channel-option"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
-import { successCollectionResponse, successResponse } from "@/common/lib/utils"
+import {
+  successCollectionResponse,
+  successResponse,
+  zValidator,
+} from "@/common/lib/utils"
 import { CreateChannelEntity } from "@/domains/channels/entities/create-channel-entity"
 import { UpdateChannelEntity } from "@/domains/channels/entities/update-channel-entity"
 import { UpdateChannelOptionEntity } from "@/domains/channels/entities/update-channel-option-entity"

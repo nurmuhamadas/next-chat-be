@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { CreateChannelMessage } from "@/app/use-cases/messages/create-channel-message"
@@ -12,7 +11,11 @@ import { GetMessages } from "@/app/use-cases/messages/get-messages"
 import { ReadMessage } from "@/app/use-cases/messages/read-message"
 import { UpdateMessage } from "@/app/use-cases/messages/update-message"
 import { SearchParamsEntity } from "@/common/entities/search-params-entity"
-import { successCollectionResponse, successResponse } from "@/common/lib/utils"
+import {
+  successCollectionResponse,
+  successResponse,
+  zValidator,
+} from "@/common/lib/utils"
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
 import { UpdateMessageEntity } from "@/domains/messages/entities/update-message-entity"
 import { container } from "@/infrastuctures/container"

@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 
 import { CreateProfile } from "@/app/use-cases/user/create-profile"
@@ -7,7 +6,11 @@ import { GetUserProfile } from "@/app/use-cases/user/get-user-profile"
 import { SearchUsers } from "@/app/use-cases/user/search-users"
 import { SearchUsersForMember } from "@/app/use-cases/user/search-users-for-member"
 import { UpdateProfile } from "@/app/use-cases/user/update-profile"
-import { successCollectionResponse, successResponse } from "@/common/lib/utils"
+import {
+  successCollectionResponse,
+  successResponse,
+  zValidator,
+} from "@/common/lib/utils"
 import { CreateProfileEntity } from "@/domains/users/entities/create-profile-entity"
 import { UpdateProfileEntity } from "@/domains/users/entities/update-profile-entity"
 import { container } from "@/infrastuctures/container"
