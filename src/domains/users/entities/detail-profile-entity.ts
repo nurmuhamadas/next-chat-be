@@ -5,9 +5,9 @@ export class DetailProfileEntity {
     public readonly name: string,
     public readonly gender: Gender,
     public readonly username: string,
-    public readonly bio?: string,
-    public readonly imageUrl?: string,
-    public readonly lastSeenAt?: Date,
+    public readonly bio?: string | null,
+    public readonly imageUrl?: string | null,
+    public readonly lastSeenAt?: Date | null,
   ) {}
 
   public toProfileDTO(): ProfileDTO {

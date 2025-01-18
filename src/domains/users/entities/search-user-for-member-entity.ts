@@ -3,8 +3,8 @@ export class SearchUserForMemberEntity {
     public readonly id: string,
     public readonly name: string,
     public readonly allowAddToGroup: boolean,
-    public readonly imageUrl?: string,
-    public readonly lastSeenAt?: Date,
+    public readonly imageUrl?: string | null,
+    public readonly lastSeenAt?: Date | null,
   ) {}
 
   public toUserSearchForMemberDTO(): UserSearchForMemberDTO {

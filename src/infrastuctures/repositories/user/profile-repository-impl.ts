@@ -25,9 +25,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       result.userId,
       result.name,
       result.gender,
-      result.bio ?? undefined,
-      result.imageUrl ?? undefined,
-      result.lastSeenAt ?? undefined,
+      result.bio,
+      result.imageUrl,
+      result.lastSeenAt,
     )
   }
 
@@ -40,8 +40,8 @@ export class ProfileRepositoryImpl implements ProfileRepository {
           userId: profile.userId,
           name: profile.name,
           gender: profile.gender,
-          bio: profile.bio ?? undefined,
-          imageUrl: profile.imageUrl ?? undefined,
+          bio: profile.bio,
+          imageUrl: profile.imageUrl,
         },
       }),
       prisma.setting.create({
@@ -63,9 +63,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
         profileResult.userId,
         profileResult.name,
         profileResult.gender,
-        profileResult.bio ?? undefined,
-        profileResult.imageUrl ?? undefined,
-        profileResult.lastSeenAt ?? undefined,
+        profileResult.bio,
+        profileResult.imageUrl,
+        profileResult.lastSeenAt,
       ),
       new SettingEntity(
         settingResult.id,
@@ -99,9 +99,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       result.userId,
       result.name,
       result.gender,
-      result.bio ?? undefined,
-      result.imageUrl ?? undefined,
-      result.lastSeenAt ?? undefined,
+      result.bio,
+      result.imageUrl,
+      result.lastSeenAt,
     )
   }
 
@@ -134,13 +134,7 @@ export class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     const data = result.map(
-      (v) =>
-        new SearchUserEntity(
-          v.userId,
-          v.name,
-          v.imageUrl ?? undefined,
-          v.lastSeenAt ?? undefined,
-        ),
+      (v) => new SearchUserEntity(v.userId, v.name, v.imageUrl, v.lastSeenAt),
     )
 
     return new SearchResultEntity(data, result.length, nextCursor)
@@ -186,8 +180,8 @@ export class ProfileRepositoryImpl implements ProfileRepository {
           result.userId,
           result.name,
           result.user.setting?.allowAddToGroup ?? false,
-          result.imageUrl ?? undefined,
-          result.lastSeenAt ?? undefined,
+          result.imageUrl,
+          result.lastSeenAt,
         ),
     )
 
@@ -210,9 +204,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
       result.name,
       result.gender,
       result.user.username,
-      result.bio ?? undefined,
-      result.imageUrl ?? undefined,
-      result.lastSeenAt ?? undefined,
+      result.bio,
+      result.imageUrl,
+      result.lastSeenAt,
     )
   }
 
