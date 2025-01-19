@@ -30,16 +30,26 @@ export const wsRoute = new Hono()
           const rawWs = ws.raw as ServerWebSocket
 
           websocket.saveConnection(rawWs, session.userId)
-          websocket.subscribeTopic(rawWs)
+
+          const onlineUserIds = websocket.getConnectionIds()
+
+          websocket.broadcastByConnectionKeys(
+            JSON.stringify({ type: "ONLINE", data: onlineUserIds }),
+            onlineUserIds,
+          )
         },
-        onClose: (_, ws) => {
+        onClose: () => {
           const websocket = container.get<WebSocketManager>(
             KEYS.WebSocketManager,
           )
-          const rawWs = ws.raw as ServerWebSocket
 
           websocket.removeConnection(session.userId)
-          websocket.unsubscribeTopic(rawWs)
+
+          const onlineUserIds = websocket.getConnectionIds()
+          websocket.broadcastByConnectionKeys(
+            JSON.stringify({ type: "ONLINE", data: onlineUserIds }),
+            onlineUserIds,
+          )
         },
       }
     }),

@@ -124,7 +124,7 @@ export class CreateChannelMessage {
       )
 
       this.webSocketManager.broadcastByConnectionKeys(
-        JSON.stringify(createdMessage),
+        JSON.stringify({ type: "MESSAGE", data: createdMessage.toDTO() }),
         subIds,
       )
 

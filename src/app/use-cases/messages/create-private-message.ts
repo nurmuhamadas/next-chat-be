@@ -187,7 +187,7 @@ export class CreatePrivateMessage {
         }
 
         this.webSocketManager.broadcastByConnectionKeys(
-          JSON.stringify(createdMessage),
+          JSON.stringify({ type: "MESSAGE", data: createdMessage.toDTO() }),
           receivers,
         )
 
@@ -267,7 +267,7 @@ export class CreatePrivateMessage {
       }
 
       this.webSocketManager.broadcastByConnectionKeys(
-        JSON.stringify(createdMessage),
+        JSON.stringify({ type: "MESSAGE", data: createdMessage.toDTO() }),
         receivers,
       )
 

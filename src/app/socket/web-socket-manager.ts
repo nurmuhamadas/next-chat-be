@@ -16,4 +16,6 @@ export abstract class WebSocketManager {
     topic: string,
     data: string,
   ): void
+
+  abstract getConnectionIds(): string[]
 }

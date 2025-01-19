@@ -24,16 +24,20 @@ export class HonoWebSocket implements WebSocketManager {
     connections.delete(userId)
   }
 
-  broadcastByConnectionKeys(message: string, userIds: string[]): void {
+  broadcastByConnectionKeys(data: string, userIds: string[]): void {
     userIds.forEach((userId) => {
       const ws = connections.get(userId)
       if (ws) {
-        ws.send(message)
+        ws.send(data)
       }
     })
   }
 
   broadcastByTopic(ws: ServerWebSocket, topic: string, data: string): void {
-    ws.publish(data, topic)
+    ws.publish(topic, data)
+  }
+
+  getConnectionIds(): string[] {
+    return Array.from(connections.keys())
   }
 }
