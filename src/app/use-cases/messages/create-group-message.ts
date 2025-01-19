@@ -123,7 +123,7 @@ export class CreateGroupMessage {
         data.groupId,
       )
 
-      this.webSocketManager.broadcastMessage(
+      this.webSocketManager.broadcastByConnectionKeys(
         JSON.stringify(createdMessage),
         memberIds,
       )

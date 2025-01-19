@@ -6,13 +6,14 @@ const connections = new Map<string, ServerWebSocket>()
 
 export class HonoWebSocket implements WebSocketManager {
   static MESSAGE_TOPIC = "message"
+  static ONLINE_TOPIC = "online"
 
-  subscribeTopic(ws: ServerWebSocket): void {
-    ws.subscribe(HonoWebSocket.MESSAGE_TOPIC)
+  subscribeTopic(ws: ServerWebSocket, topic: string): void {
+    ws.subscribe(topic)
   }
 
-  unsubscribeTopic(ws: ServerWebSocket): void {
-    ws.unsubscribe(HonoWebSocket.MESSAGE_TOPIC)
+  unsubscribeTopic(ws: ServerWebSocket, topic: string): void {
+    ws.unsubscribe(topic)
   }
 
   saveConnection(ws: ServerWebSocket, userId: string): void {
@@ -23,12 +24,16 @@ export class HonoWebSocket implements WebSocketManager {
     connections.delete(userId)
   }
 
-  broadcastMessage(message: string, userIds: string[]): void {
+  broadcastByConnectionKeys(message: string, userIds: string[]): void {
     userIds.forEach((userId) => {
       const ws = connections.get(userId)
       if (ws) {
         ws.send(message)
       }
     })
+  }
+
+  broadcastByTopic(ws: ServerWebSocket, topic: string, data: string): void {
+    ws.publish(data, topic)
   }
 }

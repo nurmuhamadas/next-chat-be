@@ -123,7 +123,7 @@ export class CreateChannelMessage {
         data.channelId,
       )
 
-      this.webSocketManager.broadcastMessage(
+      this.webSocketManager.broadcastByConnectionKeys(
         JSON.stringify(createdMessage),
         subIds,
       )

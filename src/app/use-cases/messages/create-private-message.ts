@@ -186,7 +186,7 @@ export class CreatePrivateMessage {
           receivers.push(data.userReceiverId)
         }
 
-        this.webSocketManager.broadcastMessage(
+        this.webSocketManager.broadcastByConnectionKeys(
           JSON.stringify(createdMessage),
           receivers,
         )
@@ -266,7 +266,7 @@ export class CreatePrivateMessage {
         receivers.push(data.userReceiverId)
       }
 
-      this.webSocketManager.broadcastMessage(
+      this.webSocketManager.broadcastByConnectionKeys(
         JSON.stringify(createdMessage),
         receivers,
       )
