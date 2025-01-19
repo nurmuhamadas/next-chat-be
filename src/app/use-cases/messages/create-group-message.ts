@@ -1,9 +1,11 @@
 import { inject, injectable } from "inversify"
 
+import { WebSocketManager } from "@/app/socket/web-socket-manager"
 import { ERROR } from "@/common/constants/errors"
 import AuthorizationError from "@/common/exceptions/authorization-error"
 import InvariantError from "@/common/exceptions/invariant-error"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
+import { GroupMemberRepository } from "@/domains/groups/repositories/group-member-repository"
 import { GroupRepository } from "@/domains/groups/repositories/group-repository"
 import { AttachmentEntity } from "@/domains/messages/entities/attachment-entity"
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
@@ -33,6 +35,10 @@ export class CreateGroupMessage {
     private roomRepository: RoomRepository,
     @inject(KEYS.UnreadMessageRepository)
     private unreadMessageRepository: UnreadMessageRepository,
+    @inject(KEYS.GroupMemberRepository)
+    private groupMemberRepository: GroupMemberRepository,
+    @inject(KEYS.WebSocketManager)
+    private webSocketManager: WebSocketManager,
   ) {}
 
   async execute(
@@ -111,6 +117,15 @@ export class CreateGroupMessage {
       await this.unreadMessageRepository.incrementGroupUnreadMessageCountExceptOwner(
         session.userId,
         data.groupId,
+      )
+
+      const memberIds = await this.groupMemberRepository.getAllMemberIds(
+        data.groupId,
+      )
+
+      this.webSocketManager.broadcastMessage(
+        JSON.stringify(createdMessage),
+        memberIds,
       )
 
       return createdMessage

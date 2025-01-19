@@ -174,4 +174,14 @@ export class ChannelSubscriberRepositoryImpl
         ),
     )
   }
+
+  async getAllSubscriberIds(channelId: string): Promise<string[]> {
+    const result = await prisma.channelSubscriber.findMany({
+      where: { channelId, unsubscribedAt: null },
+      select: { userId: true },
+      take: 1000,
+    })
+
+    return result.map((subscriber) => subscriber.userId)
+  }
 }

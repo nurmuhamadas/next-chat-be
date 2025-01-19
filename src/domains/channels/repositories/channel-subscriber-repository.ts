@@ -33,4 +33,6 @@ export abstract class ChannelSubscriberRepository {
     channelId: string,
     userId: string,
   ): Promise<ChannelSubscriberEntity[]>
+
+  abstract getAllSubscriberIds(channelId: string): Promise<string[]>
 }

@@ -30,4 +30,6 @@ export abstract class GroupMemberRepository {
     groupId: string,
     userId: string,
   ): Promise<GroupMemberEntity[]>
+
+  abstract getAllMemberIds(groupId: string): Promise<string[]>
 }

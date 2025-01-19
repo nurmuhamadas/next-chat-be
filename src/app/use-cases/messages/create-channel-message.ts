@@ -1,10 +1,12 @@
 import { inject, injectable } from "inversify"
 
+import { WebSocketManager } from "@/app/socket/web-socket-manager"
 import { ERROR } from "@/common/constants/errors"
 import AuthorizationError from "@/common/exceptions/authorization-error"
 import InvariantError from "@/common/exceptions/invariant-error"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
 import { ChannelRepository } from "@/domains/channels/repositories/channel-repository"
+import { ChannelSubscriberRepository } from "@/domains/channels/repositories/channel-subscriber-repository"
 import { AttachmentEntity } from "@/domains/messages/entities/attachment-entity"
 import { CreateMessageEntity } from "@/domains/messages/entities/create-message-entity"
 import { MessageEntity } from "@/domains/messages/entities/message-entity"
@@ -33,6 +35,10 @@ export class CreateChannelMessage {
     private roomRepository: RoomRepository,
     @inject(KEYS.UnreadMessageRepository)
     private unreadMessageRepository: UnreadMessageRepository,
+    @inject(KEYS.ChannelSubscriberRepository)
+    private channelSubscriberRepository: ChannelSubscriberRepository,
+    @inject(KEYS.WebSocketManager)
+    private webSocketManager: WebSocketManager,
   ) {}
 
   async execute(
@@ -111,6 +117,15 @@ export class CreateChannelMessage {
       await this.unreadMessageRepository.incrementChannelUnreadMessageCountExceptOwner(
         session.userId,
         data.channelId,
+      )
+
+      const subIds = await this.channelSubscriberRepository.getAllSubscriberIds(
+        data.channelId,
+      )
+
+      this.webSocketManager.broadcastMessage(
+        JSON.stringify(createdMessage),
+        subIds,
       )
 
       return createdMessage

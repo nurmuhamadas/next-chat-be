@@ -165,4 +165,14 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
         ),
     )
   }
+
+  async getAllMemberIds(groupId: string): Promise<string[]> {
+    const result = await prisma.groupMember.findMany({
+      where: { groupId, leftAt: null },
+      select: { userId: true },
+      take: 1000,
+    })
+
+    return result.map((member) => member.userId)
+  }
 }
