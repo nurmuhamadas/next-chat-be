@@ -144,6 +144,7 @@ export class CreatePrivateMessage {
           session.userId,
           message,
           parentMessage ?? undefined,
+          newPrivateChat.id,
         )
 
         await this.roomRepository.createRoom(
@@ -199,6 +200,7 @@ export class CreatePrivateMessage {
         session.userId,
         message,
         parentMessage ?? undefined,
+        privateChat.id,
       )
 
       const senderRoom = await this.roomRepository.getRoomByActionId(

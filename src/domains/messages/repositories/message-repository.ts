@@ -16,6 +16,7 @@ export abstract class MessageRepository {
     userId: string,
     data: CreateMessageEntity,
     parentMessage?: MessageEntity,
+    privateChatId?: string,
   ): Promise<MessageEntity>
 
   abstract getPrivateMessages(
