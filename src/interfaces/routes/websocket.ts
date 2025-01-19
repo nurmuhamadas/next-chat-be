@@ -10,32 +10,38 @@ import { sessionMiddleware } from "./middleware/session-middleware"
 
 const { upgradeWebSocket } = createBunWebSocket<ServerWebSocket>()
 
-export const wsRoute = new Hono().get(
-  "/",
-  sessionMiddleware,
-  upgradeWebSocket((c) => {
-    const session = c.get("userSession")
+export const wsRoute = new Hono()
+  .get(
+    "/messages",
+    sessionMiddleware,
+    upgradeWebSocket((c) => {
+      const session = c.get("userSession")
 
-    return {
-      onOpen(_, ws) {
-        if (!session) {
-          ws.close(1008, "Unauthorized")
-          return
-        }
+      return {
+        onOpen(_, ws) {
+          if (!session) {
+            ws.close(1008, "Unauthorized")
+            return
+          }
 
-        const websocket = container.get<WebSocketManager>(KEYS.WebSocketManager)
-        const rawWs = ws.raw as ServerWebSocket
+          const websocket = container.get<WebSocketManager>(
+            KEYS.WebSocketManager,
+          )
+          const rawWs = ws.raw as ServerWebSocket
 
-        websocket.saveConnection(rawWs, session.userId)
-        websocket.subscribeTopic(rawWs)
-      },
-      onClose: (_, ws) => {
-        const websocket = container.get<WebSocketManager>(KEYS.WebSocketManager)
-        const rawWs = ws.raw as ServerWebSocket
+          websocket.saveConnection(rawWs, session.userId)
+          websocket.subscribeTopic(rawWs)
+        },
+        onClose: (_, ws) => {
+          const websocket = container.get<WebSocketManager>(
+            KEYS.WebSocketManager,
+          )
+          const rawWs = ws.raw as ServerWebSocket
 
-        websocket.removeConnection(session.userId)
-        websocket.unsubscribeTopic(rawWs)
-      },
-    }
-  }),
-)
+          websocket.removeConnection(session.userId)
+          websocket.unsubscribeTopic(rawWs)
+        },
+      }
+    }),
+  )
+  .get("/online")
