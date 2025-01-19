@@ -190,7 +190,7 @@ export class MessageRepositoryImpl implements MessageRepository {
     const data = result.map((result) => {
       return new MessageEntity(
         result.id,
-        result.senderId,
+        userId,
         new MessageAuthorEntity(
           result.senderId,
           result.sender.profile?.name,
@@ -226,6 +226,7 @@ export class MessageRepositoryImpl implements MessageRepository {
   }
 
   async getGroupMessages(
+    userId: string,
     groupId: string,
     memberHistory: GroupMemberEntity[],
     params: SearchParamsEntity,
@@ -262,7 +263,7 @@ export class MessageRepositoryImpl implements MessageRepository {
     const data = result.map((result) => {
       return new MessageEntity(
         result.id,
-        result.senderId,
+        userId,
         new MessageAuthorEntity(
           result.senderId,
           result.sender.profile?.name,
@@ -298,6 +299,7 @@ export class MessageRepositoryImpl implements MessageRepository {
   }
 
   async getChannelMessages(
+    userId: string,
     channelId: string,
     subsHistory: ChannelSubscriberEntity[],
     params: SearchParamsEntity,
@@ -334,7 +336,7 @@ export class MessageRepositoryImpl implements MessageRepository {
     const data = result.map((result) => {
       return new MessageEntity(
         result.id,
-        result.senderId,
+        userId,
         new MessageAuthorEntity(
           result.senderId,
           result.sender.profile?.name,

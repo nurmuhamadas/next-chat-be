@@ -27,12 +27,14 @@ export abstract class MessageRepository {
   ): Promise<SearchResultEntity<MessageEntity>>
 
   abstract getGroupMessages(
+    userId: string,
     groupId: string,
     memberHistory: GroupMemberEntity[],
     params: SearchParamsEntity,
   ): Promise<SearchResultEntity<MessageEntity>>
 
   abstract getChannelMessages(
+    userId: string,
     channelId: string,
     subsHistory: ChannelSubscriberEntity[],
     params: SearchParamsEntity,

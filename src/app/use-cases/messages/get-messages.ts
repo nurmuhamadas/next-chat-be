@@ -60,6 +60,7 @@ export class GetMessages {
       )
 
       const result = await this.messageRepository.getGroupMessages(
+        session.userId,
         receiverId,
         memberHistory,
         params,
@@ -74,6 +75,7 @@ export class GetMessages {
         )
 
       const result = await this.messageRepository.getChannelMessages(
+        session.userId,
         receiverId,
         subscriberHistory,
         params,
