@@ -1,6 +1,7 @@
 {
   "name": "next-chat-be",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "bun run --hot src/app.ts",
     "eslint": "bunx eslint ./src",
     "typecheck": "tsc --noEmit",
