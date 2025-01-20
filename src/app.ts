@@ -107,9 +107,7 @@ app
   )
   .get("ws/online")
 
-export { app }
-
-export const server = serve({
+const server = serve({
   fetch: app.fetch,
   port: 8000,
 })
