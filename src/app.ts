@@ -113,3 +113,5 @@ const server = serve({
 })
 
 injectWebSocket(server)
+
+export default server
