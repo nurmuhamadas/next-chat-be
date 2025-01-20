@@ -11,6 +11,7 @@
     "types": ["reflect-metadata", "bun"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "outDir": "dist",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
