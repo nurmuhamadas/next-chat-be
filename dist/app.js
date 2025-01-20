@@ -28199,8 +28199,7 @@ var require_bcryptjs = __commonJS((exports2, module2) => {
 // src/app.ts
 var exports_app = {};
 __export(exports_app, {
-  server: () => server,
-  app: () => app
+  default: () => app_default
 });
 module.exports = __toCommonJS(exports_app);
 var import_reflect_metadata2 = __toESM(require_Reflect());
@@ -44494,3 +44493,4 @@ var server = serve({
   port: 8000
 });
 injectWebSocket(server);
+var app_default = server;
