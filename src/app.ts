@@ -1,21 +1,22 @@
 import "reflect-metadata"
 
+import { serve } from "@hono/node-server"
+import { createNodeWebSocket } from "@hono/node-ws"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { ServerWebSocket } from "bun"
 import { Hono } from "hono"
-import { createBunWebSocket } from "hono/bun"
 import { cors } from "hono/cors"
 import { logger } from "hono/logger"
 
-import { APP_URL } from "../config"
-
+import { WebSocketManager } from "./app/socket/web-socket-manager"
 import { ERROR } from "./common/constants/errors"
 import ClientError from "./common/exceptions/client-error"
 import InvariantError from "./common/exceptions/invariant-error"
 import { createError, customLogger } from "./common/lib/utils"
+import { container } from "./infrastuctures/container"
+import { KEYS } from "./infrastuctures/container/keys"
 import { createRouter } from "./interfaces/routes"
-
-const { websocket } = createBunWebSocket<ServerWebSocket>()
+import { sessionMiddleware } from "./interfaces/routes/middleware/session-middleware"
 
 const app = new Hono().basePath("/api")
 
@@ -24,12 +25,14 @@ app.use(logger(customLogger))
 app.use(
   "/*",
   cors({
-    origin: APP_URL,
+    origin: process.env.APP_URL!,
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     maxAge: 600,
     credentials: true,
   }),
 )
+
+const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app })
 
 createRouter(app)
 
@@ -53,18 +56,62 @@ app.onError((error, c) => {
     return c.json(createError(ERROR.INTERNAL_SERVER_ERROR), 500)
   }
 
+  console.log(error)
   customLogger("ERROR:", `Message: ${error.message}`)
   return c.json(createError(ERROR.INTERNAL_SERVER_ERROR), 500)
 })
 
-export const server = Bun.serve({
+app
+  .get(
+    "ws/messages",
+    sessionMiddleware,
+    upgradeWebSocket((c) => {
+      const session = c.get("userSession")
+
+      return {
+        onOpen(_, ws) {
+          if (!session) {
+            ws.close(1008, "Unauthorized")
+            return
+          }
+
+          const websocket = container.get<WebSocketManager>(
+            KEYS.WebSocketManager,
+          )
+          const rawWs = ws.raw as ServerWebSocket
+
+          websocket.saveConnection(rawWs, session.userId)
+
+          const onlineUserIds = websocket.getConnectionIds()
+
+          websocket.broadcastByConnectionKeys(
+            JSON.stringify({ type: "ONLINE", data: onlineUserIds }),
+            onlineUserIds,
+          )
+        },
+        onClose: () => {
+          const websocket = container.get<WebSocketManager>(
+            KEYS.WebSocketManager,
+          )
+
+          websocket.removeConnection(session.userId)
+
+          const onlineUserIds = websocket.getConnectionIds()
+          websocket.broadcastByConnectionKeys(
+            JSON.stringify({ type: "ONLINE", data: onlineUserIds }),
+            onlineUserIds,
+          )
+        },
+      }
+    }),
+  )
+  .get("ws/online")
+
+export { app }
+
+export const server = serve({
   fetch: app.fetch,
   port: 8000,
-  websocket: websocket,
 })
 
-export default {
-  ...app,
-  websocket,
-  port: 8000,
-}
+injectWebSocket(server)

@@ -5,8 +5,6 @@ import { v7 as uuidV7 } from "uuid"
 
 import { SessionEntity } from "@/domains/auth/entities/session-entity"
 
-import { APP_URL } from "../../../config"
-
 export class CookieHelper {
   static AUTH_COOKIE_KEY = "next-chat-session"
   static DEVICE_ID_COOKIE_KEY = "device-id"
@@ -30,7 +28,10 @@ export class CookieHelper {
     if (!deviceId) {
       setCookie(c, this.DEVICE_ID_COOKIE_KEY, session.deviceId, {
         path: "/",
-        domain: process.env.NODE_ENV !== "production" ? "localhost" : APP_URL,
+        domain:
+          process.env.NODE_ENV !== "production"
+            ? "localhost"
+            : process.env.APP_URL!,
         httpOnly: true,
         secure: true,
         sameSite: "none",
@@ -39,7 +40,10 @@ export class CookieHelper {
     }
     setCookie(c, this.AUTH_COOKIE_KEY, session.token, {
       path: "/",
-      domain: process.env.NODE_ENV !== "production" ? "localhost" : APP_URL,
+      domain:
+        process.env.NODE_ENV !== "production"
+          ? "localhost"
+          : process.env.APP_URL!,
       httpOnly: true,
       secure: true,
       sameSite: "none",
@@ -50,7 +54,10 @@ export class CookieHelper {
   static deleteAuthCookie(c: Context) {
     deleteCookie(c, this.AUTH_COOKIE_KEY, {
       path: "/",
-      domain: process.env.NODE_ENV !== "production" ? "localhost" : APP_URL,
+      domain:
+        process.env.NODE_ENV !== "production"
+          ? "localhost"
+          : process.env.APP_URL!,
     })
   }
 }

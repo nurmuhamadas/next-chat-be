@@ -5,8 +5,6 @@ import { AuthTokenManager } from "@/app/security/auth-token-manager"
 import { DateHelper } from "@/common/lib/date-helper"
 import { SessionTokenEntity } from "@/domains/auth/entities/session-token-entity"
 
-import { AUTH_SECRET } from "../../../config"
-
 @injectable()
 export class JWTTokenManager implements AuthTokenManager {
   generateSessionToken(session: SessionTokenEntity): Promise<string> {
@@ -16,7 +14,7 @@ export class JWTTokenManager implements AuthTokenManager {
         createdAt: new Date(),
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 10,
       },
-      AUTH_SECRET,
+      process.env.AUTH_SECRET!,
     )
   }
 
@@ -28,12 +26,12 @@ export class JWTTokenManager implements AuthTokenManager {
         createdAt: new Date(),
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 10,
       },
-      AUTH_SECRET,
+      process.env.AUTH_SECRET!,
     )
   }
 
   async verifySessionToken(token: string): Promise<SessionTokenEntity> {
-    const payload = await jwt.verify(token, AUTH_SECRET)
+    const payload = await jwt.verify(token, process.env.AUTH_SECRET!)
     const session = new SessionTokenEntity(
       payload.userId as string,
       payload.username as string,

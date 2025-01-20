@@ -2,7 +2,9 @@
   "name": "next-chat-be",
   "scripts": {
     "postinstall": "prisma generate",
-    "dev": "bun run --hot src/app.ts",
+    "dev": "tsx watch src/app.ts",
+    "build": "bun build src/app.ts --outdir ./build --target node --format cjs",
+    "start": "node ./build/app.js",
     "eslint": "bunx eslint ./src",
     "typecheck": "tsc --noEmit",
     "migration:create": "prisma migrate dev --create-only",
@@ -11,8 +13,11 @@
     "test": "bun test"
   },
   "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@hono/node-ws": "^1.0.5",
     "@hono/zod-validator": "^0.4.2",
     "@prisma/client": "^6.1.0",
+    "bcryptjs": "^2.4.3",
     "date-fns": "^4.1.0",
     "hono": "^4.6.14",
     "inversify": "^6.2.1",
@@ -24,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/bun": "latest",
     "@typescript-eslint/eslint-plugin": "^8.19.0",
     "eslint": "^9.17.0",
@@ -33,6 +39,7 @@
     "globals": "^15.14.0",
     "prettier": "^3.4.2",
     "prisma": "^6.1.0",
+    "tsx": "^4.19.2",
     "typescript-eslint": "^8.19.0"
   },
   "prisma": {

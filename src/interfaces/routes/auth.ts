@@ -14,6 +14,7 @@ const authRoute = new Hono()
     const { username } = c.req.param()
 
     const validateUsername = container.get(ValidateUsernameAvailability)
+    console.log(username)
 
     const isUsernameAvailable = await validateUsername.execute(username)
 

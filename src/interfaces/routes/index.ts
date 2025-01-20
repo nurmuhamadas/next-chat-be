@@ -9,7 +9,6 @@ import privateChatRoute from "./private-chat"
 import roomRoute from "./room"
 import settingRoute from "./setting"
 import userRoute from "./user"
-import { wsRoute } from "./websocket"
 
 export const createRouter = (app: Hono) => {
   app.route("/auth", authRoute)
@@ -21,5 +20,5 @@ export const createRouter = (app: Hono) => {
   app.route("/channels", channelRoute)
   app.route("/rooms", roomRoute)
   app.route("/messages", messageRoute)
-  app.route("/ws", wsRoute)
+  // app.route("/ws", wsRoute)
 }
