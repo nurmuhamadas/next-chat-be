@@ -2,15 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/app.js",
+      "src": "src/app.ts",
       "use": "@vercel/node",
-      "config": { "includeFiles": ["dist/**"] }
+      "config": { "includeFiles": ["src/**"] }
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "dist/app.js"
-    }
-  ]
+  "regions": ["sin1"],
+  "rewrites": [{ "source": "/(.*)", "destination": "src/app.ts" }]
 }
