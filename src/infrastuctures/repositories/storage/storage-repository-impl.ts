@@ -6,8 +6,6 @@ import { StorageRepository } from "@/domains/storage/repositories/storage-reposi
 import { KEYS } from "@/infrastuctures/container/keys"
 import { AppwriteClient } from "@/infrastuctures/storage/appwrite"
 
-import { STORAGE_ID } from "../../../../config"
-
 @injectable()
 export class StorageRepositoryImpl implements StorageRepository {
   constructor(@inject(KEYS.AppwriteClient) private appwrite: AppwriteClient) {}
@@ -19,7 +17,7 @@ export class StorageRepositoryImpl implements StorageRepository {
     const newFile = new File([blob], file.name, { type: file.type })
 
     const uploadedFile = await storage.createFile(
-      STORAGE_ID,
+      process.env.STORAGE_ID!,
       ID.unique(),
       newFile,
     )
@@ -37,7 +35,7 @@ export class StorageRepositoryImpl implements StorageRepository {
   async deleteFile(id: string): Promise<void> {
     const { storage } = await this.appwrite.createAdminClient()
 
-    await storage.deleteFile(STORAGE_ID, id)
+    await storage.deleteFile(process.env.STORAGE_ID!, id)
   }
 
   async deleteFileByUrl(url: string): Promise<void> {
@@ -45,6 +43,6 @@ export class StorageRepositoryImpl implements StorageRepository {
 
     const id = this.appwrite.destructFileId(url)
 
-    await storage.deleteFile(STORAGE_ID, id)
+    await storage.deleteFile(process.env.STORAGE_ID!, id)
   }
 }

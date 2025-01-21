@@ -1,14 +1,15 @@
+import { createNodeWebSocket } from "@hono/node-ws"
 import type { ServerWebSocket } from "bun"
 import { Hono } from "hono"
-import { createBunWebSocket } from "hono/bun"
 
+import { app } from "@/app"
 import { WebSocketManager } from "@/app/socket/web-socket-manager"
 import { container } from "@/infrastuctures/container"
 import { KEYS } from "@/infrastuctures/container/keys"
 
 import { sessionMiddleware } from "./middleware/session-middleware"
 
-const { upgradeWebSocket } = createBunWebSocket<ServerWebSocket>()
+const { upgradeWebSocket } = createNodeWebSocket({ app })
 
 export const wsRoute = new Hono()
   .get(
